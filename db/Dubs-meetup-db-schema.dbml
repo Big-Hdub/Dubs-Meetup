@@ -1,0 +1,83 @@
+Table Users {
+  id integer [pk, increment] // auto-increment
+  firstName varchar [not null]
+  lastName varchar [not null]
+  email varchar [not null, unique] // validate email
+  username varchar [not null, unique]
+  created_at timestamp [default: 'CURRENT_TIMESTAP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAP']
+}
+
+Table Groups {
+  id integer [pk, increment] // auto-increment
+  orginizerId integer [ref: > Users.id, not null]
+  name varchar [not null] // max: 60
+  about varchar [not null] // min: 50
+  type varchar [not null] // isIn: ['Online', 'In person']
+  private boolean [not null] // isBoolean
+  city varchar [not null] // first leter capitalized
+  state varchar [not null] // first leter capitalized
+  created_at timestamp [default: 'CURRENT_TIMESTAP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAP']
+  numMembers integer [not null, default: 1] // min: 1
+  previewImage varchar [not null, default: '/defaultImageUrl'] // valid url
+}
+
+Table GroupImages {
+  id integer [pk, increment] // auto-increment
+  groupId integer [ref: > Groups.id, not null]
+  url varchar [not null, unique] // isUrl
+  preview boolean [not null] // isBoolean
+  created_at timestamp [default: 'CURRENT_TIMESTAP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAP']
+}
+
+Table Venues {
+  id integer [pk, increment] // auto-increment
+  groupId integer [ref: > Groups.id, not null]
+  address varchar [not null]
+  city varchar [not null] // first leter capitalized
+  state varchar [not null] // first leter capitalized
+  lat decimal [not null] // dec: [10, 7], min: -90, max: 90
+  lng decimal [not null] // dec: [10, 7], min: -180, max: 180
+  created_at timestamp [default: 'CURRENT_TIMESTAP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAP']
+}
+
+Table Events {
+  id integer [pk, increment] // auto-increment
+  groupId integer [ref: > Groups.id, not null]
+  venueId integer [ref: > Venues.id, not null]
+  name varchar [not null] // min: 5
+  type varchar [not null] // isIn: ['Online', 'In person']
+  capacity integer [not null] // isInt
+  price decimal [not null] // dec: [6, 2]
+  description varchar [not null]
+  startDate timestamp [not null] // must be in future
+  endDate timestamp [not null]  // must be after startDate
+  created_at timestamp [default: 'CURRENT_TIMESTAP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAP']
+}
+
+Table EventImages {
+  id integer [pk, increment] // auto-increment
+  eventId integer [ref: > Events.id, not null]
+  url varchar [not null, unique] // isUrl
+  preview boolean [not null] // isBoolean
+  created_at timestamp [default: 'CURRENT_TIMESTAP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAP']
+}
+
+Table Members {
+  id integer [pk, increment] // auto-increment
+  userId integer [ref: > Users.id, not null]
+  groupId integer [ref: > Groups.id, not null]
+  status varchar [not null, default: 'pending'] // isIn ['co-host', 'member', 'pending']
+}
+
+Table Attendees {
+  id integer [pk, increment] // auto-increment
+  groupId integer [ref: > Groups.id, not null]
+  memberId integer [ref: > Members.id, not null]
+  status varchar [not null, default: 'pending'] // isIn ['attending', 'waitlist', 'pending']
+}
