@@ -19,7 +19,6 @@ Table Groups {
   state varchar [not null] // first leter capitalized
   created_at timestamp [default: 'CURRENT_TIMESTAP']
   updated_at timestamp [default: 'CURRENT_TIMESTAP']
-  numMembers integer [not null, default: 1] // min: 1
   previewImage varchar [not null, default: '/defaultImageUrl'] // valid url
 }
 
