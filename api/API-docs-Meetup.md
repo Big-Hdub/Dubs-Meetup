@@ -50,7 +50,7 @@ Returns the information about the current user that is logged in.
 * Require Authentication: false
 * Request
   * Method: GET
-  * URL: /api/user
+  * URL: /api/session
   * Body: none
 
 * Successful Response when there is a logged in user
@@ -90,8 +90,8 @@ information.
 
 * Require Authentication: false
 * Request
-  * Method: GET
-  * URL: /api/users/login
+  * Method: POST
+  * URL: /api/session
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -284,7 +284,7 @@ Returns all the groups.
 * Require Authentication: true
 * Request
   * Method: GET
-  * URL: /api/users/:userId
+  * URL: /api/groups/current
   * Body: none
 
 * Successful Response
@@ -1382,7 +1382,7 @@ Request a new membership for a group specified by id.
 
 * Require Authentication: true
 * Request
-  * Method: GET
+  * Method: POST
   * URL: /api/groups/:groupId/join
   * Headers:
     * Content-Type: application/json
@@ -1451,7 +1451,7 @@ Change the status of a membership for a group specified by id.
     * Current User must already be the organizer
 * Request
   * Method: PATCH
-  * URL: /api/groups/:groupId/members/:memberId
+  * URL: /api/groups/:groupId/member
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1692,7 +1692,7 @@ Request attendance for an event specified by id.
 * Require Authentication: true
 * Require Authorization: Current User must be a member of the group
 * Request
-  * Method: GET
+  * Method: POST
   * URL: /api/events/:eventId/apply
   * Headers:
     * Content-Type: application/json
@@ -1757,7 +1757,7 @@ Change the status of an attendance for an event specified by id.
   have a membership to the group with the status of "co-host"
 * Request
   * Method: PATCH
-  * URL: /api/events/:eventId/attendeeId
+  * URL: /api/events/:eventId/attendee
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1844,7 +1844,7 @@ Delete an attendance to an event specified by id.
   the user whose attendance is being deleted
 * Request
   * Method: DELETE
-  * URL: /api/events/:eventId/:attendeeId
+  * URL: /api/events/:eventId/attendees/:attendeeId
   * Headers:
     * Content-Type: application/json
   * Body: none
@@ -1908,7 +1908,7 @@ Delete an existing image for a Group.
   of the Group
 * Request
   * Method: DELETE
-  * URL: /api/groups/:groupId/images/:imageId
+  * URL: /api/groups/:groupId/group-images/:imageId
   * Body: none
 
 * Successful Response
@@ -1944,7 +1944,7 @@ Delete an existing image for an Event.
   of the Group that the Event belongs to
 * Request
   * Method: DELETE
-  * URL: /api/events/:eventId/images/:imageId
+  * URL: /api/events/:eventId/event-images/:imageId
   * Body: none
 
 * Successful Response
