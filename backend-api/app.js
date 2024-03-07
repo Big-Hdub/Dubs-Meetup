@@ -9,6 +9,9 @@ const { environment } = require('./config');
 const isProduction = environment === 'production';
 const app = express();
 
+
+const { notFound, sequelizeError, errorFormater } = require('./functions/validation-and-error-handling')
+
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
@@ -41,6 +44,8 @@ app.use(
 const routes = require('./routes');
 app.use(routes); // Connect all the routes
 
-
+app.use(notFound);
+app.use(sequelizeError);
+app.use(errorFormater);
 
 module.exports = app;
