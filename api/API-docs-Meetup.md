@@ -2,7 +2,7 @@
 
 ## Database Schema Design
 
-`<insert database schema design here>`
+![alt text](../db/Dubs-meetup-db-schema.png)
 
 ## API Documentation
 

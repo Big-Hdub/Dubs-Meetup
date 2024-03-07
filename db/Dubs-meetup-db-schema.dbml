@@ -76,7 +76,7 @@ Table Members {
 
 Table Attendees {
   id integer [pk, increment] // auto-increment
-  group_id integer [ref: > Groups.id, not null]
+  event_id integer [ref: > Events.id, not null]
   user_id integer [ref: > Users.id, not null]
   status varchar [not null, default: 'pending'] // isIn ['attending', 'waitlist', 'pending']
 }
