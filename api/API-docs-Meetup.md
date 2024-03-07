@@ -1,8 +1,8 @@
-# `<name of application here>`
+# `Dubs Meetup`
 
 ## Database Schema Design
 
-![alt text](../db/Dubs-meetup-db-schema.png)
+![alt text](../images/Dubs-meetup-db-schema.png)
 
 ## API Documentation
 
