@@ -10,7 +10,7 @@ const isProduction = environment === 'production';
 const app = express();
 
 
-const { notFound, sequelizeError, errorFormater } = require('./functions/validation-and-error-handling')
+const { notFound, sequelizeError, errorFormater } = require('./utils/validation-and-error-handling')
 
 app.use(morgan('dev'));
 app.use(cookieParser());
