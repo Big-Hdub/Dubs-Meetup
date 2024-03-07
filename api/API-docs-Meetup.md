@@ -1451,7 +1451,7 @@ Change the status of a membership for a group specified by id.
     * Current User must already be the organizer
 * Request
   * Method: PATCH
-  * URL: /api/groups/:groupId/member
+  * URL: /api/groups/:groupId/members
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1757,7 +1757,7 @@ Change the status of an attendance for an event specified by id.
   have a membership to the group with the status of "co-host"
 * Request
   * Method: PATCH
-  * URL: /api/events/:eventId/attendee
+  * URL: /api/events/:eventId/attendees
   * Headers:
     * Content-Type: application/json
   * Body:
@@ -1908,7 +1908,7 @@ Delete an existing image for a Group.
   of the Group
 * Request
   * Method: DELETE
-  * URL: /api/groups/:groupId/group-images/:imageId
+  * URL: /api/group-images/:imageId
   * Body: none
 
 * Successful Response
@@ -1944,7 +1944,7 @@ Delete an existing image for an Event.
   of the Group that the Event belongs to
 * Request
   * Method: DELETE
-  * URL: /api/events/:eventId/event-images/:imageId
+  * URL: /api/event-images/:imageId
   * Body: none
 
 * Successful Response

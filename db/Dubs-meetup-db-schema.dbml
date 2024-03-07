@@ -5,8 +5,8 @@ Table Users {
   email varchar [not null, unique] // validate email
   username varchar [not null, unique]
   hashed_password varchar [not null]
-  created_at timestamp [default: 'CURRENT_TIMESTAP']
-  updated_at timestamp [default: 'CURRENT_TIMESTAP']
+  created_at timestamp [default: 'CURRENT_TIMESTAMP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAMP']
 }
 
 Table Groups {
@@ -18,8 +18,8 @@ Table Groups {
   private boolean [not null] // isBoolean
   city varchar [not null] // first leter capitalized
   state varchar [not null] // first leter capitalized
-  created_at timestamp [default: 'CURRENT_TIMESTAP']
-  updated_at timestamp [default: 'CURRENT_TIMESTAP']
+  created_at timestamp [default: 'CURRENT_TIMESTAMP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAMP']
 }
 
 Table GroupImages {
@@ -27,8 +27,8 @@ Table GroupImages {
   group_id integer [ref: > Groups.id, not null]
   url varchar [not null, unique] // isUrl
   preview boolean [not null] // isBoolean
-  created_at timestamp [default: 'CURRENT_TIMESTAP']
-  updated_at timestamp [default: 'CURRENT_TIMESTAP']
+  created_at timestamp [default: 'CURRENT_TIMESTAMP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAMP']
 }
 
 Table Venues {
@@ -39,8 +39,8 @@ Table Venues {
   state varchar [not null] // first leter capitalized
   lat decimal [not null] // dec: [10, 7], min: -90, max: 90
   lng decimal [not null] // dec: [10, 7], min: -180, max: 180
-  created_at timestamp [default: 'CURRENT_TIMESTAP']
-  updated_at timestamp [default: 'CURRENT_TIMESTAP']
+  created_at timestamp [default: 'CURRENT_TIMESTAMP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAMP']
 }
 
 Table Events {
@@ -72,6 +72,8 @@ Table Members {
   user_id integer [ref: > Users.id, not null]
   group_id integer [ref: > Groups.id, not null]
   status varchar [not null, default: 'pending'] // isIn ['co-host', 'member', 'pending']
+  created_at timestamp [default: 'CURRENT_TIMESTAMP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAMP']
 }
 
 Table Attendees {
@@ -79,4 +81,6 @@ Table Attendees {
   event_id integer [ref: > Events.id, not null]
   user_id integer [ref: > Users.id, not null]
   status varchar [not null, default: 'pending'] // isIn ['attending', 'waitlist', 'pending']
+  created_at timestamp [default: 'CURRENT_TIMESTAMP']
+  updated_at timestamp [default: 'CURRENT_TIMESTAMP']
 }
