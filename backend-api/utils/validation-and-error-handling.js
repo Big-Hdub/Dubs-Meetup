@@ -1,6 +1,7 @@
 const { environment } = require('../config');
 const isProduction = environment === 'production';
 const { ValidationError } = require('sequelize');
+const { validationResult, check } = require('express-validator');
 
 const notFound = (_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
@@ -34,8 +35,39 @@ const errorFormater = (err, _req, res, _next) => {
     });
 };
 
+const handleValidationErrors = (req, _res, next) => {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+        const errors = {};
+        validationErrors
+            .array()
+            .forEach(error => errors[error.path] = error.msg);
+
+        const err = Error("Bad request.");
+        err.errors = errors;
+        err.status = 400;
+        err.title = "Bad request.";
+        next(err);
+    }
+    next();
+};
+
+const validateLogin = [
+    check('credential')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage('Please provide a valid email or username.'),
+    check('password')
+        .exists({ checkFalsy: true })
+        .withMessage('Please provide a password.'),
+    handleValidationErrors
+];
+
 module.exports = {
     notFound,
     sequelizeError,
-    errorFormater
+    errorFormater,
+    handleValidationErrors,
+    validateLogin
 }
