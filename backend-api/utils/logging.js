@@ -38,7 +38,24 @@ const logout = (_req, res) => {
     return res.json({ message: 'success' });
 }
 
+const getUser = (req, res) => {
+    const { user } = req;
+    if (user) {
+        const safeUser = {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            username: user.username,
+        };
+        return res.json({
+            user: safeUser
+        });
+    } else return res.json({ user: null });
+}
+
 module.exports = {
     login,
-    logout
+    logout,
+    getUser
 }
