@@ -17,7 +17,7 @@ Table Groups {
   type varchar [not null] // isIn: ['Online', 'In person']
   private boolean [not null] // isBoolean
   city varchar [not null] // first leter capitalized
-  state varchar [not null] // first leter capitalized
+  state varchar [not null] // must be abreviated state all caps
   created_at timestamp [default: 'CURRENT_TIMESTAMP']
   updated_at timestamp [default: 'CURRENT_TIMESTAMP']
 }
