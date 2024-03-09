@@ -1,28 +1,114 @@
 'use strict';
 const {
-  Model
+  Model,
+  Validator
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Event extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      // Event.hasMany(
+      //   models.EventImages, {
+      //   foreignKey: 'eventId'
+      // });
+      Event.belongsToMany(
+        models.User, {
+        through: 'Attendees',
+        foreignKey: 'eventId',
+        otherKey: 'userId'
+      })
     }
   }
   Event.init({
-    groupId: DataTypes.INTEGER,
-    venueId: DataTypes.INTEGER,
-    name: DataTypes.STRING,
-    type: DataTypes.STRING,
-    capacity: DataTypes.INTEGER,
-    price: DataTypes.DECIMAL,
-    description: DataTypes.STRING,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE
+    groupId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isNumeric: {
+          msg: "Must be an integer of Group id"
+        },
+        isInt: {
+          msg: "Must be an integer of Group id"
+        }
+      }
+    },
+    venueId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isNumeric: {
+          msg: "Must be an integer of Venue id"
+        },
+        isInt: {
+          msg: "Must be an integer of Venue id"
+        }
+      }
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        min: {
+          args: 5,
+          msg: "Cannot have less than 5 characters."
+        }
+      }
+    },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isIn: {
+          args: [['Online', 'In person']],
+          msg: 'Must be "Online" or "In person"'
+        }
+      }
+    },
+    capacity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        min: {
+          args: 1,
+          msg: "Must be greater than 0."
+        },
+        isNumeric: {
+          msg: "Must be an integer"
+        },
+        isInt: {
+          msg: "Must be an integer"
+        }
+      }
+    },
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        dec: {
+          args: [6, 2],
+          msg: "Must be a decimal in money format."
+        }
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    startDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+        isAfter: sequelize.literal('CURRENT_TIMESTAMP')
+      }
+    },
+    endDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      validate: {
+        afterStart(val) {
+          if (val < this.startDate) throw new Error("End date neeeds to be after start date.")
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Event',
