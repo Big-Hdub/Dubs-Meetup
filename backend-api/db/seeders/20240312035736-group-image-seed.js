@@ -1,4 +1,5 @@
 'use strict';
+/** @type {import('sequelize-cli').Migration} */
 
 const { GroupImage } = require('../models');
 
@@ -6,6 +7,8 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
+options.tableName = 'GroupImages';
+options.validate = true;
 
 const groupImages = [
   {
@@ -24,11 +27,10 @@ const groupImages = [
   },
 ]
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      await GroupImage.bulkCreate(groupImages, { validate: true })
+      await GroupImage.bulkCreate(groupImages, options)
     } catch (err) {
       console.error(err);
       throw err;
@@ -36,7 +38,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Venues';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
       groupId: { [Op.in]: [1, 2] }

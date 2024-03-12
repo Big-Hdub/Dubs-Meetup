@@ -1,4 +1,5 @@
 'use strict';
+/** @type {import('sequelize-cli').Migration} */
 
 const { Event } = require('../models');
 
@@ -6,6 +7,8 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
+options.tableName = 'Events';
+options.validate = true;
 
 const events = [
   {
@@ -32,11 +35,10 @@ const events = [
   }
 ]
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      await Event.bulkCreate(events, { validate: true });
+      await Event.bulkCreate(events, options);
     } catch (err) {
       console.error(err);
       throw err;
@@ -44,7 +46,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Events';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
       name: { [Op.in]: ['Dubs Tourney', 'FF marathon'] }
