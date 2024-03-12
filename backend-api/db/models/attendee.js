@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Attendee.init({
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     eventId: {
       type: DataTypes.INTEGER,
       allowNull: false,
