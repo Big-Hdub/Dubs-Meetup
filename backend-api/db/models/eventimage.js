@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       EventImage.belongsTo(
         models.Event, {
-        foreignKey: 'EventId'
+        foreignKey: 'eventId'
       })
     }
   }
