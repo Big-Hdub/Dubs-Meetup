@@ -16,8 +16,8 @@ const events = [
     capacity: 20,
     price: 89.99,
     description: 'Fun in the sun',
-    startDate: '2024-04-08 12:00:00.000 +00:00',
-    endDate: '2024-05-08 12:00:00.000 +00:00'
+    startDate: new Date('2024-04-08 12:00:00.000 +00:00'),
+    endDate: new Date('2024-05-08 12:00:00.000 +00:00')
   },
   {
     groupId: 1,
@@ -27,8 +27,8 @@ const events = [
     capacity: 200,
     price: 9.99,
     description: 'A warrior of light time',
-    startDate: '2024-05-08 12:00:00.000 +00:00',
-    endDate: '2024-06-08 12:00:00.000 +00:00'
+    startDate: new Date('2024-05-08 12:00:00.000 +00:00'),
+    endDate: new Date('2024-06-08 12:00:00.000 +00:00')
   }
 ]
 

@@ -17,7 +17,7 @@ Table Groups {
   type varchar [not null] // isIn: ['Online', 'In person']
   private boolean [not null] // isBoolean
   city varchar [not null] // first leter capitalized
-  state varchar [not null] // must be abreviated state all caps
+  state varchar [not null] // abreviated and all caps
   created_at timestamp [default: 'CURRENT_TIMESTAMP']
   updated_at timestamp [default: 'CURRENT_TIMESTAMP']
 }
@@ -36,7 +36,7 @@ Table Venues {
   group_id integer [ref: > Groups.id, not null]
   address varchar [not null]
   city varchar [not null] // first leter capitalized
-  state varchar [not null] // first leter capitalized
+  state varchar [not null] // abreviated and all caps
   lat decimal [not null] // dec: [10, 7], min: -90, max: 90
   lng decimal [not null] // dec: [10, 7], min: -180, max: 180
   created_at timestamp [default: 'CURRENT_TIMESTAMP']

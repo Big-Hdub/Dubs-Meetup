@@ -1,22 +1,45 @@
 'use strict';
 const {
-  Model
+  Model,
+  Validator
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class GroupImage extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      GroupImage.belongsTo(
+        models.Group, {
+        foreignKey: 'groupId'
+      })
     }
   }
   GroupImage.init({
-    groupId: DataTypes.INTEGER,
-    url: DataTypes.STRING,
-    preview: DataTypes.BOOLEAN
+    groupId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        isNumeric: {
+          msg: "Must be an integer of Group id"
+        },
+        isInt: {
+          msg: "Must be an integer of Group id"
+        }
+      }
+    },
+    url: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isUrl: { msg: "Must be a valid Url." }
+      }
+    },
+    preview: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
+      validate: {
+        isIn: [[true, false]]
+      }
+    }
   }, {
     sequelize,
     modelName: 'GroupImage',

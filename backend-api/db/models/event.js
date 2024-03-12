@@ -6,10 +6,10 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Event extends Model {
     static associate(models) {
-      // Event.hasMany(
-      //   models.EventImages, {
-      //   foreignKey: 'eventId'
-      // });
+      Event.hasMany(
+        models.EventImage, {
+        foreignKey: 'eventId'
+      });
       Event.belongsToMany(
         models.User, {
         through: 'Attendees',
@@ -83,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        dec: {
+        isDecimal: {
           args: [6, 2],
           msg: "Must be a decimal in money format."
         }
@@ -96,18 +96,20 @@ module.exports = (sequelize, DataTypes) => {
     startDate: {
       type: DataTypes.DATE,
       allowNull: false,
-      validate: {
-        isAfter: sequelize.literal('CURRENT_TIMESTAMP')
-      }
+      // validate: {
+      // afterStart(val) {
+      //   if (val < this.startDate) throw new Error("End date neeeds to be after start date.")
+      // }
+      // }
     },
     endDate: {
       type: DataTypes.DATE,
       allowNull: false,
-      validate: {
-        afterStart(val) {
-          if (val < this.startDate) throw new Error("End date neeeds to be after start date.")
-        }
-      }
+      // validate: {
+      // afterStart(val) {
+      //   if (val < this.startDate) throw new Error("End date neeeds to be after start date.")
+      // }
+      // }
     }
   }, {
     sequelize,
