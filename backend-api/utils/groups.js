@@ -111,11 +111,11 @@ const deleteGroup = async (req, res, next) => {
         where: {
             id: req.params.id
         }
-    })
+    });
     res.json({
         message: "Successfully deleted"
-    })
-}
+    });
+};
 
 module.exports = {
     getGroups,
