@@ -1,16 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const { getGroups, getCurrentGroups, getGroupById, createGroup } = require('../../utils/groups');
+const { getGroups, getCurrentGroups, getGroupById, createGroup, createGroupImage } = require('../../utils/groups');
 const { requireAuth } = require('../../utils/auth');
+const { validateGroupCreate, properGroupAuth, validGroupId } = require('../../utils/validation-and-error-handling');
 
 router.route('/')
     .get(getGroups)
-    .post(requireAuth, createGroup)
+    .post(requireAuth, validateGroupCreate, createGroup)
 
 router.route('/current')
     .get(requireAuth, getCurrentGroups)
 
+router.route('/:id/images')
+    .all(validGroupId)
+    .post(requireAuth, properGroupAuth, createGroupImage)
+
 router.route('/:id')
+    .all(validGroupId)
     .get(getGroupById)
 
 module.exports = router;

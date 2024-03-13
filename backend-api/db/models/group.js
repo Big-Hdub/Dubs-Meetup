@@ -116,6 +116,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Group',
+    indexes: [
+      {
+        unique: true,
+        fields: ['organizerId', 'name']
+      }]
   });
   return Group;
 };

@@ -12,7 +12,7 @@ Table Users {
 Table Groups {
   id integer [pk, increment] // auto-increment
   organizer_id integer [ref: > Users.id, not null]
-  name varchar [not null] // max: 60
+  name varchar [not null, unique] // max: 60
   about varchar [not null] // min: 50
   type varchar [not null] // isIn: ['Online', 'In person']
   private boolean [not null] // isBoolean
