@@ -8,11 +8,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Group.belongsTo(
         models.User, {
-        foreignKey: "organizerId"
+        foreignKey: "organizerId",
+        as: 'Organizer'
       })
       Group.hasMany(
         models.Venue, {
         foreignKey: "groupId"
+      })
+      Group.hasMany(
+        models.GroupImage, {
+        foreignKey: "groupId",
+        as: 'previewImage'
       })
       Group.hasMany(
         models.GroupImage, {
