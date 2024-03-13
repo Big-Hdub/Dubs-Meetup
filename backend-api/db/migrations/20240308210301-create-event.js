@@ -11,11 +11,13 @@ module.exports = {
       },
       groupId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: { model: 'Groups' }
       },
       venueId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: { model: 'Venues' }
       },
       name: {
         type: Sequelize.STRING,
