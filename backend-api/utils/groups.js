@@ -100,10 +100,29 @@ const createGroupImage = async (req, res) => {
     });
 };
 
+const editGroup = async (req, res) => {
+    const group = await Group.findByPk(Number(req.params.id));
+    await group.update(req.body);
+    res.json(group);
+};
+
+const deleteGroup = async (req, res, next) => {
+    await Group.destroy({
+        where: {
+            id: req.params.id
+        }
+    })
+    res.json({
+        message: "Successfully deleted"
+    })
+}
+
 module.exports = {
     getGroups,
     getCurrentGroups,
     getGroupById,
     createGroup,
-    createGroupImage
+    createGroupImage,
+    editGroup,
+    deleteGroup
 };

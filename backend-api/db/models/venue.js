@@ -9,11 +9,13 @@ module.exports = (sequelize, DataTypes) => {
         models.Group, {
         through: 'Events',
         foreignKey: 'venueId',
-        otherKey: 'groupId'
+        otherKey: 'groupId',
+        onDelete: 'cascade'
       })
       Venue.belongsTo(
         models.Group, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        onDelete: 'cascade'
       })
     }
   }

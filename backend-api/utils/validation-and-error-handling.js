@@ -18,10 +18,10 @@ const sequelizeError = (err, _req, _res, next) => {
         let errors = {};
         for (let error of err.errors) {
             errors[error.path] = error.message;
-        }
+        };
         err.title = 'Validation error';
         err.errors = errors;
-    }
+    };
     next(err);
 };
 
@@ -50,7 +50,7 @@ const handleValidationErrors = (req, _res, next) => {
         err.status = 400;
         err.title = "Bad request.";
         next(err);
-    }
+    };
     next();
 };
 
@@ -122,25 +122,65 @@ const validateGroupCreate = [
 ];
 
 const properGroupAuth = async (req, _res, next) => {
-    const group = await Group.findByPk(Number(req.params.id))
-    console.log(group.organizerId, req.user.id)
+    const group = await Group.findByPk(Number(req.params.id));
     if (group.organizerId !== req.user.id) {
         const err = new Error("Current User mst be the organizer for the group");
         err.status = 403;
         return next(err);
-    }
-    next()
-}
+    };
+    next();
+};
 
 const validGroupId = async (req, _res, next) => {
-    const group = Group.findByPk(Number(req.params.id));
+    const group = await Group.findByPk(Number(req.params.id));
+
     if (!group) {
-        const err = new Error("Couldn't find a Group with the specified id");
+        const err = new Error("Group couldn't be found");
         err.status = 404;
         return next(err);
-    }
+    };
     return next();
-}
+};
+
+const validateGroupEdit = [
+    check('name')
+        .optional()
+        .notEmpty()
+        .isString()
+        .isLength({ max: 60 })
+        .notEmpty()
+        .withMessage('Name must be 60 characters or less.'),
+    check('about')
+        .optional()
+        .notEmpty()
+        .isString()
+        .isLength({ min: 50 })
+        .notEmpty()
+        .withMessage('About must be 50 characters or more'),
+    check('type')
+        .optional()
+        .notEmpty()
+        .isIn(['Online', 'In person'])
+        .withMessage("Type must be 'Online' or 'In person'"),
+    check('private')
+        .optional()
+        .notEmpty()
+        .isBoolean()
+        .withMessage('Private must be a boolean'),
+    check('city')
+        .optional()
+        .notEmpty()
+        .isString()
+        .withMessage('City is required'),
+    check('state')
+        .optional()
+        .notEmpty()
+        .isString()
+        .isUppercase()
+        .isLength({ min: 2, max: 2 })
+        .withMessage('State is required'),
+    handleValidationErrors
+];
 
 module.exports = {
     notFound,
@@ -151,5 +191,6 @@ module.exports = {
     validateSignup,
     validateGroupCreate,
     properGroupAuth,
-    validGroupId
-}
+    validGroupId,
+    validateGroupEdit
+};
