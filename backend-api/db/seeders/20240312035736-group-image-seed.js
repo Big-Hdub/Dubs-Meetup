@@ -25,6 +25,11 @@ const groupImages = [
     groupId: 1,
     url: 'www.play.net/images/pic3.png',
   },
+  {
+    groupId: 2,
+    url: 'www.play.net/images/pic4.png',
+    preview: true
+  }
 ]
 
 module.exports = {

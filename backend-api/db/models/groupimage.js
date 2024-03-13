@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       GroupImage.belongsTo(
         models.Group, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        onDelete: 'cascade'
       })
     }
   }
@@ -34,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     url: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         isUrl: { msg: "Must be a valid Url." }
       }

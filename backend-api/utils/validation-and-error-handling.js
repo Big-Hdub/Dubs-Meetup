@@ -2,6 +2,7 @@ const { environment } = require('../config');
 const isProduction = environment === 'production';
 const { ValidationError } = require('sequelize');
 const { validationResult, check } = require('express-validator');
+const { Group } = require('../db/models');
 
 const notFound = (_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
@@ -17,10 +18,10 @@ const sequelizeError = (err, _req, _res, next) => {
         let errors = {};
         for (let error of err.errors) {
             errors[error.path] = error.message;
-        }
+        };
         err.title = 'Validation error';
         err.errors = errors;
-    }
+    };
     next(err);
 };
 
@@ -49,7 +50,7 @@ const handleValidationErrors = (req, _res, next) => {
         err.status = 400;
         err.title = "Bad request.";
         next(err);
-    }
+    };
     next();
 };
 
@@ -84,11 +85,112 @@ const validateSignup = [
     handleValidationErrors
 ];
 
+const validateGroupCreate = [
+    check('name')
+        .exists({ checkFalsy: true })
+        .isString()
+        .isLength({ max: 60 })
+        .notEmpty()
+        .withMessage('Name must be 60 characters or less.'),
+    check('about')
+        .exists({ checkFalsy: true })
+        .isString()
+        .isLength({ min: 50 })
+        .notEmpty()
+        .withMessage('About must be 50 characters or more'),
+    check('type')
+        .exists({ checkFalsy: true })
+        .isIn(['Online', 'In person'])
+        .withMessage("Type must be 'Online' or 'In person'"),
+    check('private')
+        .exists({ checkFalsy: true })
+        .isBoolean()
+        .withMessage('Private must be a boolean'),
+    check('city')
+        .exists({ checkFalsy: true })
+        .isString()
+        .notEmpty()
+        .withMessage('City is required'),
+    check('state')
+        .exists({ checkFalsy: true })
+        .isString()
+        .notEmpty()
+        .isUppercase()
+        .isLength({ min: 2, max: 2 })
+        .withMessage('State is required'),
+    handleValidationErrors
+];
+
+const properGroupAuth = async (req, _res, next) => {
+    const group = await Group.findByPk(Number(req.params.id));
+    if (group.organizerId !== req.user.id) {
+        const err = new Error("Current User mst be the organizer for the group");
+        err.status = 403;
+        return next(err);
+    };
+    next();
+};
+
+const validGroupId = async (req, _res, next) => {
+    const group = await Group.findByPk(Number(req.params.id));
+
+    if (!group) {
+        const err = new Error("Group couldn't be found");
+        err.status = 404;
+        return next(err);
+    };
+    return next();
+};
+
+const validateGroupEdit = [
+    check('name')
+        .optional()
+        .notEmpty()
+        .isString()
+        .isLength({ max: 60 })
+        .notEmpty()
+        .withMessage('Name must be 60 characters or less.'),
+    check('about')
+        .optional()
+        .notEmpty()
+        .isString()
+        .isLength({ min: 50 })
+        .notEmpty()
+        .withMessage('About must be 50 characters or more'),
+    check('type')
+        .optional()
+        .notEmpty()
+        .isIn(['Online', 'In person'])
+        .withMessage("Type must be 'Online' or 'In person'"),
+    check('private')
+        .optional()
+        .notEmpty()
+        .isBoolean()
+        .withMessage('Private must be a boolean'),
+    check('city')
+        .optional()
+        .notEmpty()
+        .isString()
+        .withMessage('City is required'),
+    check('state')
+        .optional()
+        .notEmpty()
+        .isString()
+        .isUppercase()
+        .isLength({ min: 2, max: 2 })
+        .withMessage('State is required'),
+    handleValidationErrors
+];
+
 module.exports = {
     notFound,
     sequelizeError,
     errorFormater,
     handleValidationErrors,
     validateLogin,
-    validateSignup
-}
+    validateSignup,
+    validateGroupCreate,
+    properGroupAuth,
+    validGroupId,
+    validateGroupEdit
+};

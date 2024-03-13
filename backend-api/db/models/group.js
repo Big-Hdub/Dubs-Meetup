@@ -8,27 +8,38 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Group.belongsTo(
         models.User, {
-        foreignKey: "organizerId"
+        foreignKey: "organizerId",
+        as: 'Organizer'
       })
       Group.hasMany(
         models.Venue, {
-        foreignKey: "groupId"
+        foreignKey: "groupId",
+        onDelete: 'cascade'
       })
       Group.hasMany(
         models.GroupImage, {
-        foreignKey: "groupId"
+        foreignKey: "groupId",
+        as: 'previewImage',
+        onDelete: 'cascade'
+      })
+      Group.hasMany(
+        models.GroupImage, {
+        foreignKey: "groupId",
+        onDelete: 'cascade'
       })
       Group.belongsToMany(
         models.User, {
         through: 'Members',
         foreignKey: 'groupId',
-        otherKey: 'userId'
+        otherKey: 'userId',
+        onDelete: 'cascade'
       })
       Group.belongsToMany(
         models.Venue, {
         through: 'Events',
         foreignKey: 'groupId',
-        otherKey: 'venueId'
+        otherKey: 'venueId',
+        onDelete: 'cascade'
       })
     }
   }
@@ -110,6 +121,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Group',
+    indexes: [
+      {
+        unique: true,
+        fields: ['organizerId', 'name']
+      }]
   });
   return Group;
 };
