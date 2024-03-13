@@ -20,6 +20,9 @@ router.use('/session', sessionRouter);
 const usersRouter = require('./users.js');
 router.use('/users', usersRouter);
 
+const groupsRouter = require('./groups.js');
+router.use('/groups', groupsRouter);
+
 router.post('/test', (req, res) => {
     res.json({ requestBody: req.body });
 });
