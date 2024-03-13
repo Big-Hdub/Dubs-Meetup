@@ -1,4 +1,5 @@
 'use strict';
+/** @type {import('sequelize-cli').Migration} */
 
 const { Group } = require('../models');
 
@@ -6,6 +7,8 @@ let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
 }
+options.tableName = 'Groups';
+options.validate = true;
 
 const groups = [
   {
@@ -28,11 +31,10 @@ const groups = [
   }
 ]
 
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      await Group.bulkCreate(groups, { validate: true });
+      await Group.bulkCreate(groups, options);
     } catch (err) {
       console.error(err);
       throw err;
@@ -40,7 +42,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    options.tableName = 'Groups';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
       name: { [Op.in]: ['Dubs clan'] }
