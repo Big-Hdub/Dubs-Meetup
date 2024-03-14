@@ -5,7 +5,7 @@ const { Event } = require('../models');
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA;  // define your schema in options object
+  options.schema = process.env.SCHEMA;
 }
 options.tableName = 'Events';
 options.validate = true;

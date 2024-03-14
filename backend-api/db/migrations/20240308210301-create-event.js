@@ -3,7 +3,7 @@
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA; // define your schema in options object
+  options.schema = process.env.SCHEMA;
 }
 options.tableName = "Events";
 
@@ -22,7 +22,8 @@ module.exports = {
         references: {
           model: 'Groups',
           key: 'id'
-        }
+        },
+        onDelete: 'cascade'
       },
       venueId: {
         type: Sequelize.INTEGER,
@@ -30,7 +31,8 @@ module.exports = {
         references: {
           model: 'Venues',
           key: 'id'
-        }
+        },
+        onDelete: 'cascade'
       },
       name: {
         type: Sequelize.STRING,

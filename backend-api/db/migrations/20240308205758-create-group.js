@@ -3,7 +3,7 @@
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  options.schema = process.env.SCHEMA; // define your schema in options object
+  options.schema = process.env.SCHEMA;
 }
 options.tableName = "Groups";
 
@@ -60,6 +60,7 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
+    await queryInterface.addIndex('Groups', ['organizerId', 'name'], { unique: true });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(options);
