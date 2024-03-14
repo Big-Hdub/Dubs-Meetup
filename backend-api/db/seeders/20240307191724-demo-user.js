@@ -38,7 +38,7 @@ const demoUsers = [
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      return User.bulkCreate(demoUsers, options);
+      await User.bulkCreate(demoUsers, options);
     } catch (err) {
       console.error(err);
       throw err;
@@ -47,7 +47,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
+    await queryInterface.bulkDelete(options, {
       username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
     }, {});
   }
