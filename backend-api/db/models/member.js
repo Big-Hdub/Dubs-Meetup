@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 'pending',
       validate: {
         isIn: {
-          args: [['co-host', 'member', 'pending']],
+          args: [['Organizer', 'co-host', 'member', 'pending']],
           msg: 'Must be "co-host", "member, or "pending"'
         }
       }
