@@ -29,30 +29,10 @@ const findOrganizersGroups = (id) => {
     return groups;
 };
 
-const findGroupById = (id) => {
-    const group = Group.findOne({
-        where: { id: id },
-        include: [{
-            model: GroupImage,
-            attributes: ['id', 'url', 'preview'],
-        }, {
-            model: User,
-            attributes: ['id', 'firstName', 'lastName'],
-            as: 'Organizer'
-        }, {
-            model: Venue,
-            attributes: {
-                exclude: ['createdAt', 'updatedAt', 'Events']
-            }
-        }]
-    });
-    return group;
-};
-
 const formatGroups = (groups) => {
     return Promise.all(groups.map(async group => {
         const numMembers = await Member.count({
-            where: { GroupId: group.id }
+            where: { groupId: group.id }
         });
         return {
             ...group.toJSON(),
@@ -75,9 +55,28 @@ const getCurrentGroups = async (req, res) => {
     res.json({ Groups: formattedGroups });
 };
 
-const getGroupById = async (req, res, next) => {
-    const id = req.params.id;
-    const group = await findGroupById(Number(id));
+const findGroupById = async (groupObj) => {
+    const group = groupObj.toJSON();
+    group.numMembers = await Member.count({ where: { groupId: group.id } })
+    group.GroupImages = await GroupImage.findAll({
+        where: { groupId: group.id },
+        attributes: ['id', 'url', 'preview']
+    });
+    group.Organizer = await User.findOne({
+        where: { id: group.organizerId },
+        attributes: ['id', 'firstName', 'lastName']
+    });
+    group.Venues = await Venue.findAll({
+        where: { groupId: group.id },
+        attributes: {
+            exclude: ['createdAt', 'updatedAt', 'Events']
+        }
+    });
+    return group;
+};
+
+const getGroupById = async (req, res) => {
+    const group = await findGroupById(req.group);
     res.json(group);
 };
 
@@ -101,17 +100,14 @@ const createGroupImage = async (req, res) => {
 };
 
 const editGroup = async (req, res) => {
-    const group = await Group.findByPk(Number(req.params.id));
+    const group = req.group;
     await group.update(req.body);
     res.json(group);
 };
 
 const deleteGroup = async (req, res, next) => {
-    await Group.destroy({
-        where: {
-            id: req.params.id
-        }
-    });
+    const group = req.group;
+    group.destroy();
     res.json({
         message: "Successfully deleted"
     });

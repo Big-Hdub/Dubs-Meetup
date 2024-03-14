@@ -98,6 +98,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Venue',
+    indexes: [
+      {
+        unique: true,
+        fields: ['groupId', 'address', 'city', 'state']
+      }]
   });
   return Venue;
 };
