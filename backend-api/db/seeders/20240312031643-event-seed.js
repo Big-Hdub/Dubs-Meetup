@@ -24,7 +24,7 @@ const events = [
   },
   {
     groupId: 1,
-    venueId: 1,
+    venueId: 2,
     name: 'FF marathon',
     type: 'Online',
     capacity: 200,

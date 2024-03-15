@@ -8,13 +8,30 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Event.hasMany(
         models.EventImage, {
-        foreignKey: 'eventId'
+        foreignKey: 'eventId',
+        as: 'previewImage',
+        onDelete: 'cascade'
+      });
+      Event.hasMany(
+        models.EventImage, {
+        foreignKey: 'eventId',
+        onDelete: 'cascade'
       });
       Event.belongsToMany(
         models.User, {
         through: 'Attendees',
         foreignKey: 'eventId',
         otherKey: 'userId'
+      })
+      Event.hasOne(
+        models.Group, {
+        foreignKey: 'id',
+        onDelete: 'cascade'
+      })
+      Event.hasOne(
+        models.Venue, {
+        foreignKey: 'id',
+        onDelete: 'cascade'
       })
     }
   }
@@ -120,6 +137,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Event',
+    indexes: [
+      {
+        unique: true,
+        fields: ['groupId', 'venueId', 'startDate', 'endDate']
+      }]
   });
   return Event;
 };

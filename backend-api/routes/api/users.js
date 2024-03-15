@@ -1,9 +1,9 @@
-const express = require('express');
+const router = require('express').Router();
 const { signup } = require('../../utils/users');
-const { validateSignup } = require('../../utils/validation-and-error-handling');
-const router = express.Router();
+const { validateSignup, methodError } = require('../../utils/validation-and-error-handling');
 
 router.route('/')
     .post(validateSignup, signup)
+    .all(methodError);
 
 module.exports = router;

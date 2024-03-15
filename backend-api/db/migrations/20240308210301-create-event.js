@@ -20,8 +20,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Groups',
-          key: 'id'
+          model: 'Groups'
         },
         onDelete: 'cascade'
       },
@@ -29,8 +28,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Venues',
-          key: 'id'
+          model: 'Venues'
         },
         onDelete: 'cascade'
       },
@@ -73,6 +71,7 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
+    await queryInterface.addIndex('Events', ['groupId', 'venueId', 'startDate', 'endDate'], { unique: true });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(options);

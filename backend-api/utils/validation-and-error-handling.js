@@ -1,8 +1,8 @@
 const { environment } = require('../config');
 const isProduction = environment === 'production';
-const { ValidationError, Op } = require('sequelize');
+const { ValidationError, Op, literal } = require('sequelize');
 const { validationResult, check } = require('express-validator');
-const { Group, Venue, User, Member } = require('../db/models');
+const { Group, Venue, User, Member, Event } = require('../db/models');
 
 const notFound = (_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
@@ -130,6 +130,18 @@ const properGroupAuth = async (req, _res, next) => {
     };
     next();
 };
+
+const properGroupEventAuth = async (req, res, next) => {
+    const groupId = req.group.id;
+    const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } });
+    if (member.status !== 'co-host' && member.status !== 'Organizer') {
+        const err = new Error("Current User must be the organizer or co-host for the group");
+        err.title = "Action requires proper autherization."
+        err.status = 403;
+        return next(err);
+    }
+    next();
+}
 
 const validGroupId = async (req, _res, next) => {
     const group = await Group.findByPk(Number(req.params.id));
@@ -266,6 +278,62 @@ const validateVenueCreate = [
     handleValidationErrors
 ];
 
+const methodError = (_req, _res, next) => {
+    const err = new Error('Not a valid request method.');
+    err.title = "Invalid method";
+    err.status = 405;
+    return next(err);
+}
+
+const validEventId = async (req, _res, next) => {
+    const event = await Event.findByPk(req.params.id);
+    if (!event) {
+        const err = new Error("Event couldn't be found");
+        err.title = "No Event"
+        err.status = 404;
+        return next(err);
+    }
+    console.log(event)
+    req.event = event;
+    return next();
+}
+
+const validateEventCreate = [
+    check('name')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isString()
+        .isLength({ min: 5 })
+        .withMessage('Name must be at least 5 characters'),
+    check('type')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isIn(['Online', 'In person'])
+        .withMessage('Type must be Online or In person'),
+    check('capacity')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isInt()
+        .isNumeric()
+        .withMessage('Capacity must be an integer'),
+    check('price')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isDecimal()
+        .withMessage('Price is invalid'),
+    check('description')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isString()
+        .withMessage('Description is required'),
+    check('startDate')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isAfter(`${new Date()}`)
+        .withMessage('Start date must be in the future'),
+    handleValidationErrors
+];
+
 module.exports = {
     notFound,
     sequelizeError,
@@ -275,10 +343,14 @@ module.exports = {
     validateSignup,
     validateGroupCreate,
     properGroupAuth,
+    properGroupEventAuth,
     validGroupId,
     validateGroupEdit,
     validVenueId,
     properVenueAuth,
     validateVenueEdit,
-    validateVenueCreate
+    validateVenueCreate,
+    methodError,
+    validEventId,
+    validateEventCreate
 };
