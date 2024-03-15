@@ -8,7 +8,8 @@ const findAllGroups = () => {
             where: {
                 preview: true
             },
-            as: 'previewImage'
+            as: 'previewImage',
+            require: false
         },
     });
     return groups;
