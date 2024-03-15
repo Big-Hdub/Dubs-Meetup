@@ -23,6 +23,9 @@ router.use('/users', usersRouter);
 const groupsRouter = require('./groups.js');
 router.use('/groups', groupsRouter);
 
+const venuesRouter = require('./venues.js');
+router.use('/venues', venuesRouter);
+
 router.post('/test', (req, res) => {
     res.json({ requestBody: req.body });
 });

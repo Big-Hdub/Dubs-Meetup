@@ -71,7 +71,7 @@ Table Members {
   id integer [pk, increment] // auto-increment
   user_id integer [ref: > Users.id, not null]
   group_id integer [ref: > Groups.id, not null]
-  status varchar [not null, default: 'pending'] // isIn ['co-host', 'member', 'pending']
+  status varchar [not null, default: 'pending'] // isIn ['Organizer', 'co-host', 'member', 'pending']
   created_at timestamp [default: 'CURRENT_TIMESTAMP']
   updated_at timestamp [default: 'CURRENT_TIMESTAMP']
 }

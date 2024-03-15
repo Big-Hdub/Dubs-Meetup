@@ -32,13 +32,20 @@ const demoUsers = [
     email: 'user2@user.io',
     username: 'FakeUser2',
     hashedPassword: bcrypt.hashSync('password3')
+  },
+  {
+    firstName: 'Leilani',
+    lastName: 'Wagner',
+    email: 'user3@user.io',
+    username: 'FakeUser3',
+    hashedPassword: bcrypt.hashSync('password3')
   }
 ]
 
 module.exports = {
   async up(queryInterface, Sequelize) {
     try {
-      return User.bulkCreate(demoUsers, options);
+      await User.bulkCreate(demoUsers, options);
     } catch (err) {
       console.error(err);
       throw err;
@@ -47,8 +54,8 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
-      username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
+    await queryInterface.bulkDelete(options, {
+      username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2', 'FakeUser3'] }
     }, {});
   }
 };

@@ -49,7 +49,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
+    await queryInterface.bulkDelete(options, {
       groupId: { [Op.in]: [1, 2] }
     })
   }

@@ -1,8 +1,8 @@
 const { environment } = require('../config');
 const isProduction = environment === 'production';
-const { ValidationError } = require('sequelize');
+const { ValidationError, Op } = require('sequelize');
 const { validationResult, check } = require('express-validator');
-const { Group } = require('../db/models');
+const { Group, Venue, User, Member } = require('../db/models');
 
 const notFound = (_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
@@ -122,9 +122,9 @@ const validateGroupCreate = [
 ];
 
 const properGroupAuth = async (req, _res, next) => {
-    const group = await Group.findByPk(Number(req.params.id));
+    const group = req.group;
     if (group.organizerId !== req.user.id) {
-        const err = new Error("Current User mst be the organizer for the group");
+        const err = new Error("Current User must be the organizer for the group");
         err.status = 403;
         return next(err);
     };
@@ -133,12 +133,12 @@ const properGroupAuth = async (req, _res, next) => {
 
 const validGroupId = async (req, _res, next) => {
     const group = await Group.findByPk(Number(req.params.id));
-
     if (!group) {
         const err = new Error("Group couldn't be found");
         err.status = 404;
         return next(err);
     };
+    req.group = group;
     return next();
 };
 
@@ -148,14 +148,12 @@ const validateGroupEdit = [
         .notEmpty()
         .isString()
         .isLength({ max: 60 })
-        .notEmpty()
         .withMessage('Name must be 60 characters or less.'),
     check('about')
         .optional()
         .notEmpty()
         .isString()
         .isLength({ min: 50 })
-        .notEmpty()
         .withMessage('About must be 50 characters or more'),
     check('type')
         .optional()
@@ -182,6 +180,92 @@ const validateGroupEdit = [
     handleValidationErrors
 ];
 
+const validVenueId = async (req, _res, next) => {
+    const venue = await Venue.findByPk(req.params.id);
+    if (!venue) {
+        const err = new Error("Venue couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    req.venue = venue;
+    return next();
+}
+
+const properVenueAuth = async (req, res, next) => {
+    let groupId;
+    if (req.group) groupId = req.group.id;
+    if (req.venue) groupId = req.venue.groupId;
+    const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } });
+    if (member.status !== 'co-host' && member.status !== 'Organizer') {
+        const err = new Error("Current User must be the organizer or co-host for the group");
+        err.status = 403;
+        return next(err);
+    }
+    next();
+}
+
+const validateVenueEdit = [
+    check('address')
+        .optional()
+        .notEmpty()
+        .isString()
+        .withMessage('Street address is required'),
+    check('city')
+        .optional()
+        .notEmpty()
+        .isString()
+        .withMessage('City is required'),
+    check('state')
+        .optional()
+        .notEmpty()
+        .isString()
+        .isUppercase()
+        .isLength({ min: 2, max: 2 })
+        .withMessage('State is required'),
+    check('lat')
+        .optional()
+        .notEmpty()
+        .isDecimal()
+        .withMessage('Latitude must be within -90 and 90'),
+    check('lng')
+        .optional()
+        .notEmpty()
+        .isDecimal()
+        .withMessage('Longitude must be within -180 and 180'),
+    handleValidationErrors
+];
+
+const validateVenueCreate = [
+    check('address')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isString()
+        .withMessage('Street address is required'),
+    check('city')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isString()
+        .withMessage('City is required'),
+    check('state')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isString()
+        .isUppercase()
+        .isLength({ min: 2, max: 2 })
+        .withMessage('State is required'),
+    check('lat')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isDecimal()
+        .withMessage('Latitude must be within -90 and 90'),
+    check('lng')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isDecimal()
+        .withMessage('Longitude must be within -180 and 180'),
+    handleValidationErrors
+];
+
 module.exports = {
     notFound,
     sequelizeError,
@@ -192,5 +276,9 @@ module.exports = {
     validateGroupCreate,
     properGroupAuth,
     validGroupId,
-    validateGroupEdit
+    validateGroupEdit,
+    validVenueId,
+    properVenueAuth,
+    validateVenueEdit,
+    validateVenueCreate
 };
