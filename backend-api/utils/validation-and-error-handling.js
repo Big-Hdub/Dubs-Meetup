@@ -207,7 +207,7 @@ const properVenueAuth = async (req, res, next) => {
     if (req.group) groupId = req.group.id;
     if (req.venue) groupId = req.venue.groupId;
     const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } });
-    if (member.status !== 'co-host' && member.status !== 'Organizer') {
+    if (member?.status !== 'co-host' && member?.status !== 'Organizer') {
         const err = new Error("Current User must be the organizer or co-host for the group");
         err.status = 403;
         return next(err);
