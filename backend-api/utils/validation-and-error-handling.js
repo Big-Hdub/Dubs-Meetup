@@ -134,7 +134,7 @@ const properGroupAuth = async (req, _res, next) => {
 const properGroupEventAuth = async (req, res, next) => {
     const groupId = req.group.id;
     const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } });
-    if (member.status !== 'co-host' && member.status !== 'Organizer') {
+    if (member?.status !== 'co-host' && member?.status !== 'Organizer') {
         const err = new Error("Current User must be the organizer or co-host for the group");
         err.title = "Action requires proper autherization."
         err.status = 403;
@@ -174,7 +174,6 @@ const validateGroupEdit = [
         .withMessage("Type must be 'Online' or 'In person'"),
     check('private')
         .optional()
-        .notEmpty()
         .isBoolean()
         .withMessage('Private must be a boolean'),
     check('city')

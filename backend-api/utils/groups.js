@@ -86,6 +86,11 @@ const createGroup = async (req, res) => {
     const { user } = req;
     if (user) groupObj.organizerId = user.id;
     const newGroup = await Group.create(groupObj);
+    await Member.create({
+        userId: user.id,
+        groupId: newGroup.id,
+        status: "Organizer"
+    });
     res.status(201).json(newGroup);
 };
 
