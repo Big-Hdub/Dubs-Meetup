@@ -1,0 +1,160 @@
+const { check } = require('express-validator');
+const { Event, Group, Venue, EventImage, Attendee } = require('../db/models');
+
+const getEvents = async (req, res) => {
+    let events = await Event.findAll({
+        include: [{
+            model: EventImage,
+            attributes: ['url'],
+            where: { preview: true },
+            as: 'previewImage',
+            required: false
+        },
+        {
+            model: Group,
+            attributes: ['id', 'name', 'city', 'state'],
+            required: false
+        },
+        {
+            model: Venue,
+            attributes: ['id', 'city', 'state'],
+            required: false
+        }]
+    });
+    events = await Promise.all(events.map(async event => {
+        const numAttending = await Attendee.count({
+            where: {
+                eventId: event.id,
+                status: 'attending'
+            }
+        });
+        return {
+            ...event.toJSON(),
+            numAttending,
+            Group: event.Group || null,
+            Venue: event.Venue || null,
+            previewImage: event.previewImage[0]?.url || null
+        };
+    }));
+    res.json(events)
+}
+
+const getEventsByGroupId = async (req, res, next) => {
+    const group = req.group;
+    let events = await Event.findAll({
+        where: { groupId: group.id },
+        include: [{
+            model: EventImage,
+            attributes: ['url'],
+            where: { preview: true },
+            as: 'previewImage',
+            required: false
+        },
+        {
+            model: Group,
+            attributes: ['id', 'name', 'city', 'state'],
+            required: false
+        },
+        {
+            model: Venue,
+            attributes: ['id', 'city', 'state'],
+            required: false
+        }]
+    });
+    events = await Promise.all(events.map(async event => {
+        const numAttending = await Attendee.count({
+            where: {
+                eventId: event.id,
+                status: 'attending'
+            }
+        });
+        return {
+            ...event.toJSON(),
+            numAttending,
+            Group: event.Group || null,
+            Venue: event.Venue || null,
+            previewImage: event.previewImage[0]?.url || null
+        };
+    }));
+    if (!events.length) {
+        const err = new Error("No events found for that group.");
+        err.title = "No events"
+        err.status = 404;
+        return next(err);
+    }
+    res.json(events);
+}
+
+const getEventByEventId = async (req, res, next) => {
+    let event = await Event.findOne({
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
+        },
+        where: { id: req.params.id },
+        include: [{
+            model: EventImage,
+            attributes: ['id', 'url', 'preview'],
+            required: false
+        },
+        {
+            model: Group,
+            attributes: ['id', 'name', 'private', 'city', 'state'],
+            required: false
+        },
+        {
+            model: Venue,
+            attributes: ['id', 'address', 'city', 'state', 'lat', 'lng'],
+            required: false
+        }]
+    });
+    event = {
+        ...event.toJSON(),
+        numAttending: await Attendee.count({
+            where: {
+                eventId: event.id,
+                status: 'attending'
+            }
+        })
+    }
+    res.json(event);
+}
+
+const createEvent = async (req, res, next) => {
+    const eventObj = req.body;
+    const venue = await Venue.findByPk(eventObj.venueId)
+    if (!venue) {
+        const err = new Error("Venue couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    eventObj.groupId = Number(req.params.id);
+    const startDate = new Date(eventObj.startDate);
+    const endDate = new Date(eventObj.endDate);
+    if (startDate.getTime() > endDate.getTime()) {
+        const err = new Error('Bad request');
+        err.title = 'Bad request';
+        err.errors = { "endDate": "End date is less than start date" };
+        err.status = 400;
+        return next(err);
+    }
+    const newEvent = await Event.create(eventObj);
+    res.json({
+        id: newEvent.id,
+        groupId: newEvent.groupId,
+        venueId: newEvent.venueId,
+        name: newEvent.name,
+        type: newEvent.type,
+        capacity: newEvent.capacity,
+        price: newEvent.price,
+        description: newEvent.description,
+        startDate: newEvent.startDate,
+        endDate: newEvent.endDate
+    });
+};
+
+module.exports = {
+    getEvents,
+    getEventsByGroupId,
+    getEventByEventId,
+    createEvent
+}
