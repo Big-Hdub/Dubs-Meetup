@@ -292,7 +292,6 @@ const validEventId = async (req, _res, next) => {
         err.status = 404;
         return next(err);
     }
-    console.log(event)
     req.event = event;
     return next();
 }
