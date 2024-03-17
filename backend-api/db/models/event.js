@@ -24,16 +24,6 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: 'userId',
         onDelete: 'cascade'
       })
-      // Event.hasOne(
-      //   models.Group, {
-      //   foreignKey: 'id',
-      //   onDelete: 'cascade'
-      // })
-      // Event.hasOne(
-      //   models.Venue, {
-      //   foreignKey: 'id',
-      //   onDelete: 'cascade'
-      // })
     }
   }
   Event.init({

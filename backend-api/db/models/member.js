@@ -6,6 +6,12 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Member extends Model {
     static associate(models) {
+      Member.hasMany(
+        models.User, {
+        foreignKey: 'id',
+        as: 'Membership',
+        onDelete: 'CASCADE'
+      })
     }
   }
   Member.init({

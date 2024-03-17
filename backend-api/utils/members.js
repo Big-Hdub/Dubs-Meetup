@@ -1,4 +1,4 @@
-const { Member } = require('../db/models');
+const { Member, User } = require('../db/models');
 const { Op } = require("sequelize");
 
 const getMembers = async (req, res) => {
@@ -9,10 +9,29 @@ const getMembers = async (req, res) => {
     });
     let members;
     if (auth?.status && auth.status === 'Organizer' || auth.status === 'co-host') {
-        members = await Member.findAll({ attributes: ['id', 'firstName', 'lastName', 'status'] })
-        res.json(members)
+        members = await User.findAll({
+            attributes: ['id', 'firstName', 'lastName'],
+            include: {
+                model: Member,
+                attributes: ['status'],
+                as: 'Membership'
+            }
+        })
+    } else {
+        members = await User.findAll({
+            attributes: ['id', 'firstName', 'lastName'],
+            include: {
+                model: Member,
+                attributes: ['status'],
+                as: 'Membership',
+                where: {
+                    [Op.or]: [{ status: 'co-host' },
+                    { status: 'member' }]
+                }
+            }
+        })
     }
-    res.json(auth)
+    res.json(members)
 }
 
 module.exports = {
