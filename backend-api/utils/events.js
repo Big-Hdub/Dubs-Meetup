@@ -152,9 +152,59 @@ const createEvent = async (req, res, next) => {
     });
 };
 
+const createEventImage = async (req, res) => {
+    const { body } = req;
+    body.eventId = Number(req.params.id);
+    const newImage = await EventImage.create(body);
+    res.json(newImage);
+};
+
+const editEvent = async (req, res, next) => {
+    const { body, event } = req;
+    let startDate;
+    let endDate;
+    body.startDate ? startDate = new Date(body.startDate) : startDate = new Date(event.startDate);
+    body.endDate ? endDate = new Date(body.endDate) : endDate = new Date(event.endDate);
+    if (startDate.getTime() > endDate.getTime()) {
+        const err = new Error('Bad request');
+        err.title = 'Bad request';
+        err.errors = { "endDate": "End date is less than start date" };
+        err.status = 400;
+        return next(err);
+    }
+    if (body.venueId) {
+        const venue = await Venue.findByPk(body.venueId);
+        if (!venue) {
+            const err = new Error("Venue couldn't be found");
+            err.status = 404;
+            return next(err);
+        } else if (venue.groupId !== event.groupId) {
+            const err = new Error("Venue doesn't belong to group");
+            err.status = 400;
+            err.title = "Bad Request"
+            return next(err);
+        }
+    }
+    const newEvent = await event.update(body);
+    res.json({
+        id: newEvent.id,
+        groupId: newEvent.groupId,
+        venueId: newEvent.venueId,
+        name: newEvent.name,
+        type: newEvent.type,
+        capacity: newEvent.capacity,
+        price: newEvent.price,
+        description: newEvent.description,
+        startDate: newEvent.startDate,
+        endDate: newEvent.endDate
+    });
+};
+
 module.exports = {
     getEvents,
     getEventsByGroupId,
     getEventByEventId,
-    createEvent
+    createEvent,
+    createEventImage,
+    editEvent
 }

@@ -2,7 +2,7 @@ const { environment } = require('../config');
 const isProduction = environment === 'production';
 const { ValidationError, Op, literal } = require('sequelize');
 const { validationResult, check } = require('express-validator');
-const { Group, Venue, User, Member, Event } = require('../db/models');
+const { Group, Venue, Member, Event, Attendee } = require('../db/models');
 
 const notFound = (_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
@@ -332,6 +332,73 @@ const validateEventCreate = [
     handleValidationErrors
 ];
 
+const properEventImageAuth = async (req, _res, next) => {
+    const { user, event } = req;
+    const attendee = await Attendee.findOne({
+        where: [
+            { userId: user.id },
+            { eventId: event.id }
+        ]
+    });
+    if (!attendee.status === 'attendee' || !attendee.status === 'host' || !attendee.status === 'co-host') {
+        const err = new Error('Requires proper authorization');
+        err.status = 403;
+        return next(err);
+    };
+    next();
+};
+
+const properEventEditAuth = async (req, res, next) => {
+    const event = req.event;
+    const member = await Member.findOne({
+        where: [
+            { groupId: event.groupId },
+            { userId: req.user.id }]
+    });
+    if (!member.status === 'Organizer' || !member.status === 'co-host') {
+        const err = new Error('Not authorized to edit this event.');
+        err.status = 403;
+        return next(err);
+    }
+    next();
+};
+
+const validateEventEdit = [
+    check('name')
+        .optional()
+        .notEmpty()
+        .isString()
+        .isLength({ min: 5 })
+        .withMessage('Name must be at least 5 characters'),
+    check('type')
+        .optional()
+        .notEmpty()
+        .isIn(['Online', 'In person'])
+        .withMessage('Type must be Online or In person'),
+    check('capacity')
+        .optional()
+        .notEmpty()
+        .isInt()
+        .isNumeric()
+        .withMessage('Capacity must be an integer'),
+    check('price')
+        .optional()
+        .notEmpty()
+        .isDecimal()
+        .withMessage('Price is invalid'),
+    check('description')
+        .optional()
+        .notEmpty()
+        .isString()
+        .withMessage('Description is required'),
+    check('startDate')
+        .optional()
+        .notEmpty()
+        .isAfter(`${new Date()}`)
+        .withMessage('Start date must be in the future'),
+    handleValidationErrors
+];
+
 module.exports = {
     notFound,
     sequelizeError,
@@ -350,5 +417,8 @@ module.exports = {
     validateVenueCreate,
     methodError,
     validEventId,
-    validateEventCreate
+    validateEventCreate,
+    properEventImageAuth,
+    properEventEditAuth,
+    validateEventEdit
 };

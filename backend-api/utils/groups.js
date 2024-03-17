@@ -4,12 +4,8 @@ const findAllGroups = () => {
     const groups = Group.findAll({
         include: {
             model: GroupImage,
-            attributes: ['url'],
-            where: {
-                preview: true
-            },
+            require: false,
             as: 'previewImage',
-            require: false
         },
     });
     return groups;
@@ -35,10 +31,11 @@ const formatGroups = (groups) => {
         const numMembers = await Member.count({
             where: { groupId: group.id }
         });
+        const preview = group.previewImage.filter(image => image.preview === true)[0]?.url
         return {
             ...group.toJSON(),
             numMembers,
-            previewImage: group.previewImage[0].url
+            previewImage: preview || null
         };
     }));
 };
