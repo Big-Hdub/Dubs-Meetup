@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         through: 'Events',
         foreignKey: 'groupId',
         otherKey: 'venueId',
-        onDelete: 'cascade'
+        onDelete: 'SET NULL'
       })
     }
   }

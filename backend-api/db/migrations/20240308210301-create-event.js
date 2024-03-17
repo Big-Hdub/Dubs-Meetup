@@ -6,6 +6,7 @@ if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
 }
 options.tableName = "Events";
+options.unique = true;
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -20,17 +21,19 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Groups'
+          model: 'Groups',
+          key: 'id'
         },
-        onDelete: 'cascade'
+        onDelete: 'CASCADE'
       },
       venueId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Venues'
+          model: 'Venues',
+          key: 'id'
         },
-        onDelete: 'cascade'
+        onDelete: 'CASCADE'
       },
       name: {
         type: Sequelize.STRING,
@@ -71,7 +74,7 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
-    await queryInterface.addIndex('Events', ['groupId', 'venueId', 'startDate', 'endDate'], { unique: true });
+    await queryInterface.addIndex('Events', ['groupId', 'venueId', 'startDate', 'endDate'], options);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(options);

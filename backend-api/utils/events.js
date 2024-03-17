@@ -200,11 +200,18 @@ const editEvent = async (req, res, next) => {
     });
 };
 
+const deleteEvent = async (req, res) => {
+    const event = req.event;
+    await event.destroy();
+    res.json({ "message": "Successfully deleted" })
+}
+
 module.exports = {
     getEvents,
     getEventsByGroupId,
     getEventByEventId,
     createEvent,
     createEventImage,
-    editEvent
+    editEvent,
+    deleteEvent
 }

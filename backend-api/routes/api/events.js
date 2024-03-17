@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { requireAuth } = require('../../utils/auth');
-const { getEvents, getEventByEventId, createEventImage, editEvent } = require('../../utils/events');
+const { getEvents, getEventByEventId, createEventImage, editEvent, deleteEvent } = require('../../utils/events');
 const { methodError, validEventId, properEventImageAuth, properEventEditAuth, validateEventEdit } = require('../../utils/validation-and-error-handling');
 
 router.route('/')
@@ -16,6 +16,7 @@ router.route('/:id')
     .all(validEventId)
     .get(getEventByEventId)
     .put(requireAuth, properEventEditAuth, validateEventEdit, editEvent)
+    .delete(requireAuth, properEventEditAuth, deleteEvent)
     .all(methodError);
 
 module.exports = router;

@@ -355,7 +355,7 @@ const properEventEditAuth = async (req, res, next) => {
             { groupId: event.groupId },
             { userId: req.user.id }]
     });
-    if (!member.status === 'Organizer' || !member.status === 'co-host') {
+    if (!member?.status || !member.status === 'Organizer' && !member.status === 'co-host') {
         const err = new Error('Not authorized to edit this event.');
         err.status = 403;
         return next(err);
