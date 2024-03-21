@@ -32,8 +32,15 @@ const getMembers = async (req, res) => {
         })
     }
     res.json(members)
+};
+
+const requestMembership = async (req, res, next) => {
+    const groupId = Number(req.params.id);
+    const userId = Number(req.user.id);
+    if (isNaN(userId) || isNaN(groupId)) { }
 }
 
 module.exports = {
-    getMembers
+    getMembers,
+    requestMembership
 }

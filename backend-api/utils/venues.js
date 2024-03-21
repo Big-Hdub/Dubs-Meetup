@@ -8,7 +8,7 @@ const getVenuesByGroupId = async (req, res, next) => {
             exclude: ['createdAt', 'updatedAt']
         }
     })
-    res.json(venues)
+    res.json(venues);
 };
 
 const createVenue = async (req, res, next) => {

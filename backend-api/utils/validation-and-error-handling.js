@@ -1,6 +1,6 @@
 const { environment } = require('../config');
 const isProduction = environment === 'production';
-const { ValidationError, Op, literal } = require('sequelize');
+const { ValidationError, Op } = require('sequelize');
 const { validationResult, check } = require('express-validator');
 const { Group, Venue, Member, Event, Attendee } = require('../db/models');
 
