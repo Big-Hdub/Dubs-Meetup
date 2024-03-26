@@ -41,6 +41,11 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: 'venueId',
         onDelete: 'SET NULL'
       })
+      // Group.hasMany(
+      //   models.Event, {
+      //   foreignKey: 'groupId',
+      //   as: 'Events'
+      // })
     }
   }
   Group.init({

@@ -10,7 +10,7 @@ router.route('/')
 router.route('/:id/images')
     .all(validEventId, requireAuth)
     .post(properEventImageAuth, createEventImage)
-    .all(methodError)
+    .all(methodError);
 
 router.route('/:id')
     .all(validEventId)

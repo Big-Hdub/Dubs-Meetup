@@ -24,6 +24,16 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: 'userId',
         onDelete: 'cascade'
       })
+      Event.belongsTo(
+        models.Group, {
+        foreignKey: 'id',
+        onDelete: 'cascade'
+      })
+      Event.belongsTo(
+        models.Venue, {
+        foreignKey: 'id',
+        onDelete: 'cascade'
+      })
     }
   }
   Event.init({

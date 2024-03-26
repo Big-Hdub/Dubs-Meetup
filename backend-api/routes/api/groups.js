@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { createVenue, getVenuesByGroupId } = require('../../utils/venues');
 const { getGroups, getCurrentGroups, getGroupById, createGroup, createGroupImage, editGroup, deleteGroup } = require('../../utils/groups');
 const { getEventsByGroupId, createEvent } = require('../../utils/events');
-const { getMembers, requestMembership } = require('../../utils/members')
+const { getMembers, requestMembership, editMembership, deleteMembership } = require('../../utils/members')
 const { requireAuth } = require('../../utils/auth');
 const { validateGroupCreate, properGroupAuth, validGroupId, validateGroupEdit, properVenueAuth, validateVenueCreate, methodError, properGroupEventAuth, validateEventCreate } = require('../../utils/validation-and-error-handling');
 
@@ -35,11 +35,17 @@ router.route('/:id/events')
 router.route('/:id/members')
     .all(validGroupId)
     .get(getMembers)
+    .patch(requireAuth, editMembership)
     .all(methodError);
 
 router.route('/:id/join')
     .all(validGroupId)
     .post(requireAuth, requestMembership)
+    .all(methodError);
+
+router.route('/:id/members/:memberId')
+    .all(validGroupId)
+    .delete(requireAuth, deleteMembership)
     .all(methodError);
 
 router.route('/:id')

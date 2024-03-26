@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         models.Event, {
         foreignKey: 'eventId',
         onDelete: 'cascade'
+        // as: 'previewImage'
       })
     }
   }
