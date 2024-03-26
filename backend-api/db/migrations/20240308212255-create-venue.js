@@ -6,6 +6,7 @@ if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
 }
 options.tableName = "Venues";
+options.unique = true;
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -56,7 +57,7 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
-    await queryInterface.addIndex('Venues', ['groupId', 'address', 'city', 'state'], { unique: true });
+    await queryInterface.addIndex('Venues', ['groupId', 'address', 'city', 'state'], options);
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(options);

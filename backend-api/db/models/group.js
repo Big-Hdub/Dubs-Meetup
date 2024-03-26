@@ -39,8 +39,13 @@ module.exports = (sequelize, DataTypes) => {
         through: 'Events',
         foreignKey: 'groupId',
         otherKey: 'venueId',
-        onDelete: 'cascade'
+        onDelete: 'SET NULL'
       })
+      // Group.hasMany(
+      //   models.Event, {
+      //   foreignKey: 'groupId',
+      //   as: 'Events'
+      // })
     }
   }
   Group.init({

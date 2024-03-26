@@ -21,14 +21,15 @@ module.exports = (sequelize, DataTypes) => {
         models.User, {
         through: 'Attendees',
         foreignKey: 'eventId',
-        otherKey: 'userId'
+        otherKey: 'userId',
+        onDelete: 'cascade'
       })
-      Event.hasOne(
+      Event.belongsTo(
         models.Group, {
         foreignKey: 'id',
         onDelete: 'cascade'
       })
-      Event.hasOne(
+      Event.belongsTo(
         models.Venue, {
         foreignKey: 'id',
         onDelete: 'cascade'
