@@ -2,7 +2,7 @@ const { environment } = require('../config');
 const isProduction = environment === 'production';
 const { ValidationError, Op } = require('sequelize');
 const { validationResult, check } = require('express-validator');
-const { Group, Venue, Member, Event, Attendee } = require('../db/models');
+const { User, Group, Venue, Member, Event, Attendee } = require('../db/models');
 
 const notFound = (_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
@@ -13,7 +13,6 @@ const notFound = (_req, _res, next) => {
 };
 
 const sequelizeError = (err, _req, _res, next) => {
-    // check if error is a Sequelize error:
     if (err instanceof ValidationError) {
         let errors = {};
         for (let error of err.errors) {
@@ -128,6 +127,31 @@ const properGroupAuth = async (req, _res, next) => {
         err.status = 403;
         return next(err);
     };
+    next();
+};
+
+const validateGroupEventAttendenceEdit = async (req, res, next) => {
+    const { userId, status } = req.body;
+    const groupId = req.event.groupId;
+    const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } })
+    if (member?.status !== 'co-host' && member?.status !== 'Organizer') {
+        const err = new Error("Current User must be Organizer or co-host of the group");
+        err.title = "Action requires proper autherization."
+        err.status = 403;
+        return next(err);
+    };
+    const user = User.findByPk(userId);
+    if (!user) {
+        const err = new Error("User couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    if (status && status === 'pending') {
+        const err = new Error("Bad Request");
+        err.errors = { "status": "Cannot change an attendance status to pending" }
+        err.status = 400;
+        return next(err);
+    }
     next();
 };
 
@@ -433,5 +457,6 @@ module.exports = {
     properEventImageAuth,
     properEventEditAuth,
     validateEventEdit,
-    groupMember
+    groupMember,
+    validateGroupEventAttendenceEdit
 };

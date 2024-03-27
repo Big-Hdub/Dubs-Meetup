@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { requireAuth } = require('../../utils/auth');
 const { getEvents, getEventByEventId, createEventImage, editEvent, deleteEvent } = require('../../utils/events');
-const { methodError, validEventId, properEventImageAuth, properEventEditAuth, validateEventEdit, groupMember } = require('../../utils/validation-and-error-handling');
-const { getAttendees, applyAttendance } = require('../../utils/attendees');
+const { methodError, validEventId, properEventImageAuth, properEventEditAuth, validateEventEdit, groupMember, validateGroupEventAttendenceEdit } = require('../../utils/validation-and-error-handling');
+const { getAttendees, applyAttendance, editAttendance } = require('../../utils/attendees');
 
 router.route('/')
     .get(getEvents)
@@ -16,6 +16,7 @@ router.route('/:id/images')
 router.route('/:id/attendees')
     .all(validEventId)
     .get(getAttendees)
+    .patch(requireAuth, validateGroupEventAttendenceEdit, editAttendance)
     .all(methodError);
 
 router.route('/:id/apply')

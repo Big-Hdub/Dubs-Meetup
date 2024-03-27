@@ -58,7 +58,24 @@ const applyAttendance = async (req, res, next) => {
     }
 };
 
+const editAttendance = async (req, res, next) => {
+    const { userId, status } = req.body;
+    const eventId = Number(req.params.id);
+    const attendance = await Attendee.findOne({
+        where: [{ userId: userId }, { eventId: eventId }],
+        attributes: ['id', 'eventId', 'userId', 'status']
+    })
+    if (!attendance) {
+        const err = new Error('Attendance between the user and the event does not exist');
+        err.status = 404;
+        return next(err);
+    }
+    await attendance.update({ status: status });
+    res.json(attendance)
+}
+
 module.exports = {
     getAttendees,
-    applyAttendance
+    applyAttendance,
+    editAttendance
 }
