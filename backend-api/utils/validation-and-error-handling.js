@@ -131,6 +131,18 @@ const properGroupAuth = async (req, _res, next) => {
     next();
 };
 
+const groupMember = async (req, res, next) => {
+    const groupId = req.event.groupId;
+    const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } })
+    if (member?.status !== 'co-host' && member?.status !== 'Organizer' && member?.status !== 'member') {
+        const err = new Error("Current User must be a member of the group");
+        err.title = "Action requires proper autherization."
+        err.status = 403;
+        return next(err);
+    }
+    next();
+}
+
 const properGroupEventAuth = async (req, res, next) => {
     const groupId = req.group.id;
     const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } });
@@ -420,5 +432,6 @@ module.exports = {
     validateEventCreate,
     properEventImageAuth,
     properEventEditAuth,
-    validateEventEdit
+    validateEventEdit,
+    groupMember
 };
