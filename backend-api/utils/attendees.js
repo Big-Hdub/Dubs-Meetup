@@ -74,8 +74,18 @@ const editAttendance = async (req, res, next) => {
     res.json(attendance)
 }
 
+const removeAttendee = async (req, res, next) => {
+    const { id, userId } = req.params;
+    const attendee = await Attendee.findOne({ where: [{ eventId: id }, { userId: userId }] });
+    attendee.destroy();
+    res.json({
+        "message": "Successfully deleted attendance from event"
+    })
+}
+
 module.exports = {
     getAttendees,
     applyAttendance,
-    editAttendance
+    editAttendance,
+    removeAttendee
 }

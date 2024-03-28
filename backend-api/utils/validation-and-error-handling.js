@@ -435,6 +435,35 @@ const validateEventEdit = [
     handleValidationErrors
 ];
 
+const properRemoveAttendanceAuth = async (req, res, next) => {
+    const currentId = req.user.id;
+    const { id, userId } = req.params;
+    const event = await Event.findByPk(Number(id), { include: [Group, User] });
+    if (currentId !== Number(userId) && currentId !== event.Group.id) {
+        const err = new Error('Current User must be the Organizer of the group, or the user whose attendance is being deleted');
+        err.status = 400;
+        return next(err);
+    }
+    const user = await User.findByPk(Number(userId));
+    if (!user) {
+        const err = new Error("User couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    const attendance = event.Users.map(user => user.toJSON());
+    const check = attendance.filter(user => {
+        return user.id === Number(userId)
+    });
+    if (!check.length) {
+        const err = new Error("Attendance does not exist for this User");
+        err.status = 404;
+        return next(err);
+    }
+    event.Users = check;
+    req.event = event;
+    next();
+};
+
 module.exports = {
     notFound,
     sequelizeError,
@@ -458,5 +487,6 @@ module.exports = {
     properEventEditAuth,
     validateEventEdit,
     groupMember,
-    validateGroupEventAttendenceEdit
+    validateGroupEventAttendenceEdit,
+    properRemoveAttendanceAuth
 };

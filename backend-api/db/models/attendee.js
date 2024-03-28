@@ -10,7 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         models.User, {
         foreignKey: 'userId',
         as: 'Attendance'
-        // onDelete: 'cascade'
+      })
+      Attendee.belongsTo(
+        models.Event, {
+        foreignKey: 'eventId'
       })
     }
   }
