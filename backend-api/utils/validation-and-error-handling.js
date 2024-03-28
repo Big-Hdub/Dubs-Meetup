@@ -2,7 +2,7 @@ const { environment } = require('../config');
 const isProduction = environment === 'production';
 const { ValidationError, Op } = require('sequelize');
 const { validationResult, check } = require('express-validator');
-const { User, Group, Venue, Member, Event, Attendee } = require('../db/models');
+const { User, Group, Venue, Member, Event, Attendee, GroupImage, EventImage } = require('../db/models');
 
 const notFound = (_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
@@ -464,6 +464,30 @@ const properRemoveAttendanceAuth = async (req, res, next) => {
     next();
 };
 
+const validGroupImage = async (req, res, next) => {
+    const id = Number(req.params.id);
+    const image = await GroupImage.findByPk(id);
+    if (!image) {
+        const err = new Error("Group Image couldn't be found");
+        err.status = 404;
+        return next(err);
+    };
+    const group = await Member.findOne({
+        where: [
+            { groupId: Number(image.groupId) },
+            { userId: Number(req.user.id) },
+            { status: { [Op.or]: ['Organizer', 'co-host'] } }
+        ]
+    });
+    if (!group) {
+        const err = new Error('Current user must be the Organizer or co-host of the Group');
+        err.status = 403;
+        return next(err);
+    };
+    req.image = image;
+    next();
+};
+
 module.exports = {
     notFound,
     sequelizeError,
@@ -488,5 +512,6 @@ module.exports = {
     validateEventEdit,
     groupMember,
     validateGroupEventAttendenceEdit,
-    properRemoveAttendanceAuth
+    properRemoveAttendanceAuth,
+    validGroupImage
 };
