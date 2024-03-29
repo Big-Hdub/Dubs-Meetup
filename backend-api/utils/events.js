@@ -1,7 +1,24 @@
-const { check } = require('express-validator');
+const { validationResult, check } = require('express-validator');
 const { Event, Group, Venue, EventImage, Attendee } = require('../db/models');
 
 const getEvents = async (req, res) => {
+    let { page, size, name, type, startDate } = req.query;
+    // console.log(page, size, name, type, startDate)
+
+    page = parseInt(page);
+    size = parseInt(size);
+
+    if (Number.isNaN(page) || page < 1 || page > 10) page = 1;
+    if (Number.isNaN(size) || size < 1 || size > 20) size = 20;
+
+    const where = {};
+    const pagination = {};
+    pagination.limit = size;
+    pagination.offset = size * (page - 1);
+    if (name) where.name = name;
+    if (type) where.type = type;
+    if (startDate) where.startDate = startDate;
+
     let events = await Event.findAll({
         include: [{
             model: EventImage,
@@ -19,7 +36,9 @@ const getEvents = async (req, res) => {
             model: Venue,
             attributes: ['id', 'city', 'state'],
             required: false
-        }]
+        }],
+        where,
+        ...pagination
     });
     events = await Promise.all(events.map(async event => {
         const numAttending = await Attendee.count({
@@ -36,8 +55,12 @@ const getEvents = async (req, res) => {
             previewImage: event.previewImage[0]?.url || null
         };
     }));
-    res.json(events)
-}
+    res.json({
+        events,
+        page: page,
+        size: size
+    });
+};
 
 const getEventsByGroupId = async (req, res, next) => {
     const group = req.group;
@@ -204,7 +227,15 @@ const deleteEvent = async (req, res) => {
     const event = req.event;
     await event.destroy();
     res.json({ "message": "Successfully deleted" })
-}
+};
+
+const deleteEventImage = async (req, res) => {
+    const image = req.image;
+    await image.destroy();
+    res.json({
+        "message": "Successfully deleted"
+    });
+};
 
 module.exports = {
     getEvents,
@@ -213,5 +244,6 @@ module.exports = {
     createEvent,
     createEventImage,
     editEvent,
-    deleteEvent
+    deleteEvent,
+    deleteEventImage
 }

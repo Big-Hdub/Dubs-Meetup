@@ -2,7 +2,7 @@ const { environment } = require('../config');
 const isProduction = environment === 'production';
 const { ValidationError, Op } = require('sequelize');
 const { validationResult, check } = require('express-validator');
-const { Group, Venue, Member, Event, Attendee } = require('../db/models');
+const { User, Group, Venue, Member, Event, Attendee, GroupImage, EventImage } = require('../db/models');
 
 const notFound = (_req, _res, next) => {
     const err = new Error("The requested resource couldn't be found.");
@@ -13,7 +13,6 @@ const notFound = (_req, _res, next) => {
 };
 
 const sequelizeError = (err, _req, _res, next) => {
-    // check if error is a Sequelize error:
     if (err instanceof ValidationError) {
         let errors = {};
         for (let error of err.errors) {
@@ -130,6 +129,43 @@ const properGroupAuth = async (req, _res, next) => {
     };
     next();
 };
+
+const validateGroupEventAttendenceEdit = async (req, res, next) => {
+    const { userId, status } = req.body;
+    const groupId = req.event.groupId;
+    const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } })
+    if (member?.status !== 'co-host' && member?.status !== 'Organizer') {
+        const err = new Error("Current User must be Organizer or co-host of the group");
+        err.title = "Action requires proper autherization."
+        err.status = 403;
+        return next(err);
+    };
+    const user = User.findByPk(userId);
+    if (!user) {
+        const err = new Error("User couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    if (status && status === 'pending') {
+        const err = new Error("Bad Request");
+        err.errors = { "status": "Cannot change an attendance status to pending" }
+        err.status = 400;
+        return next(err);
+    }
+    next();
+};
+
+const groupMember = async (req, res, next) => {
+    const groupId = req.event.groupId;
+    const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } })
+    if (member?.status !== 'co-host' && member?.status !== 'Organizer' && member?.status !== 'member') {
+        const err = new Error("Current User must be a member of the group");
+        err.title = "Action requires proper autherization."
+        err.status = 403;
+        return next(err);
+    }
+    next();
+}
 
 const properGroupEventAuth = async (req, res, next) => {
     const groupId = req.group.id;
@@ -399,6 +435,108 @@ const validateEventEdit = [
     handleValidationErrors
 ];
 
+const properRemoveAttendanceAuth = async (req, res, next) => {
+    const currentId = req.user.id;
+    const { id, userId } = req.params;
+    const event = await Event.findByPk(Number(id), { include: [Group, User] });
+    if (currentId !== Number(userId) && currentId !== event.Group.id) {
+        const err = new Error('Current User must be the Organizer of the group, or the user whose attendance is being deleted');
+        err.status = 400;
+        return next(err);
+    }
+    const user = await User.findByPk(Number(userId));
+    if (!user) {
+        const err = new Error("User couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
+    const attendance = event.Users.map(user => user.toJSON());
+    const check = attendance.filter(user => {
+        return user.id === Number(userId)
+    });
+    if (!check.length) {
+        const err = new Error("Attendance does not exist for this User");
+        err.status = 404;
+        return next(err);
+    }
+    event.Users = check;
+    req.event = event;
+    next();
+};
+
+const validGroupImage = async (req, res, next) => {
+    const id = Number(req.params.id);
+    const image = await GroupImage.findByPk(id);
+    if (!image) {
+        const err = new Error("Group Image couldn't be found");
+        err.status = 404;
+        return next(err);
+    };
+    const group = await Member.findOne({
+        where: [
+            { groupId: Number(image.groupId) },
+            { userId: Number(req.user.id) },
+            { status: { [Op.or]: ['Organizer', 'co-host'] } }
+        ]
+    });
+    if (!group) {
+        const err = new Error('Current user must be the Organizer or co-host of the Group');
+        err.status = 403;
+        return next(err);
+    };
+    req.image = image;
+    next();
+};
+
+const validEventImageId = async (req, res, next) => {
+    const id = Number(req.params.id);
+    const image = await EventImage.findByPk(id);
+    if (!image) {
+        const err = new Error("Event Image couldn't be found");
+        err.status = 404;
+        return next(err);
+    };
+    const event = await Event.findByPk(Number(image.eventId));
+    const member = await Member.findOne({
+        where: [
+            { groupId: Number(event.groupId) },
+            { userId: Number(req.user.id) },
+            { status: { [Op.or]: ['Organizer', 'co-host'] } }
+        ]
+    });
+    if (!member) {
+        const err = new Error('Current user must be the Organizer or co-host of the Group');
+        err.status = 403;
+        return next(err);
+    };
+    req.image = image;
+    next();
+};
+
+const validateGetEventsQuery = [
+    check('page')
+        .optional()
+        .isInt({ min: 1, max: 10 })
+        .withMessage('Page must be an integer 1 - 10'),
+    check('size')
+        .optional()
+        .isInt({ min: 1, max: 20 })
+        .withMessage('Size must be an integer 1 - 20'),
+    check('name')
+        .optional()
+        .isString()
+        .withMessage('Name must be a string'),
+    check('type')
+        .optional()
+        .isIn(['Online', 'In person'])
+        .withMessage("Type must be 'Online' or 'In Person'"),
+    check('startDate')
+        .optional()
+        .isAfter(`${new Date()}`)
+        .withMessage('Start date must be in the future'),
+    handleValidationErrors
+];
+
 module.exports = {
     notFound,
     sequelizeError,
@@ -420,5 +558,11 @@ module.exports = {
     validateEventCreate,
     properEventImageAuth,
     properEventEditAuth,
-    validateEventEdit
+    validateEventEdit,
+    groupMember,
+    validateGroupEventAttendenceEdit,
+    properRemoveAttendanceAuth,
+    validGroupImage,
+    validEventImageId,
+    validateGetEventsQuery
 };

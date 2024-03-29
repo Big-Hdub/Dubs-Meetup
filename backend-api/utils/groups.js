@@ -116,6 +116,14 @@ const deleteGroup = async (req, res, next) => {
     });
 };
 
+const deleteGroupImage = async (req, res, next) => {
+    const image = req.image;
+    image.destroy();
+    res.json({
+        "message": "Successfully deleted"
+    })
+};
+
 module.exports = {
     getGroups,
     getCurrentGroups,
@@ -123,5 +131,6 @@ module.exports = {
     createGroup,
     createGroupImage,
     editGroup,
-    deleteGroup
+    deleteGroup,
+    deleteGroupImage
 };

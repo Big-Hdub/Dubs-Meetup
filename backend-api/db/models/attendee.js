@@ -6,6 +6,15 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Attendee extends Model {
     static associate(models) {
+      Attendee.belongsTo(
+        models.User, {
+        foreignKey: 'userId',
+        as: 'Attendance'
+      })
+      Attendee.belongsTo(
+        models.Event, {
+        foreignKey: 'eventId'
+      })
     }
   }
   Attendee.init({

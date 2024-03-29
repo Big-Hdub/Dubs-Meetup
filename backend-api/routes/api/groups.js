@@ -35,15 +35,15 @@ router.route('/:id/events')
 router.route('/:id/members')
     .all(validGroupId)
     .get(getMembers)
-    .patch(requireAuth, editMembership)
     .all(methodError);
 
-router.route('/:id/join')
+router.route('/:id/membership')
     .all(validGroupId)
     .post(requireAuth, requestMembership)
+    .put(requireAuth, editMembership)
     .all(methodError);
 
-router.route('/:id/members/:memberId')
+router.route('/:id/membership/:memberId')
     .all(validGroupId)
     .delete(requireAuth, deleteMembership)
     .all(methodError);

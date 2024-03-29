@@ -25,6 +25,12 @@ router.use('/venues', venuesRouter);
 const eventsRouter = require('./events.js');
 router.use('/events', eventsRouter);
 
+const groupImagesRouter = require('./groupImages.js');
+router.use('/group-images', groupImagesRouter);
+
+const eventImagesRouter = require('./eventImages.js');
+router.use('/event-images', eventImagesRouter);
+
 router.post('/test', (req, res) => {
     res.json({ requestBody: req.body });
 });
