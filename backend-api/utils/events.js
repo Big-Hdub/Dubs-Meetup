@@ -204,7 +204,15 @@ const deleteEvent = async (req, res) => {
     const event = req.event;
     await event.destroy();
     res.json({ "message": "Successfully deleted" })
-}
+};
+
+const deleteEventImage = async (req, res) => {
+    const image = req.image;
+    await image.destroy();
+    res.json({
+        "message": "Successfully deleted"
+    });
+};
 
 module.exports = {
     getEvents,
@@ -213,5 +221,6 @@ module.exports = {
     createEvent,
     createEventImage,
     editEvent,
-    deleteEvent
+    deleteEvent,
+    deleteEventImage
 }

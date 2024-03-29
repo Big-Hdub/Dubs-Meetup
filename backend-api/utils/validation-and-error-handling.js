@@ -488,6 +488,31 @@ const validGroupImage = async (req, res, next) => {
     next();
 };
 
+const validEventImageId = async (req, res, next) => {
+    const id = Number(req.params.id);
+    const image = await EventImage.findByPk(id);
+    if (!image) {
+        const err = new Error("Event Image couldn't be found");
+        err.status = 404;
+        return next(err);
+    };
+    const event = await Event.findByPk(Number(image.eventId));
+    const member = await Member.findOne({
+        where: [
+            { groupId: Number(event.groupId) },
+            { userId: Number(req.user.id) },
+            { status: { [Op.or]: ['Organizer', 'co-host'] } }
+        ]
+    });
+    if (!member) {
+        const err = new Error('Current user must be the Organizer or co-host of the Group');
+        err.status = 403;
+        return next(err);
+    };
+    req.image = image;
+    next();
+};
+
 module.exports = {
     notFound,
     sequelizeError,
@@ -513,5 +538,6 @@ module.exports = {
     groupMember,
     validateGroupEventAttendenceEdit,
     properRemoveAttendanceAuth,
-    validGroupImage
+    validGroupImage,
+    validEventImageId
 };
