@@ -513,6 +513,30 @@ const validEventImageId = async (req, res, next) => {
     next();
 };
 
+const validateGetEventsQuery = [
+    check('page')
+        .optional()
+        .isInt({ min: 1, max: 10 })
+        .withMessage('Page must be an integer 1 - 10'),
+    check('size')
+        .optional()
+        .isInt({ min: 1, max: 20 })
+        .withMessage('Size must be an integer 1 - 20'),
+    check('name')
+        .optional()
+        .isString()
+        .withMessage('Name must be a string'),
+    check('type')
+        .optional()
+        .isIn(['Online', 'In person'])
+        .withMessage("Type must be 'Online' or 'In Person'"),
+    check('startDate')
+        .optional()
+        .isAfter(`${new Date()}`)
+        .withMessage('Start date must be in the future'),
+    handleValidationErrors
+];
+
 module.exports = {
     notFound,
     sequelizeError,
@@ -539,5 +563,6 @@ module.exports = {
     validateGroupEventAttendenceEdit,
     properRemoveAttendanceAuth,
     validGroupImage,
-    validEventImageId
+    validEventImageId,
+    validateGetEventsQuery
 };

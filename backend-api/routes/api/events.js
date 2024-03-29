@@ -1,11 +1,11 @@
 const router = require('express').Router();
 const { requireAuth } = require('../../utils/auth');
 const { getEvents, getEventByEventId, createEventImage, editEvent, deleteEvent } = require('../../utils/events');
-const { methodError, validEventId, properEventImageAuth, properEventEditAuth, validateEventEdit, groupMember, validateGroupEventAttendenceEdit, properRemoveAttendanceAuth } = require('../../utils/validation-and-error-handling');
+const { methodError, validEventId, properEventImageAuth, properEventEditAuth, validateEventEdit, groupMember, validateGroupEventAttendenceEdit, properRemoveAttendanceAuth, validateGetEventsQuery } = require('../../utils/validation-and-error-handling');
 const { getAttendees, applyAttendance, editAttendance, removeAttendee } = require('../../utils/attendees');
 
 router.route('/')
-    .get(getEvents)
+    .get(validateGetEventsQuery, getEvents)
     .all(methodError);
 
 router.route('/:id/images')
