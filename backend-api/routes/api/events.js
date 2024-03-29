@@ -13,19 +13,21 @@ router.route('/:id/images')
     .post(properEventImageAuth, createEventImage)
     .all(methodError);
 
-router.route('/:id/attendance')
+router.route('/:id/attendees')
     .all(validEventId)
     .get(getAttendees)
-    .patch(requireAuth, validateGroupEventAttendenceEdit, editAttendance)
     .all(methodError);
 
 router.route('/:id/attendance/:userId')
     .all(validEventId)
     .delete(requireAuth, properRemoveAttendanceAuth, removeAttendee)
+    .all(methodError);
 
-router.route('/:id/apply')
+router.route('/:id/attendance')
     .all(validEventId)
     .post(requireAuth, groupMember, applyAttendance)
+    .patch(requireAuth, validateGroupEventAttendenceEdit, editAttendance)
+    .all(methodError);
 
 router.route('/:id')
     .all(validEventId)
