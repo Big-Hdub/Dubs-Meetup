@@ -6,7 +6,6 @@ if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
 }
 options.tableName = "Events";
-options.unique = true;
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -74,9 +73,10 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
-    await queryInterface.addIndex('Events', ['groupId', 'venueId', 'startDate', 'endDate'], options);
+    await queryInterface.addIndex(options, ['groupId', 'venueId', 'startDate', 'endDate'], { unique: true });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(options);
+    await queryInterface.removeIndex(options, ['groupId', 'venueId', 'startDate', 'endDate'], { unique: true })
   }
 };
