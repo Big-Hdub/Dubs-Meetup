@@ -60,7 +60,7 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
-    await queryInterface.addIndex('Groups', ['organizerId', 'name'], { unique: true });
+    await queryInterface.addIndex(options, ['organizerId', 'name'], { unique: true });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(options);
