@@ -59,8 +59,7 @@ module.exports = {
     await queryInterface.addIndex(options, ['groupId', 'address', 'city', 'state'], { unique: true });
   },
   async down(queryInterface, Sequelize) {
-    ``
     await queryInterface.dropTable(options);
-    await queryInterface.removeTable(options, ['groupId', 'address', 'city', 'state'], { unique: true });
+    await queryInterface.removeIndex(options, ['groupId', 'address', 'city', 'state'], { unique: true });
   }
 };
