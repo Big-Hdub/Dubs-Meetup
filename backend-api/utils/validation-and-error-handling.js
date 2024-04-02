@@ -314,6 +314,7 @@ const validateVenueCreate = [
 ];
 
 const methodError = (_req, _res, next) => {
+    if (isProduction) return next();
     const err = new Error('Not a valid request method.');
     err.title = "Invalid method";
     err.status = 405;

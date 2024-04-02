@@ -4,8 +4,7 @@ const { validGroupImage, methodError } = require('../../utils/validation-and-err
 const { deleteGroupImage } = require('../../utils/groups')
 
 router.route('/:id')
-    .all(validGroupImage, requireAuth)
-    .delete(deleteGroupImage)
+    .delete(requireAuth, validGroupImage, deleteGroupImage)
     .all(methodError);
 
 module.exports = router;

@@ -9,31 +9,26 @@ router.route('/')
     .all(methodError);
 
 router.route('/:id/images')
-    .all(validEventId, requireAuth)
-    .post(properEventImageAuth, createEventImage)
+    .post(requireAuth, validEventId, properEventImageAuth, createEventImage)
     .all(methodError);
 
 router.route('/:id/attendees')
-    .all(validEventId)
-    .get(getAttendees)
+    .get(validEventId, getAttendees)
     .all(methodError);
 
 router.route('/:id/attendance/:userId')
-    .all(validEventId)
-    .delete(requireAuth, properRemoveAttendanceAuth, removeAttendee)
+    .delete(requireAuth, validEventId, properRemoveAttendanceAuth, removeAttendee)
     .all(methodError);
 
 router.route('/:id/attendance')
-    .all(validEventId)
-    .post(requireAuth, groupMember, applyAttendance)
-    .patch(requireAuth, validateGroupEventAttendenceEdit, editAttendance)
+    .post(requireAuth, validEventId, groupMember, applyAttendance)
+    .patch(requireAuth, validEventId, validateGroupEventAttendenceEdit, editAttendance)
     .all(methodError);
 
 router.route('/:id')
-    .all(validEventId)
-    .get(getEventByEventId)
-    .put(requireAuth, properEventEditAuth, validateEventEdit, editEvent)
-    .delete(requireAuth, properEventEditAuth, deleteEvent)
+    .get(validEventId, getEventByEventId)
+    .put(requireAuth, validEventId, properEventEditAuth, validateEventEdit, editEvent)
+    .delete(requireAuth, validEventId, properEventEditAuth, deleteEvent)
     .all(methodError);
 
 module.exports = router;

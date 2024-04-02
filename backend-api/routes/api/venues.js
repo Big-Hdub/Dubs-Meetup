@@ -4,8 +4,7 @@ const { requireAuth } = require('../../utils/auth');
 const { editVenue } = require('../../utils/venues')
 
 router.route('/:id')
-    .all(validVenueId)
-    .put(requireAuth, properVenueAuth, validateVenueEdit, editVenue)
+    .put(requireAuth, validVenueId, properVenueAuth, validateVenueEdit, editVenue)
     .all(methodError);
 
 module.exports = router;

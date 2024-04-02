@@ -16,43 +16,36 @@ router.route('/current')
     .all(methodError);
 
 router.route('/:id/images')
-    .all(validGroupId)
-    .post(requireAuth, properGroupAuth, createGroupImage)
+    .post(requireAuth, validGroupId, properGroupAuth, createGroupImage)
     .all(methodError);
 
 router.route('/:id/venues')
-    .all(validGroupId, requireAuth)
-    .get(properGroupAuth, getVenuesByGroupId)
-    .post(properVenueAuth, validateVenueCreate, createVenue)
+    .get(requireAuth, validGroupId, properGroupAuth, getVenuesByGroupId)
+    .post(requireAuth, validGroupId, properVenueAuth, validateVenueCreate, createVenue)
     .all(methodError);
 
 router.route('/:id/events')
-    .all(validGroupId)
-    .get(getEventsByGroupId)
-    .post(requireAuth, properGroupEventAuth, validateEventCreate, createEvent)
+    .get(validGroupId, getEventsByGroupId)
+    .post(requireAuth, validGroupId, properGroupEventAuth, validateEventCreate, createEvent)
     .all(methodError);
 
 router.route('/:id/members')
-    .all(validGroupId)
-    .get(getMembers)
+    .get(validGroupId, getMembers)
     .all(methodError);
 
 router.route('/:id/membership')
-    .all(validGroupId)
-    .post(requireAuth, requestMembership)
-    .put(requireAuth, editMembership)
+    .post(requireAuth, validGroupId, requestMembership)
+    .put(requireAuth, validGroupId, editMembership)
     .all(methodError);
 
 router.route('/:id/membership/:memberId')
-    .all(validGroupId)
-    .delete(requireAuth, deleteMembership)
+    .delete(requireAuth, validGroupId, deleteMembership)
     .all(methodError);
 
 router.route('/:id')
-    .all(validGroupId)
-    .get(getGroupById)
-    .put(requireAuth, properGroupAuth, validateGroupEdit, editGroup)
-    .delete(requireAuth, properGroupAuth, deleteGroup)
+    .get(validGroupId, getGroupById)
+    .put(requireAuth, validGroupId, properGroupAuth, validateGroupEdit, editGroup)
+    .delete(requireAuth, validGroupId, properGroupAuth, deleteGroup)
     .all(methodError);
 
 module.exports = router;
