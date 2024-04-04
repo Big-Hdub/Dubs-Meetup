@@ -7,14 +7,18 @@ const signup = async (req, res, next) => {
     const emailCheck = await User.findOne({ where: { email: email } });
     if (emailCheck) {
         const err = new Error("User already exists");
-        err.errors.email = "User with that email already exists"
+        err.errors = {
+            "email": "User with that email already exists"
+        };
         err.status = 500;
         return next(err);
     };
     const userNameCheck = await User.findOne({ where: { username: username } });
     if (userNameCheck) {
         const err = new Error("User already exists");
-        err.errors.username = "User with that username already exists"
+        err.errors = {
+            "username": "User with that username already exists"
+        };
         err.status = 500;
         return next(err);
     }
