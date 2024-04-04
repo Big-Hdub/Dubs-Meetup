@@ -279,18 +279,18 @@ const validateVenueEdit = [
 const validateVenueCreate = [
     check('address')
         .exists({ checkFalsy: true })
-        .notEmpty()
         .isString()
+        .notEmpty()
         .withMessage('Street address is required'),
     check('city')
         .exists({ checkFalsy: true })
-        .notEmpty()
         .isString()
+        .notEmpty()
         .withMessage('City is required'),
     check('state')
         .exists({ checkFalsy: true })
-        .notEmpty()
         .isString()
+        .notEmpty()
         .isUppercase()
         .isLength({ min: 2, max: 2 })
         .withMessage('State is required'),
@@ -298,12 +298,14 @@ const validateVenueCreate = [
         .exists({ checkFalsy: true })
         .notEmpty()
         .isDecimal()
-        .withMessage('Latitude must be within -90 and 90'),
+        .custom(val => val >= -90 && val <= 90)
+        .withMessage('Latitude is not valid'),
     check('lng')
         .exists({ checkFalsy: true })
         .notEmpty()
         .isDecimal()
-        .withMessage('Longitude must be within -180 and 180'),
+        .custom(val => val >= -180 && val <= 180)
+        .withMessage('Longitude is not valid'),
     handleValidationErrors
 ];
 
