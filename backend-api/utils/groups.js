@@ -88,7 +88,7 @@ const createGroup = async (req, res) => {
         groupId: newGroup.id,
         status: "Organizer"
     });
-    res.status(201).json(newGroup);
+    res.json(newGroup);
 };
 
 const createGroupImage = async (req, res) => {

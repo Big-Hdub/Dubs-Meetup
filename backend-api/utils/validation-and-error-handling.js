@@ -46,7 +46,6 @@ const handleValidationErrors = (req, _res, next) => {
         const err = Error("Bad request.");
         err.errors = errors;
         err.status = 400;
-        err.title = "Bad request.";
         next(err);
     };
     next();
@@ -88,13 +87,11 @@ const validateGroupCreate = [
         .exists({ checkFalsy: true })
         .isString()
         .isLength({ max: 60 })
-        .notEmpty()
         .withMessage('Name must be 60 characters or less.'),
     check('about')
         .exists({ checkFalsy: true })
         .isString()
         .isLength({ min: 50 })
-        .notEmpty()
         .withMessage('About must be 50 characters or more'),
     check('type')
         .exists({ checkFalsy: true })
