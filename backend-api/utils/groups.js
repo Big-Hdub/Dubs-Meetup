@@ -11,8 +11,8 @@ const findAllGroups = () => {
     return groups;
 };
 
-const findOrganizersGroups = (id) => {
-    const groups = Group.findAll({
+const findOrganizersGroups = async (id) => {
+    const groups = await Group.findAll({
         where: { organizerId: id },
         include: {
             model: GroupImage,
@@ -81,7 +81,7 @@ const getGroupById = async (req, res) => {
 const createGroup = async (req, res) => {
     const groupObj = req.body;
     const { user } = req;
-    if (user) groupObj.organizerId = user.id;
+    groupObj.organizerId = Number(user.id);
     const newGroup = await Group.create(groupObj);
     await Member.create({
         userId: user.id,
@@ -93,7 +93,7 @@ const createGroup = async (req, res) => {
 
 const createGroupImage = async (req, res) => {
     const imageObj = req.body;
-    imageObj.groupId = req.user.id;
+    imageObj.groupId = Number(req.params.id);
     const groupImage = await GroupImage.create(imageObj);
     res.json({
         id: groupImage.id,

@@ -22,7 +22,7 @@ router.route('/:id/attendance/:userId')
 
 router.route('/:id/attendance')
     .post(requireAuth, validEventId, groupMember, applyAttendance)
-    .patch(requireAuth, validEventId, validateGroupEventAttendenceEdit, editAttendance)
+    .put(requireAuth, validEventId, validateGroupEventAttendenceEdit, editAttendance)
     .all(methodError);
 
 router.route('/:id')
