@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'groupId',
         onDelete: 'cascade'
       })
-      // GroupImage.belongsTo(
-      //   models.Group, {
-      //   foreignKey: 'groupId',
-      //   onDelete: 'cascade',
-      //   as: "previewImage"
-      // })
+      GroupImage.belongsTo(
+        models.Group, {
+        foreignKey: 'groupId',
+        onDelete: 'cascade',
+        as: "previewImage"
+      })
     }
   }
   GroupImage.init({

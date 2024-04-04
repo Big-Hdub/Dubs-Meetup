@@ -16,12 +16,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "groupId",
         onDelete: 'cascade'
       })
-      // Group.hasMany(
-      //   models.GroupImage, {
-      //   foreignKey: "groupId",
-      //   as: 'previewImage',
-      //   onDelete: 'cascade'
-      // })
+      Group.hasMany(
+        models.GroupImage, {
+        foreignKey: "groupId",
+        as: 'previewImage',
+        onDelete: 'cascade'
+      })
       Group.hasMany(
         models.GroupImage, {
         foreignKey: "groupId",
