@@ -26,13 +26,12 @@ const sequelizeError = (err, _req, _res, next) => {
 
 const errorFormater = (err, _req, res, _next) => {
     res.status(err.status || 500);
-    console.error(err);
-    res.json({
-        title: err.title || 'Server Error',
-        message: err.message,
-        errors: err.errors,
-        stack: isProduction ? null : err.stack
-    });
+    const response = {};
+    if (err.title) response.title = err.title;
+    response.message = err.message;
+    if (err.errors) response.errors = err.errors;
+    if (!isProduction) response.stack = err.stack;
+    res.json(response);
 };
 
 const handleValidationErrors = (req, _res, next) => {
