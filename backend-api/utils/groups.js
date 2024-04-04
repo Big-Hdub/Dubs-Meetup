@@ -1,7 +1,7 @@
 const { Group, GroupImage, Member, User, Venue } = require('../db/models');
 
-const findAllGroups = () => {
-    const groups = Group.findAll({
+const findAllGroups = async () => {
+    const groups = await Group.findAll({
         include: {
             model: GroupImage,
             require: false,
@@ -16,11 +16,8 @@ const findOrganizersGroups = async (id) => {
         where: { organizerId: id },
         include: {
             model: GroupImage,
-            attributes: ['url'],
-            where: {
-                preview: true
-            },
-            as: 'previewImage'
+            require: false,
+            as: 'previewImage',
         },
     });
     return groups;
@@ -48,7 +45,7 @@ const getGroups = async (req, res) => {
 
 const getCurrentGroups = async (req, res) => {
     const { user } = req;
-    const groups = await findOrganizersGroups(user.id);
+    const groups = await findOrganizersGroups(Number(user.id));
     const formattedGroups = await formatGroups(groups);
     res.json({ Groups: formattedGroups });
 };

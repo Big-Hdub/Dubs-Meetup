@@ -27,7 +27,6 @@ const sequelizeError = (err, _req, _res, next) => {
 const errorFormater = (err, _req, res, _next) => {
     res.status(err.status || 500);
     const response = {};
-    if (err.title) response.title = err.title;
     response.message = err.message;
     if (err.errors) response.errors = err.errors;
     if (!isProduction) response.stack = err.stack;
@@ -210,12 +209,11 @@ const validateGroupEdit = [
         .withMessage('Private must be a boolean'),
     check('city')
         .optional()
-        .notEmpty()
         .isString()
+        .notEmpty()
         .withMessage('City is required'),
     check('state')
         .optional()
-        .notEmpty()
         .isString()
         .isUppercase()
         .isLength({ min: 2, max: 2 })
