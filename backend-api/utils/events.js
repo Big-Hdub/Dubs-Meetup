@@ -20,6 +20,9 @@ const getEvents = async (req, res) => {
     if (startDate) where.startDate = startDate;
 
     let events = await Event.findAll({
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
+        },
         include: [{
             model: EventImage,
             attributes: ['url'],
@@ -65,6 +68,9 @@ const getEvents = async (req, res) => {
 const getEventsByGroupId = async (req, res, next) => {
     const group = req.group;
     let events = await Event.findAll({
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
+        },
         where: { groupId: group.id },
         include: [{
             model: EventImage,

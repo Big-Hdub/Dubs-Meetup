@@ -1,6 +1,6 @@
 const { environment } = require('../config');
 const isProduction = environment === 'production';
-const { ValidationError, Op } = require('sequelize');
+const { ValidationError, Op, INTEGER, DECIMAL } = require('sequelize');
 const { validationResult, check } = require('express-validator');
 const { User, Group, Venue, Member, Event, Attendee, GroupImage, EventImage } = require('../db/models');
 
@@ -331,53 +331,28 @@ const validEventId = async (req, _res, next) => {
     return next();
 }
 
-const validateEventCreate = [
-    check('venueId')
-        .exists({ checkFalsy: true })
-        .isInt()
-        .custom(async val => {
-            const venue = await Venue.findByPk(val);
-            return venue ? true : false;
-        })
-        .withMessage('Venue does not exist'),
-    check('name')
-        .exists({ checkFalsy: true })
-        .isString()
-        .notEmpty()
-        .isLength({ min: 5 })
-        .withMessage('Name must be at least 5 characters'),
-    check('type')
-        .exists({ checkFalsy: true })
-        .isIn(['Online', 'In person'])
-        .withMessage('Type must be Online or In person'),
-    check('capacity')
-        .exists({ checkFalsy: true })
-        .isInt()
-        .isNumeric()
-        .withMessage('Capacity must be an integer'),
-    check('price')
-        .exists({ checkFalsy: true })
-        .isDecimal()
-        .withMessage('Price is invalid'),
-    check('description')
-        .exists({ checkFalsy: true })
-        .isString()
-        .notEmpty()
-        .withMessage('Description is required'),
-    check('startDate')
-        .exists({ checkFalsy: true })
-        .notEmpty()
-        .isAfter(`${new Date()}`)
-        .withMessage('Start date must be in the future'),
-    check('endDate')
-        .exists({ checkFalsy: true })
-        .custom(val => {
-            const date1 = new Date(req.body.startDate);
-            return val.isAfter(date1);
-        })
-        .withMessage('End date is less than start date'),
-    handleValidationErrors
-];
+const validateEventCreate = async (req, _res, next) => {
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    const errors = {};
+    const venue = await Venue.findByPk(venueId);
+    if (!venueId || Number(venueId) !== venueId || venueId % 1 !== 0 || !venue) errors.venueId = 'Venue does not exist';
+    if (!name || name.length < 5 || name !== name.toString()) errors.name = 'Name must be at least 5 characters';
+    if (!type || !(type === 'Online' || type === 'In person')) errors.type = 'Type must be Online or In person';
+    if (!capacity || capacity % 1 !== 0) errors.capacity = 'Capacity must be an integer';
+    if (!price || DECIMAL(price) === NaN) errors.price = 'Price is invalid';
+    if (!description || description !== description.toString()) errors.description = 'Description is required';
+    const curr = new Date().getTime(), start = new Date(startDate).getTime(), end = new Date(endDate).getTime();
+    if (curr > start) errors.startDate = 'Start date must be in the future';
+    if (start > end) errors.endDate = 'End date is less than start date';
+    const check = Object.keys(errors);
+    if (check.length) {
+        const err = new Error('Bad Request');
+        err.errors = errors;
+        err.status = 400;
+        return next(err);
+    }
+    next();
+};
 
 const properEventImageAuth = async (req, _res, next) => {
     const { user, event } = req;
@@ -410,41 +385,28 @@ const properEventEditAuth = async (req, res, next) => {
     next();
 };
 
-const validateEventEdit = [
-    check('name')
-        .optional()
-        .notEmpty()
-        .isString()
-        .isLength({ min: 5 })
-        .withMessage('Name must be at least 5 characters'),
-    check('type')
-        .optional()
-        .notEmpty()
-        .isIn(['Online', 'In person'])
-        .withMessage('Type must be Online or In person'),
-    check('capacity')
-        .optional()
-        .notEmpty()
-        .isInt()
-        .isNumeric()
-        .withMessage('Capacity must be an integer'),
-    check('price')
-        .optional()
-        .notEmpty()
-        .isDecimal()
-        .withMessage('Price is invalid'),
-    check('description')
-        .optional()
-        .notEmpty()
-        .isString()
-        .withMessage('Description is required'),
-    check('startDate')
-        .optional()
-        .notEmpty()
-        .isAfter(`${new Date()}`)
-        .withMessage('Start date must be in the future'),
-    handleValidationErrors
-];
+const validateEventEdit = async (req, _res, next) => {
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    const errors = {};
+    const venue = await Venue.findByPk(venueId);
+    if (!venueId || Number(venueId) !== venueId || venueId % 1 !== 0 || !venue) errors.venueId = 'Venue does not exist';
+    if (!name || name.length < 5 || name !== name.toString()) errors.name = 'Name must be at least 5 characters';
+    if (!type || !(type === 'Online' || type === 'In person')) errors.type = 'Type must be Online or In person';
+    if (!capacity || capacity % 1 !== 0) errors.capacity = 'Capacity must be an integer';
+    if (!price || DECIMAL(price) === NaN) errors.price = 'Price is invalid';
+    if (!description || description !== description.toString()) errors.description = 'Description is required';
+    const curr = new Date().getTime(), start = new Date(startDate).getTime(), end = new Date(endDate).getTime();
+    if (curr > start) errors.startDate = 'Start date must be in the future';
+    if (start > end) errors.endDate = 'End date is less than start date';
+    const check = Object.keys(errors);
+    if (check.length) {
+        const err = new Error('Bad Request');
+        err.errors = errors;
+        err.status = 400;
+        return next(err);
+    }
+    next();
+};
 
 const properRemoveAttendanceAuth = async (req, res, next) => {
     const currentId = req.user.id;
