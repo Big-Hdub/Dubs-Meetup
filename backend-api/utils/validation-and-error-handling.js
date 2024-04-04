@@ -332,38 +332,50 @@ const validEventId = async (req, _res, next) => {
 }
 
 const validateEventCreate = [
+    check('venueId')
+        .exists({ checkFalsy: true })
+        .isInt()
+        .custom(async val => {
+            const venue = await Venue.findByPk(val);
+            return venue ? true : false;
+        })
+        .withMessage('Venue does not exist'),
     check('name')
         .exists({ checkFalsy: true })
-        .notEmpty()
         .isString()
+        .notEmpty()
         .isLength({ min: 5 })
         .withMessage('Name must be at least 5 characters'),
     check('type')
         .exists({ checkFalsy: true })
-        .notEmpty()
         .isIn(['Online', 'In person'])
         .withMessage('Type must be Online or In person'),
     check('capacity')
         .exists({ checkFalsy: true })
-        .notEmpty()
         .isInt()
         .isNumeric()
         .withMessage('Capacity must be an integer'),
     check('price')
         .exists({ checkFalsy: true })
-        .notEmpty()
         .isDecimal()
         .withMessage('Price is invalid'),
     check('description')
         .exists({ checkFalsy: true })
-        .notEmpty()
         .isString()
+        .notEmpty()
         .withMessage('Description is required'),
     check('startDate')
         .exists({ checkFalsy: true })
         .notEmpty()
         .isAfter(`${new Date()}`)
         .withMessage('Start date must be in the future'),
+    check('endDate')
+        .exists({ checkFalsy: true })
+        .custom(val => {
+            const date1 = new Date(req.body.startDate);
+            return val.isAfter(date1);
+        })
+        .withMessage('End date is less than start date'),
     handleValidationErrors
 ];
 

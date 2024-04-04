@@ -56,7 +56,7 @@ const getEvents = async (req, res) => {
         };
     }));
     res.json({
-        events,
+        Events: events,
         page: page,
         size: size
     });
