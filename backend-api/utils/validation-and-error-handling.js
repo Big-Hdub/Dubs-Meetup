@@ -394,7 +394,7 @@ const validateEventEdit = async (req, _res, next) => {
     if (!name || name.length < 5 || name !== name.toString()) errors.name = 'Name must be at least 5 characters';
     if (!type || !(type === 'Online' || type === 'In person')) errors.type = 'Type must be Online or In person';
     if (!capacity || capacity % 1 !== 0) errors.capacity = 'Capacity must be an integer';
-    if (!price || DECIMAL(price) === NaN) errors.price = 'Price is invalid';
+    if (!price || DECIMAL(price) === NaN || price < 0.00) errors.price = 'Price is invalid';
     if (!description || description !== description.toString()) errors.description = 'Description is required';
     const curr = new Date().getTime(), start = new Date(startDate).getTime(), end = new Date(endDate).getTime();
     if (curr > start) errors.startDate = 'Start date must be in the future';
@@ -490,12 +490,12 @@ const validEventImageId = async (req, res, next) => {
 const validateGetEventsQuery = [
     check('page')
         .optional()
-        .isInt({ min: 1, max: 10 })
-        .withMessage('Page must be an integer 1 - 10'),
+        .isInt({ min: 1 })
+        .withMessage('Page must be greater than or equal to 1'),
     check('size')
         .optional()
         .isInt({ min: 1, max: 20 })
-        .withMessage('Size must be an integer 1 - 20'),
+        .withMessage('Size must be between 1 and 20'),
     check('name')
         .optional()
         .isString()

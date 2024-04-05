@@ -1,27 +1,29 @@
 const { validationResult, check } = require('express-validator');
 const { Event, Group, Venue, EventImage, Attendee } = require('../db/models');
+const { response } = require('express');
 
 const getEvents = async (req, res) => {
     let { page, size, name, type, startDate } = req.query;
-    // console.log(page, size, name, type, startDate)
+    const response = {};
+    const pagination = {};
 
-    page = parseInt(page);
-    size = parseInt(size);
-
-    if (Number.isNaN(page) || page < 1 || page > 10) page = 1;
-    if (Number.isNaN(size) || size < 1 || size > 20) size = 20;
+    if (page || size) {
+        page = parseInt(page);
+        size = parseInt(size);
+        if (Number.isNaN(page) || page < 1 || page > 10) response.page = 1;
+        if (Number.isNaN(size) || size < 1 || size > 20) response.size = 20;
+        pagination.limit = size;
+        pagination.offset = size * (page - 1);
+    };
 
     const where = {};
-    const pagination = {};
-    pagination.limit = size;
-    pagination.offset = size * (page - 1);
     if (name) where.name = name;
     if (type) where.type = type;
     if (startDate) where.startDate = startDate;
 
     let events = await Event.findAll({
         attributes: {
-            exclude: ['createdAt', 'updatedAt']
+            exclude: ['capacity', 'price', 'description', 'createdAt', 'updatedAt']
         },
         include: [{
             model: EventImage,
@@ -58,18 +60,15 @@ const getEvents = async (req, res) => {
             previewImage: event.previewImage[0]?.url || null
         };
     }));
-    res.json({
-        Events: events,
-        page: page,
-        size: size
-    });
+    response.Events = events;
+    res.json(response);
 };
 
 const getEventsByGroupId = async (req, res, next) => {
     const group = req.group;
     let events = await Event.findAll({
         attributes: {
-            exclude: ['createdAt', 'updatedAt']
+            exclude: ['capacity', 'price', 'description', 'createdAt', 'updatedAt']
         },
         where: { groupId: group.id },
         include: [{
@@ -111,7 +110,9 @@ const getEventsByGroupId = async (req, res, next) => {
         err.status = 404;
         return next(err);
     }
-    res.json(events);
+    res.json({
+        Events: events
+    });
 }
 
 const getEventByEventId = async (req, res, next) => {
@@ -160,13 +161,6 @@ const createEvent = async (req, res, next) => {
     eventObj.groupId = Number(req.params.id);
     const startDate = new Date(eventObj.startDate);
     const endDate = new Date(eventObj.endDate);
-    // if (startDate.getTime() > endDate.getTime()) {
-    //     const err = new Error('Bad request');
-    //     err.title = 'Bad request';
-    //     err.errors = { "endDate": "End date is less than start date" };
-    //     err.status = 400;
-    //     return next(err);
-    // }
     const newEvent = await Event.create(eventObj);
     await Attendee.create({
         eventId: newEvent.id,
@@ -191,7 +185,11 @@ const createEventImage = async (req, res) => {
     const { body } = req;
     body.eventId = Number(req.params.id);
     const newImage = await EventImage.create(body);
-    res.json(newImage);
+    res.json({
+        id: newImage.id,
+        url: newImage.url,
+        preview: newImage.preview
+    });
 };
 
 const editEvent = async (req, res, next) => {
