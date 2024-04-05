@@ -172,7 +172,7 @@ const createEvent = async (req, res, next) => {
         eventId: newEvent.id,
         userId: userId,
         status: 'host'
-    })
+    });
     res.json({
         id: newEvent.id,
         groupId: newEvent.groupId,
