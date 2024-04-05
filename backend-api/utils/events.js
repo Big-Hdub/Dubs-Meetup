@@ -150,6 +150,7 @@ const getEventByEventId = async (req, res, next) => {
 
 const createEvent = async (req, res, next) => {
     const eventObj = req.body;
+    const userId = Number(req.user.id);
     const venue = await Venue.findByPk(eventObj.venueId)
     if (!venue) {
         const err = new Error("Venue couldn't be found");
@@ -159,14 +160,19 @@ const createEvent = async (req, res, next) => {
     eventObj.groupId = Number(req.params.id);
     const startDate = new Date(eventObj.startDate);
     const endDate = new Date(eventObj.endDate);
-    if (startDate.getTime() > endDate.getTime()) {
-        const err = new Error('Bad request');
-        err.title = 'Bad request';
-        err.errors = { "endDate": "End date is less than start date" };
-        err.status = 400;
-        return next(err);
-    }
+    // if (startDate.getTime() > endDate.getTime()) {
+    //     const err = new Error('Bad request');
+    //     err.title = 'Bad request';
+    //     err.errors = { "endDate": "End date is less than start date" };
+    //     err.status = 400;
+    //     return next(err);
+    // }
     const newEvent = await Event.create(eventObj);
+    await Attendee.create({
+        eventId: newEvent.id,
+        userId: userId,
+        status: 'host'
+    })
     res.json({
         id: newEvent.id,
         groupId: newEvent.groupId,

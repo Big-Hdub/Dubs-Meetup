@@ -356,10 +356,11 @@ const validateEventCreate = async (req, _res, next) => {
 
 const properEventImageAuth = async (req, _res, next) => {
     const { user, event } = req;
+    // console.log(user.toJSON(), event.toJSON())
     const attendee = await Attendee.findOne({
         where: [
-            { userId: user.id },
-            { eventId: event.id }
+            { userId: Number(user.id) },
+            { eventId: Number(event.id) }
         ]
     });
     if (!attendee.status === 'attendee' || !attendee.status === 'host' || !attendee.status === 'co-host') {
@@ -370,7 +371,7 @@ const properEventImageAuth = async (req, _res, next) => {
     next();
 };
 
-const properEventEditAuth = async (req, res, next) => {
+const properEventEditAuth = async (req, _res, next) => {
     const event = req.event;
     const member = await Member.findOne({
         where: [
