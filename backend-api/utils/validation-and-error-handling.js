@@ -378,7 +378,7 @@ const properEventEditAuth = async (req, _res, next) => {
             { groupId: event.groupId },
             { userId: req.user.id }]
     });
-    if (!member?.status || !member.status === 'Organizer' && !member.status === 'co-host') {
+    if (!member?.status && !member.status === 'Organizer' || !member.status === 'co-host') {
         const err = new Error('Not authorized to edit this event.');
         err.status = 403;
         return next(err);
@@ -499,6 +499,8 @@ const validateGetEventsQuery = [
     check('name')
         .optional()
         .isString()
+        .withMessage('Name must be a string')
+        .notEmpty()
         .withMessage('Name must be a string'),
     check('type')
         .optional()
