@@ -31,7 +31,7 @@ const getMembers = async (req, res) => {
                 as: 'Membership',
                 where: {
                     groupId: Number(group.id),
-                    status: { [Op.or]: ['host', 'co-host', 'member'] }
+                    status: { [Op.in]: ['Organizer', 'co-host', 'member'] }
                 }
             }
         })

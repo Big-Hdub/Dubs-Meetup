@@ -503,11 +503,15 @@ const validateGetEventsQuery = [
         .withMessage('Name must be a string'),
     check('type')
         .optional()
-        .isIn(['Online', 'In person'])
+        .isIn(['Online', 'In_person'])
         .withMessage("Type must be 'Online' or 'In Person'"),
     check('startDate')
         .optional()
-        .isAfter(`${new Date()}`)
+        // .isAfter(`${new Date()}`)
+        .custom(val => {
+            const sD = val.split('_').join(' ');
+            return sD.isAfter(`${new Date()}`)
+        })
         .withMessage('Start date must be in the future'),
     handleValidationErrors
 ];
