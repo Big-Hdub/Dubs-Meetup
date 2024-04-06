@@ -134,11 +134,16 @@ const deleteMembership = async (req, res, next) => {
     const userId = Number(req.user.id);
     const check = await Member.findOne({
         where: {
-            groupId: group.id,
+            groupId: Number(group.id),
             userId: userId
         }
     });
-    const member = await Member.findByPk(Number(memberId));
+    const member = await Member.findOne({
+        where: {
+            userId: Number(memberId),
+            groupId: Number(group.id)
+        }
+    });
     if (!member) {
         const err = new Error("User couldn't be found");
         err.status = 404;
