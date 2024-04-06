@@ -30,10 +30,8 @@ const getMembers = async (req, res) => {
                 attributes: ['status'],
                 as: 'Membership',
                 where: {
-                    where: {
-                        groupId: Number(group.id),
-                        status: { [Op.or]: ['co-host', 'member'] }
-                    }
+                    groupId: Number(group.id),
+                    status: { [Op.or]: ['co-host', 'member'] }
                 }
             }
         })
