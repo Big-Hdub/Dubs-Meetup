@@ -129,7 +129,7 @@ const editMembership = async (req, res, next) => {
 };
 
 const deleteMembership = async (req, res, next) => {
-    const { memberId } = req.params;
+    const memberId = Number(req.params.memberId);
     const group = req.group;
     const userId = Number(req.user.id);
     const check = await Member.findOne({
@@ -138,9 +138,14 @@ const deleteMembership = async (req, res, next) => {
             userId: userId
         }
     });
+    if (!check || check?.status !== 'Organizer') {
+        const err = new Error('Not authorized to delete this member');
+        err.status = 403;
+        return next(err);
+    }
     const member = await Member.findOne({
         where: {
-            userId: Number(memberId),
+            userId: memberId,
             groupId: Number(group.id)
         }
     });
@@ -149,7 +154,7 @@ const deleteMembership = async (req, res, next) => {
         err.status = 404;
         return next(err);
     }
-    if (member.userId === userId || check?.status === 'Organizer') {
+    if (member) {
         member.destroy();
         res.json({
             "message": "Successfully deleted membership from group"

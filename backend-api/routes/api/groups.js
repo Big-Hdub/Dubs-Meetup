@@ -20,7 +20,7 @@ router.route('/:id/images')
     .all(methodError);
 
 router.route('/:id/venues')
-    .get(requireAuth, validGroupId, properGroupAuth, getVenuesByGroupId)
+    .get(requireAuth, validGroupId, properVenueAuth, getVenuesByGroupId)
     .post(requireAuth, validGroupId, properVenueAuth, validateVenueCreate, createVenue)
     .all(methodError);
 

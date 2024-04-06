@@ -1,5 +1,6 @@
 const { validationResult, check } = require('express-validator');
 const { Event, Group, Venue, EventImage, Attendee } = require('../db/models');
+const { Op } = require("sequelize");
 
 const getEvents = async (req, res) => {
     let { page, size, name, type, startDate } = req.query;
