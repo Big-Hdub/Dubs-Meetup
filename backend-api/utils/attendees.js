@@ -52,7 +52,7 @@ const applyAttendance = async (req, res, next) => {
             eventId: id
         })
         res.json({
-            memberId: newAttendee.id,
+            userId: newAttendee.userId,
             status: newAttendee.status
         });
     }

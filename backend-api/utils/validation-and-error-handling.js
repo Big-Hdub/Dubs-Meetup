@@ -356,7 +356,6 @@ const validateEventCreate = async (req, _res, next) => {
 
 const properEventImageAuth = async (req, _res, next) => {
     const { user, event } = req;
-    // console.log(user.toJSON(), event.toJSON())
     const attendee = await Attendee.findOne({
         where: [
             { userId: Number(user.id) },
