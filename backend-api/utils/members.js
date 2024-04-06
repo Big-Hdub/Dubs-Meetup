@@ -12,7 +12,7 @@ const getMembers = async (req, res) => {
         });
     }
     let members;
-    if (auth && auth.status && auth.status === 'Organizer' || auth.status === 'co-host') {
+    if (auth?.status === 'Organizer' || auth?.status === 'co-host') {
         members = await User.findAll({
             attributes: ['id', 'firstName', 'lastName'],
             include: {
@@ -30,9 +30,10 @@ const getMembers = async (req, res) => {
                 attributes: ['status'],
                 as: 'Membership',
                 where: {
-                    where: { groupId: Number(group.id) },
-                    [Op.or]: [{ status: 'co-host' },
-                    { status: 'member' }]
+                    where: {
+                        groupId: Number(group.id),
+                        status: { [Op.or]: ['co-host', 'member'] }
+                    }
                 }
             }
         })
