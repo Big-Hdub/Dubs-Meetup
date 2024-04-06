@@ -160,10 +160,10 @@ const createEvent = async (req, res, next) => {
         const err = new Error("Venue couldn't be found");
         err.status = 404;
         return next(err);
-    } new Date(new Date(startDate).toISOString())
+    }
     eventObj.groupId = Number(req.params.id);
-    const startDate = new Date(new Date(eventObj.startDate).toISOString());
-    const endDate = new Date(eventObj.endDate);
+    eventObj.startDate = new Date(new Date(eventObj.startDate).toISOString());
+    eventObj.endDate = new Date(new Date(eventObj.endDate).toISOString());
     const newEvent = await Event.create(eventObj);
     await Attendee.create({
         eventId: newEvent.id,
