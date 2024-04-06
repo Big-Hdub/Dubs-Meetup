@@ -17,9 +17,12 @@ const getEvents = async (req, res) => {
     };
 
     const where = {};
-    if (name) where.name = name;
-    if (type) where.type = type;
-    if (startDate) where.startDate = startDate;
+    if (name) {
+        name = name.split("_").join(" ");
+        where.name = name;
+    }
+    if (type) where.type = type.split("_").join(" ");
+    if (startDate) where.startDate = startDate.split("_").join(" ");
 
     let events = await Event.findAll({
         attributes: {

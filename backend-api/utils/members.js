@@ -31,7 +31,7 @@ const getMembers = async (req, res) => {
                 as: 'Membership',
                 where: {
                     groupId: Number(group.id),
-                    status: { [Op.in]: ['host', 'co-host', 'member'] }
+                    status: { [Op.or]: ['host', 'co-host', 'member'] }
                 }
             }
         })
@@ -131,17 +131,6 @@ const deleteMembership = async (req, res, next) => {
     const memberId = Number(req.params.memberId);
     const group = req.group;
     const userId = Number(req.user.id);
-    const check = await Member.findOne({
-        where: {
-            groupId: Number(group.id),
-            userId: userId
-        }
-    });
-    if (!check || check?.status !== 'Organizer') {
-        const err = new Error('Not authorized to delete this member');
-        err.status = 403;
-        return next(err);
-    }
     const member = await Member.findOne({
         where: {
             userId: memberId,
@@ -149,8 +138,20 @@ const deleteMembership = async (req, res, next) => {
         }
     });
     if (!member) {
-        const err = new Error("User couldn't be found");
-        err.status = 404;
+        const err = new Error("Validation Error");
+        err.errors = { memberId: "User couldn't be found" }
+        err.status = 400;
+        return next(err);
+    }
+    const check = await Member.findOne({
+        where: {
+            groupId: Number(group.id),
+            userId: userId
+        }
+    });
+    if (!check && check?.status !== 'Organizer' || userId !== memberId) {
+        const err = new Error('Not authorized to delete this member');
+        err.status = 403;
         return next(err);
     }
     if (member) {
