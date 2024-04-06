@@ -31,7 +31,9 @@ const getAttendees = async (req, res, next) => {
             attributes: ['id', 'firstName', 'lastName'],
         });
     };
-    res.json(attendees);
+    const response = {}
+    response.Attendees = attendees
+    res.json(response);
 }
 
 const applyAttendance = async (req, res, next) => {
@@ -79,9 +81,15 @@ const editAttendance = async (req, res, next) => {
     });
 };
 
-const removeAttendee = async (req, res, next) => {
-    const { id, userId } = req.params;
-    const attendee = await Attendee.findOne({ where: [{ eventId: id }, { userId: userId }] });
+const removeAttendee = async (req, res) => {
+    const { id, event } = req.params;
+    const userId = Number(event.Users.id);
+    const attendee = await Attendee.findOne({
+        where: {
+            eventId: Number(id),
+            userId: userId
+        }
+    });
     attendee.destroy();
     res.json({
         "message": "Successfully deleted attendance from event"
