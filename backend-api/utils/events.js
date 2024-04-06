@@ -22,7 +22,7 @@ const getEvents = async (req, res) => {
         where.name = name;
     }
     if (type) where.type = type.split("_").join(" ");
-    if (startDate) where.startDate = startDate.split("_").join(" ");
+    if (startDate) where.startDate = new Date(new Date(startDate).toISOString());
 
     let events = await Event.findAll({
         attributes: {
@@ -160,9 +160,9 @@ const createEvent = async (req, res, next) => {
         const err = new Error("Venue couldn't be found");
         err.status = 404;
         return next(err);
-    }
+    } new Date(new Date(startDate).toISOString())
     eventObj.groupId = Number(req.params.id);
-    const startDate = new Date(eventObj.startDate);
+    const startDate = new Date(new Date(eventObj.startDate).toISOString());
     const endDate = new Date(eventObj.endDate);
     const newEvent = await Event.create(eventObj);
     await Attendee.create({
