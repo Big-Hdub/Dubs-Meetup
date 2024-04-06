@@ -89,7 +89,12 @@ const editMembership = async (req, res, next) => {
         return next(err);
     };
     const edit = req.body;
-    const memberToEdit = await Member.findByPk(Number(edit.memberId));
+    const memberToEdit = await Member.findOne({
+        where: {
+            userId: Number(edit.memberId),
+            groupId: groupId
+        }
+    });
     if (!memberToEdit) {
         const err = new Error('Membership between the user and the group does not exist');
         err.status = 404;

@@ -92,7 +92,7 @@ const getEventsByGroupId = async (req, res, next) => {
         const numAttending = await Attendee.count({
             where: {
                 eventId: event.id,
-                status: 'attending'
+                status: { [Op.or]: ['host', 'co-host', 'attending'] }
             }
         });
         return {
