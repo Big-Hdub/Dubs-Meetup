@@ -362,7 +362,7 @@ const properEventImageAuth = async (req, _res, next) => {
             { eventId: Number(event.id) }
         ]
     });
-    if (!attendee.status === 'attendee' || !attendee.status === 'host' || !attendee.status === 'co-host') {
+    if (!attendee || !attendee.status === 'attendee' && !attendee.status === 'host' && !attendee.status === 'co-host') {
         const err = new Error('Requires proper authorization');
         err.status = 403;
         return next(err);
