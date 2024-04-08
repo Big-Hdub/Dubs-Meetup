@@ -93,7 +93,7 @@ const createGroup = async (req, res) => {
         status: "Organizer"
     });
     res.json({
-        ...newGroup,
+        ...newGroup.toJSON(),
         createdAt: newGroup.createdAt.toLocaleString(),
         updatedAt: newGroup.updatedAt.toLocaleString()
     });
