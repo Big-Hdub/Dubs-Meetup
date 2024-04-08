@@ -142,13 +142,8 @@ const deleteMembership = async (req, res, next) => {
     const memberId = Number(req.params.memberId);
     const group = req.group;
     const userId = Number(req.user.id);
-    const member = await Member.findOne({
-        where: {
-            userId: memberId,
-            groupId: Number(group.id)
-        }
-    });
-    if (!member) {
+    const user = await User.findByPk(memberId);
+    if (!user) {
         const err = new Error("Validation Error");
         err.errors = { memberId: "User couldn't be found" }
         err.status = 400;
@@ -165,6 +160,12 @@ const deleteMembership = async (req, res, next) => {
         err.status = 403;
         return next(err);
     }
+    const member = await Member.findOne({
+        where: {
+            userId: memberId,
+            groupId: Number(group.id)
+        }
+    });
     if (member) {
         member.destroy();
         res.json({
