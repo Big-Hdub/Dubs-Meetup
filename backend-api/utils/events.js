@@ -167,6 +167,7 @@ const createEvent = async (req, res, next) => {
     eventObj.groupId = Number(req.params.id);
     eventObj.startDate = new Date(new Date(eventObj.startDate).toISOString());
     eventObj.endDate = new Date(new Date(eventObj.endDate).toISOString());
+    eventObj.price = DECIMAL(eventObj.price, 2);
     const newEvent = await Event.create(eventObj);
     await Attendee.create({
         eventId: newEvent.id,

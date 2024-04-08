@@ -10,7 +10,7 @@ const getVenuesByGroupId = async (req, res, next) => {
     });
     const response = {};
     response.Venues = venues;
-    res.json(venues);
+    res.json(response);
 };
 
 const createVenue = async (req, res, next) => {
