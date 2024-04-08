@@ -92,6 +92,13 @@ const editMembership = async (req, res, next) => {
         return next(err);
     };
     const edit = req.body;
+    const user = await User.findByPk(edit.memberId);
+    if (!user) {
+        const err = new Error('Validation Error');
+        err.errors = { memberId: "User couldn't be found" }
+        err.status = 400;
+        return next(err);
+    }
     const memberToEdit = await Member.findOne({
         where: {
             userId: Number(edit.memberId),

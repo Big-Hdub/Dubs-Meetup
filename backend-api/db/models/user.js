@@ -31,10 +31,11 @@ module.exports = (sequelize, DataTypes) => {
         as: 'Membership',
         onDelete: 'CASCADE'
       })
-      User.hasMany(
+      User.hasOne(
         models.Attendee, {
         foreignKey: 'userId',
-        as: 'Attendance'
+        as: 'Attendance',
+        onDelete: 'CASCADE'
       })
     }
   }

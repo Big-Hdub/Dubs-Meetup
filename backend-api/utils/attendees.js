@@ -3,8 +3,8 @@ const { Attendee, Member, User } = require('../db/models');
 
 const getAttendees = async (req, res, next) => {
     const { id, groupId } = req.event;
-    console.log(req.event.toJSON())
-    console.log(`eventId: ${id}, groupId: ${groupId}, userId: ${req.user}`)
+    // console.log(req.event.toJSON())
+    // console.log(`eventId: ${id}, groupId: ${groupId}, userId: ${req.user}`)
     let attendees;
     const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } });
     if (member?.status !== 'co-host' && member?.status !== 'Organizer') {
