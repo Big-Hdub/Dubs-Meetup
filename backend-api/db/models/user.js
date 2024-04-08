@@ -28,14 +28,12 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(
         models.Member, {
         foreignKey: 'userId',
-        as: 'Membership',
-        onDelete: 'CASCADE'
+        as: 'Membership'
       })
       User.hasOne(
         models.Attendee, {
         foreignKey: 'userId',
-        as: 'Attendance',
-        onDelete: 'CASCADE'
+        as: 'Attendance'
       })
     }
   }

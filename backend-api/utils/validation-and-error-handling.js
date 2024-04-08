@@ -504,12 +504,13 @@ const validateGetEventsQuery = [
     check('name')
         .optional()
         .isString()
-        .withMessage('Name must be a string')
-        .notEmpty()
         .withMessage('Name must be a string'),
     check('type')
         .optional()
-        .isIn(['Online', 'In_person'])
+        .custom(val => {
+            if (!val || val === 'Online' || val === 'In_person') return true;
+            return false;
+        })
         .withMessage("Type must be 'Online' or 'In Person'"),
     check('startDate')
         .optional()

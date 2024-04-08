@@ -9,8 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       Member.belongsTo(
         models.User, {
         foreignKey: 'userId',
-        as: 'Membership',
-        onDelete: 'CASCADE'
+        as: 'Membership'
       })
     }
   }

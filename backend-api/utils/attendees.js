@@ -14,7 +14,7 @@ const getAttendees = async (req, res, next) => {
                 as: 'Attendance',
                 where: [
                     { eventId: id },
-                    { status: { [Op.or]: ['attending', 'waitlist'] } }
+                    { status: { [Op.or]: ['host', 'co-host', 'attending', 'waitlist'] } }
                 ],
                 attributes: ['status']
             },
