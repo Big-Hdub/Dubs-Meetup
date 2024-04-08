@@ -114,7 +114,7 @@ const editGroup = async (req, res) => {
     const group = req.group;
     await group.update(req.body);
     res.json({
-        ...group,
+        ...group.toJSON(),
         createdAt: group.createdAt.toLocaleString(),
         updatedAt: group.updatedAt.toLocaleString()
     });
