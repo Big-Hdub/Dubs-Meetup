@@ -149,6 +149,17 @@ const deleteMembership = async (req, res, next) => {
         err.status = 400;
         return next(err);
     }
+    const member = await Member.findOne({
+        where: {
+            userId: memberId,
+            groupId: Number(group.id)
+        }
+    });
+    if (!member) {
+        const err = new Error("Membership does not exist for this User")
+        err.status = 404;
+        return next(err);
+    }
     const check = await Member.findOne({
         where: {
             groupId: Number(group.id),
@@ -160,21 +171,11 @@ const deleteMembership = async (req, res, next) => {
         err.status = 403;
         return next(err);
     }
-    const member = await Member.findOne({
-        where: {
-            userId: memberId,
-            groupId: Number(group.id)
-        }
-    });
     if (member) {
         member.destroy();
         res.json({
             "message": "Successfully deleted membership from group"
         });
-    } else {
-        const err = new Error("Membership does not exist for this User")
-        err.status = 404;
-        return next(err);
     }
 };
 
