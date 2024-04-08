@@ -133,7 +133,7 @@ const getEventByEventId = async (req, res, next) => {
         {
             model: Group,
             attributes: ['id', 'name', 'private', 'city', 'state'],
-            required: false
+            // required: false
         },
         {
             model: Venue,
@@ -155,6 +155,16 @@ const getEventByEventId = async (req, res, next) => {
     res.json(event);
 }
 
+const formatDecimal = num => {
+    let dec = num.toString();
+    if (dec.indexOf('.') !== -1) {
+        const parts = dec.split('.');
+        if (parts[1].length === 1) parts[1] += '0';
+        dec = parts.join('.')
+    } else dec += '.00';
+    return dec;
+}
+
 const createEvent = async (req, res, next) => {
     const eventObj = req.body;
     const userId = Number(req.user.id);
@@ -164,6 +174,7 @@ const createEvent = async (req, res, next) => {
         err.status = 404;
         return next(err);
     }
+    if (typeof eventObj.price === 'number') eventObj.price = formatDecimal(eventObj.price);
     eventObj.groupId = Number(req.params.id);
     eventObj.startDate = new Date(new Date(eventObj.startDate).toISOString());
     eventObj.endDate = new Date(new Date(eventObj.endDate).toISOString());
@@ -202,6 +213,7 @@ const editEvent = async (req, res, next) => {
     const { body, event } = req;
     let startDate;
     let endDate;
+    if (typeof body.price === 'number') body.price = formatDecimal(body.price);
     body.startDate ? startDate = new Date(body.startDate) : startDate = new Date(event.startDate);
     body.endDate ? endDate = new Date(body.endDate) : endDate = new Date(event.endDate);
     if (startDate.getTime() > endDate.getTime()) {

@@ -120,7 +120,7 @@ const editGroup = async (req, res) => {
     });
 };
 
-const deleteGroup = async (req, res, next) => {
+const deleteGroup = async (req, res) => {
     const group = req.group;
     group.destroy();
     res.json({

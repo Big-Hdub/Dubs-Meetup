@@ -25,9 +25,9 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: 'groupId',
         onDelete: 'CASCADE'
       })
-      User.belongsTo(
+      User.hasOne(
         models.Member, {
-        foreignKey: 'id',
+        foreignKey: 'userId',
         as: 'Membership',
         onDelete: 'CASCADE'
       })

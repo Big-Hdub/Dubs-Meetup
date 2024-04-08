@@ -6,9 +6,9 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Member extends Model {
     static associate(models) {
-      Member.hasMany(
+      Member.belongsTo(
         models.User, {
-        foreignKey: 'id',
+        foreignKey: 'userId',
         as: 'Membership',
         onDelete: 'CASCADE'
       })

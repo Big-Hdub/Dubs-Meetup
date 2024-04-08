@@ -8,9 +8,10 @@ const getMembers = async (req, res) => {
         auth = await Member.findOne({
             where: {
                 userId: Number(user.id),
+                groupId: Number(group.id)
             }
         });
-    }
+    };
     let members;
     if (auth?.status === 'Organizer' || auth?.status === 'co-host') {
         members = await User.findAll({
@@ -19,7 +20,8 @@ const getMembers = async (req, res) => {
                 model: Member,
                 attributes: ['status'],
                 as: 'Membership',
-                where: { groupId: Number(group.id) },
+                where: { groupId: group.id }
+                // status: { [Op.in]: ['Organizer', 'co-host', 'member', 'pending'] }
             }
         })
     } else {
