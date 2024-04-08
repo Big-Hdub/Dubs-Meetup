@@ -19,8 +19,8 @@ const events = [
     capacity: 20,
     price: 89.99,
     description: 'Fun in the sun',
-    startDate: new Date(new Date('2024-04-08 12:00:00 +00:00').toISOString()),
-    endDate: new Date(new Date('2024-05-08 12:00:00 +00:00').toISOString())
+    startDate: new Date(new Date('2024-05-08 12:00:00 +00:00').toISOString()),
+    endDate: new Date(new Date('2024-06-08 12:00:00 +00:00').toISOString())
   },
   {
     groupId: 1,
