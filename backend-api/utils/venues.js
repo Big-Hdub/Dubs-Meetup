@@ -7,7 +7,9 @@ const getVenuesByGroupId = async (req, res, next) => {
         attributes: {
             exclude: ['createdAt', 'updatedAt']
         }
-    })
+    });
+    const response = {};
+    response.Venues = venues;
     res.json(venues);
 };
 

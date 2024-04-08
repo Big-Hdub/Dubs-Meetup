@@ -36,7 +36,9 @@ const getMembers = async (req, res) => {
             }
         })
     }
-    res.json(members)
+    const response = {};
+    response.Members = members;
+    res.json(response);
 };
 
 const requestMembership = async (req, res, next) => {

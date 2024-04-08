@@ -32,7 +32,9 @@ const formatGroups = (groups) => {
         return {
             ...group.toJSON(),
             numMembers,
-            previewImage: preview || null
+            previewImage: preview || null,
+            createdAt: group.createdAt.toLocaleString(),
+            updatedAt: group.updatedAt.toLocaleString()
         };
     }));
 };
@@ -72,7 +74,12 @@ const findGroupById = async (groupObj) => {
 
 const getGroupById = async (req, res) => {
     const group = await findGroupById(req.group);
-    res.json(group);
+    const response = {
+        ...group,
+        createdAt: group.createdAt.toLocaleString(),
+        updatedAt: group.updatedAt.toLocaleString()
+    }
+    res.json(response);
 };
 
 const createGroup = async (req, res) => {
@@ -85,7 +92,11 @@ const createGroup = async (req, res) => {
         groupId: newGroup.id,
         status: "Organizer"
     });
-    res.json(newGroup);
+    res.json({
+        ...newGroup,
+        createdAt: newGroup.createdAt.toLocaleString(),
+        updatedAt: newGroup.updatedAt.toLocaleString()
+    });
 };
 
 const createGroupImage = async (req, res) => {
@@ -102,7 +113,11 @@ const createGroupImage = async (req, res) => {
 const editGroup = async (req, res) => {
     const group = req.group;
     await group.update(req.body);
-    res.json(group);
+    res.json({
+        ...group,
+        createdAt: group.createdAt.toLocaleString(),
+        updatedAt: group.updatedAt.toLocaleString()
+    });
 };
 
 const deleteGroup = async (req, res, next) => {

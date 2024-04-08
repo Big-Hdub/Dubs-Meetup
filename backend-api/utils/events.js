@@ -7,20 +7,15 @@ const getEvents = async (req, res) => {
     const response = {};
     const pagination = {};
 
-    if (page || size) {
-        page = parseInt(page);
-        size = parseInt(size);
-        if (Number.isNaN(page) || page < 1 || page > 10) page = 1;
-        if (Number.isNaN(size) || size < 1 || size > 20) size = 20;
-        pagination.limit = size;
-        pagination.offset = size * (page - 1);
-    };
+    page = parseInt(page);
+    size = parseInt(size);
+    if (Number.isNaN(page) || page < 1) page = 1;
+    if (Number.isNaN(size) || size < 1 || size > 20) size = 20;
+    pagination.limit = size;
+    pagination.offset = size * (page - 1);
 
     const where = {};
-    if (name) {
-        name = name.split("_").join(" ");
-        where.name = name;
-    }
+    if (name) where.name = name.split("_").join(" ")
     if (type) where.type = type.split("_").join(" ");
     if (startDate) where.startDate = new Date(new Date(startDate).toISOString());
 
@@ -60,10 +55,14 @@ const getEvents = async (req, res) => {
             numAttending,
             Group: event.Group || null,
             Venue: event.Venue || null,
-            previewImage: event.previewImage[0]?.url || null
+            previewImage: event.previewImage[0]?.url || null,
+            startDate: event.startDate.toLocaleString(),
+            endDate: event.endDate.toLocaleString()
         };
     }));
     response.Events = events;
+    response.page = page;
+    response.size = size;
     res.json(response);
 };
 
@@ -104,7 +103,9 @@ const getEventsByGroupId = async (req, res, next) => {
             numAttending,
             Group: event.Group || null,
             Venue: event.Venue || null,
-            previewImage: event.previewImage[0]?.url || null
+            previewImage: event.previewImage[0]?.url || null,
+            startDate: event.startDate.toLocaleString(),
+            endDate: event.endDate.toLocaleString()
         };
     }));
     if (!events.length) {
@@ -147,7 +148,9 @@ const getEventByEventId = async (req, res, next) => {
                 eventId: event.id,
                 status: 'attending'
             }
-        })
+        }),
+        startDate: event.startDate.toLocaleString(),
+        endDate: event.endDate.toLocaleString()
     }
     res.json(event);
 }
@@ -179,8 +182,8 @@ const createEvent = async (req, res, next) => {
         capacity: newEvent.capacity,
         price: newEvent.price,
         description: newEvent.description,
-        startDate: newEvent.startDate,
-        endDate: newEvent.endDate
+        startDate: newEvent.startDate.toLocaleString(),
+        endDate: newEvent.endDate.toLocaleString()
     });
 };
 
@@ -231,8 +234,8 @@ const editEvent = async (req, res, next) => {
         capacity: newEvent.capacity,
         price: newEvent.price,
         description: newEvent.description,
-        startDate: newEvent.startDate,
-        endDate: newEvent.endDate
+        startDate: newEvent.startDate.toLocaleString(),
+        endDate: newEvent.endDate.toLocaleString()
     });
 };
 

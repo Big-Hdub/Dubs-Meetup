@@ -508,8 +508,7 @@ const validateGetEventsQuery = [
     check('startDate')
         .optional()
         .custom(val => {
-            const sD = val.split('_').join(' ');
-            if (new Date(sD).getTime() < new Date().getTime()) {
+            if (new Date(val).getTime() < new Date().getTime()) {
                 return false;
             };
             return true;
