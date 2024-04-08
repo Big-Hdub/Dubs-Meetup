@@ -362,7 +362,7 @@ const properEventImageAuth = async (req, _res, next) => {
             { eventId: Number(event.id) }
         ]
     });
-    if (!attendee || attendee.status !== 'attendee' && attendee.status !== 'host' && attendee.status !== 'co-host') {
+    if (!attendee || attendee.status !== 'attending' && attendee.status !== 'host' && attendee.status !== 'co-host') {
         const err = new Error('Requires proper authorization');
         err.status = 403;
         return next(err);
@@ -411,6 +411,12 @@ const validateEventEdit = async (req, _res, next) => {
 const properRemoveAttendanceAuth = async (req, _res, next) => {
     const currentId = Number(req.user.id);
     const { id, userId } = req.params;
+    const user = await User.findByPk(Number(userId));
+    if (!user) {
+        const err = new Error("User couldn't be found");
+        err.status = 404;
+        return next(err);
+    }
     const check = await Attendee.findOne({
         where: {
             userId: currentId,
@@ -511,7 +517,8 @@ const validateGetEventsQuery = [
             if (new Date(val).getTime() < new Date().getTime()) {
                 return false;
             };
-            return true;
+            if (!val) return true;
+            return !isNaN(Date.parse(val));
         })
         .withMessage('Start date must be in the future'),
     handleValidationErrors

@@ -63,6 +63,12 @@ const applyAttendance = async (req, res, next) => {
 const editAttendance = async (req, res, next) => {
     const { userId, status } = req.body;
     const eventId = Number(req.params.id);
+    const user = await User.findByPk(userId);
+    if (!user) {
+        const err = new Error("User couln't be found");
+        err.status = 404;
+        return next(err)
+    }
     const attendance = await Attendee.findOne({
         where: [{ userId: userId }, { eventId: eventId }],
         attributes: ['id', 'eventId', 'userId', 'status']
