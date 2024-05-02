@@ -1,0 +1,24 @@
+* {
+    /* border: 1px solid red; */
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    display: flexbox;
+    padding: 10px;
+}
+
+input {
+    padding: 3px;
+    background-color: lightgray;
+}
+
+button {
+    padding: 0;
+    margin: 10px;
+}
+
+form,
+section {
+    display: flex;
+    flex-direction: column;
+}
