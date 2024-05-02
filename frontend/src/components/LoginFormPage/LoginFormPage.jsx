@@ -35,16 +35,26 @@ const LoginFormPage = () => {
             <h1>Log In</h1>
             <form className="login-form" onSubmit={handleSubmit}>
                 <label>
-                    <span>
-                        Credentials:
-                    </span>
-                    <input name="Credentials" type="text" autoComplete="email username" placeholder="Username/E-mail" required value={credential} onChange={(e) => setCredential(e.target.value)} />
+                    <span>Credentials:</span>
+                    <input
+                        name="Credentials"
+                        type="text"
+                        autoComplete="email username"
+                        required
+                        value={credential}
+                        onChange={(e) => setCredential(e.target.value)}
+                    />
                 </label>
                 <label>
-                    <span>
-                        Password:
-                    </span>
-                    <input name="Password" type="password" autoComplete="current-password" placeholder="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <span>Password:</span>
+                    <input
+                        name="Password"
+                        type="password"
+                        autoComplete="current-password"
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                 </label>
                 {errors.credential && <p className="errors">{errors.credential}</p>}
                 <button type="submit">Log In</button>
