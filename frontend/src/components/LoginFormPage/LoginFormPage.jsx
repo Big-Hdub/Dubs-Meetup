@@ -9,12 +9,12 @@ const LoginFormPage = () => {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const dispatch = useDispatch();
-    const session = useSelector(state => state.session.user);
+    const user = useSelector(sessionActions.selectSessionUser);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (session) navigate('/', { replace: true, state: { ...session } });
-    }, [session, navigate])
+        if (user) navigate('/');
+    }, [user, navigate])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -23,11 +23,12 @@ const LoginFormPage = () => {
             credential,
             password
         }
-        return dispatch(sessionActions.login(loginData)).catch(
+        dispatch(sessionActions.login(loginData)).catch(
             async (res) => {
                 const data = await res.json();
                 if (data?.errors) setErrors(data.errors);
-            })
+            });
+        navigate('/');
     };
 
     return (
@@ -57,7 +58,7 @@ const LoginFormPage = () => {
                     />
                 </label>
                 {errors.credential && <p className="errors">{errors.credential}</p>}
-                <button type="submit">Log In</button>
+                <button className="submit-button" type="submit">Log In</button>
             </form>
         </section>
     )

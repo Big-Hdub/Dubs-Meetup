@@ -5,19 +5,21 @@ import { useNavigate } from 'react-router-dom'
 import './SignupForm.css';
 
 const SignupFormPage = () => {
+    const dispatch = useDispatch();
+    const session = useSelector(sessionActions.selectSessionUser);
     const [username, setUsername] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState({});
-    const dispatch = useDispatch();
-    const user = useSelector(state => state.session.user);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user) navigate('/', { replace: true, state: { ...user } })
-    }, [user, navigate]);
+        console.log(session)
+        if (session.user) navigate("/", { replace: true });
+    }, [session, navigate])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,11 +31,12 @@ const SignupFormPage = () => {
             email,
             password
         };
-        return dispatch(sessionActions.signup(signupData)).catch(
+        dispatch(sessionActions.signup(signupData)).catch(
             async (res) => {
                 const data = await res.json();
                 if (data?.errors) setErrors(data.errors);
-            })
+            });
+        navigate("/", { replace: true });
     };
 
     return (
@@ -43,7 +46,7 @@ const SignupFormPage = () => {
                 <label>
                     <span>First name:</span>
                     <input
-                        name="firstName"
+                        name="first"
                         type="text"
                         autoComplete="given-name"
                         required
@@ -54,7 +57,7 @@ const SignupFormPage = () => {
                 <label>
                     <span>Last name:</span>
                     <input
-                        name="lastName"
+                        name="last"
                         type="text"
                         autoComplete="family-name"
                         required
@@ -76,7 +79,7 @@ const SignupFormPage = () => {
                 <label>
                     <span>Username:</span>
                     <input
-                        name="username"
+                        name="user"
                         type="text"
                         autoComplete="username"
                         required
@@ -87,7 +90,7 @@ const SignupFormPage = () => {
                 <label>
                     <span>Password:</span>
                     <input
-                        name="Password"
+                        name="password"
                         type="password"
                         autoComplete="new-password"
                         required
@@ -95,8 +98,19 @@ const SignupFormPage = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </label>
+                <label>
+                    <span>Confirm password:</span>
+                    <input
+                        name="confirm"
+                        type="password"
+                        autoComplete="new-password"
+                        required
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                </label>
                 {errors.credential && <p className="errors">{errors.credential}</p>}
-                <button type="submit">Sign up</button>
+                <button className="submit-button" type="submit">Sign up</button>
             </form>
         </section>
     )

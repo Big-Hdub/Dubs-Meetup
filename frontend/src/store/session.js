@@ -1,10 +1,9 @@
+import { createSelector } from '@reduxjs/toolkit'
 import { csrfFetch } from './csrf'
 
 export const SET_SESSION = 'session/SET_SESSION';
 export const DELETE_SESSION = 'session/DELETE_SESSION';
 export const CREATE_SESSION = 'session/CREATE_SESSION';
-
-const initialState = { user: null }
 
 const setSession = (user) => ({
     type: SET_SESSION,
@@ -46,6 +45,12 @@ export const signup = (signupData) => async (dispatch) => {
     if (res.ok) dispatch(setSession(data.user));
     return data;
 };
+
+const selectSession = (state) => state.session;
+
+export const selectSessionUser = createSelector([selectSession], (selectSession) => ({ ...selectSession }));
+
+const initialState = { user: null }
 
 const sessionReducer = (state = initialState, action) => {
     switch (action.type) {

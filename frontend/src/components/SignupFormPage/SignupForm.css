@@ -1,9 +1,4 @@
 * {
-    /* border: 1px solid red; */
-    margin: 0;
-    justify-content: center;
-    align-items: center;
-    display: flexbox;
     padding: 10px;
 }
 
@@ -25,6 +20,14 @@ form,
 section {
     display: flex;
     flex-direction: column;
+}
+
+.signup-form {
+    align-items: end;
+}
+
+.submit-button {
+    align-self: center;
 }
 
 .signup-holder {
