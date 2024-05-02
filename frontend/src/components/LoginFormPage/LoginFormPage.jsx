@@ -20,8 +20,11 @@ const LoginFormPage = () => {
             credential,
             password
         }
-        let user = await dispatch(sessionActions.login(loginData));
-        if (user?.errors) setErrors(user.errors);
+        return dispatch(sessionActions.login(loginData)).catch(
+            async (res) => {
+                const data = await res.json();
+                if (data?.errors) setErrors(data.errors);
+            })
     };
 
     return (
@@ -32,15 +35,15 @@ const LoginFormPage = () => {
                     <span>
                         Credentials:
                     </span>
-                    <input type="text" placeholder="Username/E-mail" required value={credential} onChange={(e) => setCredential(e.target.value)} />
+                    <input name="Credentials" type="text" autoComplete="email username" placeholder="Username/E-mail" required value={credential} onChange={(e) => setCredential(e.target.value)} />
                 </label>
                 <label>
                     <span>
                         Password:
                     </span>
-                    <input type="password" placeholder="Password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input name="Password" type="password" autoComplete="current-password" placeholder="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
                 </label>
-                {errors.credential && <p>{errors.credential}</p>}
+                {errors.credential && <p className="errors">{errors.credential}</p>}
                 <button type="submit">Log In</button>
             </form>
         </section>

@@ -12,6 +12,10 @@ input {
     background-color: lightgray;
 }
 
+.errors {
+    color: red;
+}
+
 button {
     padding: 0;
     margin: 10px;
@@ -21,4 +25,16 @@ form,
 section {
     display: flex;
     flex-direction: column;
+}
+
+.login-holder {
+    width: fit-content;
+    align-self: center;
+    border: 2px solid black;
+    border-radius: 4px;
+    background-color: rgba(59, 55, 55, 0.329);
+}
+
+#root {
+    display: flex;
 }

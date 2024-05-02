@@ -3,7 +3,6 @@ const { Op } = require("sequelize");
 
 const getMembers = async (req, res) => {
     const { group } = req;
-    console.log(req.user)
     const auth = await Member.findOne({
         where: {
             userId: Number(req.user.id),

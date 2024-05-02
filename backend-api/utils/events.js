@@ -3,7 +3,6 @@ const { Event, Group, Venue, EventImage, Attendee } = require('../db/models');
 
 const getEvents = async (req, res) => {
     let { page, size, name, type, startDate } = req.query;
-    // console.log(page, size, name, type, startDate)
 
     page = parseInt(page);
     size = parseInt(size);
