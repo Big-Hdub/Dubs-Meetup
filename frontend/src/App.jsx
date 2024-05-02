@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import LoginFormPage from "./components/LoginFormPage";
 import SignupFormPage from "./components/SignupFormPage";
 import * as sessionActions from './store/session';
+import Navigation from "./components/Navigation";
 
 const Layout = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const Layout = () => {
 
   return (
     <>
+      <Navigation isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
     </>
   );

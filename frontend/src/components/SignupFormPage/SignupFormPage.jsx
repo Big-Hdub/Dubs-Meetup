@@ -17,7 +17,6 @@ const SignupFormPage = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(session)
         if (session.user) navigate("/", { replace: true });
     }, [session, navigate])
 

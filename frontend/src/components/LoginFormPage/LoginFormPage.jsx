@@ -5,16 +5,16 @@ import { useNavigate } from 'react-router-dom'
 import './LoginForm.css';
 
 const LoginFormPage = () => {
+    const dispatch = useDispatch();
+    const session = useSelector(sessionActions.selectSessionUser);
     const [credential, setCredential] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
-    const dispatch = useDispatch();
-    const user = useSelector(sessionActions.selectSessionUser);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user) navigate('/');
-    }, [user, navigate])
+        if (session.user) navigate("/", { replace: true });
+    }, [session, navigate])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +28,7 @@ const LoginFormPage = () => {
                 const data = await res.json();
                 if (data?.errors) setErrors(data.errors);
             });
-        navigate('/');
+        navigate('/', { replace: true });
     };
 
     return (
