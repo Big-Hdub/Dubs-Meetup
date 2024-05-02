@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useModal } from "../../context/Modal";
 import * as sessionActions from '../../store/session';
-import { useNavigate } from 'react-router-dom'
 import './SignupForm.css';
 
-const SignupFormPage = () => {
+const SignupFormModal = () => {
     const dispatch = useDispatch();
-    const session = useSelector(sessionActions.selectSessionUser);
     const [username, setUsername] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -14,28 +13,30 @@ const SignupFormPage = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState({});
-    const navigate = useNavigate();
+    const { closeModal } = useModal();
 
-    useEffect(() => {
-        if (session.user) navigate("/", { replace: true });
-    }, [session, navigate])
-
-    const handleSubmit = async (e) => {
+    const handleSubmit = e => {
         e.preventDefault();
-        setErrors({});
-        const signupData = {
-            username,
-            firstName,
-            lastName,
-            email,
-            password
-        };
-        dispatch(sessionActions.signup(signupData)).catch(
-            async (res) => {
-                const data = await res.json();
-                if (data?.errors) setErrors(data.errors);
-            });
-        navigate("/", { replace: true });
+        if (password === confirmPassword) {
+            setErrors({});
+            const signupData = {
+                username,
+                firstName,
+                lastName,
+                email,
+                password
+            };
+            return dispatch(sessionActions.signup(signupData))
+                .then(closeModal)
+                .catch(
+                    async (res) => {
+                        const data = await res.json();
+                        if (data?.errors) setErrors(data.errors);
+                    });
+        }
+        return setErrors({
+            confirmPassword: "Confirm Password field must be the same as the Password field"
+        });
     };
 
     return (
@@ -53,6 +54,7 @@ const SignupFormPage = () => {
                         onChange={(e) => setFirstName(e.target.value)}
                     />
                 </label>
+                {errors.firstName && <p>{errors.firstName}</p>}
                 <label>
                     <span>Last name:</span>
                     <input
@@ -64,6 +66,7 @@ const SignupFormPage = () => {
                         onChange={(e) => setLastName(e.target.value)}
                     />
                 </label>
+                {errors.lastName && <p>{errors.lastName}</p>}
                 <label>
                     <span>E-mail:</span>
                     <input
@@ -75,6 +78,7 @@ const SignupFormPage = () => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </label>
+                {errors.email && <p>{errors.email}</p>}
                 <label>
                     <span>Username:</span>
                     <input
@@ -86,6 +90,7 @@ const SignupFormPage = () => {
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </label>
+                {errors.username && <p>{errors.username}</p>}
                 <label>
                     <span>Password:</span>
                     <input
@@ -97,6 +102,7 @@ const SignupFormPage = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </label>
+                {errors.password && <p>{errors.password}</p>}
                 <label>
                     <span>Confirm password:</span>
                     <input
@@ -108,11 +114,13 @@ const SignupFormPage = () => {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </label>
-                {errors.credential && <p className="errors">{errors.credential}</p>}
+                {errors.confirmPassword && (
+                    <p>{errors.confirmPassword}</p>
+                )}
                 <button className="submit-button" type="submit">Sign up</button>
             </form>
         </section>
     )
 };
 
-export default SignupFormPage;
+export default SignupFormModal;
