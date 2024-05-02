@@ -13,17 +13,17 @@ const deleteSession = () => ({
     type: DELETE_SESSION
 });
 
-export const login = (data) => async (dispatch) => {
+export const login = (loginData) => async (dispatch) => {
     const res = await csrfFetch('/api/session',
         {
             method: 'POST',
-            body: JSON.stringify(data)
+            body: JSON.stringify(loginData)
         });
+    const data = await res.json();
     if (res.ok) {
-        const data = await res.json();
         dispatch(setSession(data.user));
-        return data;
-    } else return await res.json();
+    }
+    return data;
 };
 
 export const logout = () => async (dispatch) => {
@@ -31,20 +31,20 @@ export const logout = () => async (dispatch) => {
         {
             method: 'DELETE',
         })
+    const message = await res.json();
     if (res.ok) {
-        const message = await res.json();
         dispatch(deleteSession());
-        return message;
     }
+    return message;
 };
 
 export const restoreUser = () => async (dispatch) => {
     const res = await csrfFetch('/api/session');
+    const data = await res.json();
     if (res.ok) {
-        const data = await res.json();
         dispatch(setSession(data.user));
-        return data;
     }
+    return data;
 }
 
 const sessionReducer = (state = initialState, action) => {

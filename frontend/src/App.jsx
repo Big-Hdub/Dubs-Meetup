@@ -1,5 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginFormPage from "./components/LoginFormPage";
+import { restoreUser } from "./store/session";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +19,16 @@ const router = createBrowserRouter([
   }])
 
 function App() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const restore = async () => {
+      dispatch(restoreUser());
+    }
+    restore();
+  }, [dispatch])
+
   return <RouterProvider router={router} />;
 }
 
