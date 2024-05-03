@@ -1,3 +1,8 @@
 .hidden {
     display: none;
 }
+
+.ModalMenuItem,
+#profile-button {
+    cursor: pointer
+}
