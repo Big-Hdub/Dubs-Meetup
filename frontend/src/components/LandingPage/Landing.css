@@ -1,0 +1,110 @@
+#landing-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#landing-features {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    height: fit-content;
+}
+
+#landing-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+}
+
+#join-dubs-meetup-button {
+    background-color: darkcyan;
+    box-sizing: border-box;
+    width: 150px;
+    height: 50px;
+    border: 1px solid black;
+    box-shadow: 3px 3px black;
+}
+
+#landing-page-pic {
+    width: 100%;
+    border-radius: 15px;
+    border: 2px black solid;
+    box-shadow: 1px 1px 10px 5px grey;
+    padding: 0;
+    margin: 0;
+}
+
+#landing-body-left,
+#landing-body-right {
+    width: 35%;
+
+}
+
+#landing-body {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#landing-body-left {
+    padding: 0;
+}
+
+#landing-h1 {
+    margin: 0;
+    padding-top: 0;
+}
+
+#landing-h2 {
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.landing-p {
+    font-size: large;
+    font-family: 'Patrick Hand';
+    margin: 0;
+}
+
+#landing-summary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    padding: 0;
+}
+
+.feature-div {
+    width: 200px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.feature-img {
+    width: 60%;
+}
+
+.feature-item {
+    margin: 0;
+    padding: 5px;
+}
+
+.feature-img {
+    box-sizing: border-box;
+    padding: 0;
+    border-radius: 15px;
+    border: 2px black solid;
+    box-shadow: 1px 1px 10px 5px grey;
+}
+
+p.feature-item {
+    padding-top: 0;
+}

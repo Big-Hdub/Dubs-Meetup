@@ -1,4 +1,5 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
 const { restoreUser } = require('../../utils/auth.js');
 router.use(restoreUser);
 
@@ -9,6 +10,10 @@ router.get("/csrf/restore", (req, res) => {
         'XSRF-Token': csrfToken
     });
 });
+router.use('/images/landing', express.static('./images/pic-for-dubs-meetup.jpg'));
+router.use('/images/group-thumb', express.static('./images/group-thumbnail.jpg'));
+router.use('/images/knights', express.static('./images/knights.jpg'));
+router.use('/images/cabin', express.static('./images/cabin.jpg'));
 
 const sessionRouter = require('./session.js');
 router.use('/session', sessionRouter);
