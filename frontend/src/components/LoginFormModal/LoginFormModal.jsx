@@ -18,43 +18,57 @@ const LoginFormModal = () => {
             credential,
             password
         }
-
         dispatch(sessionActions.login(loginData))
             .then(closeModal)
             .catch(async (res) => {
                 const data = await res.json();
-                if (data?.errors) setErrors(data.errors);
+                if (data?.errors) setErrors(data.errors)
+                else setErrors(data)
             });
+
     };
+
+    const demoLogin = () => {
+        const loginData = {
+            credential: "Demo-lition",
+            password: "password"
+        }
+        dispatch(sessionActions.login(loginData))
+            .then(closeModal)
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data?.errors) setErrors(data.errors)
+                else setErrors(data)
+            });
+    }
 
     return (
         <section className="login-holder">
-            <h1>Log In</h1>
+            <h2>Log In</h2>
             <form className="login-form" onSubmit={handleSubmit}>
-                <label>
-                    <span>Credentials:</span>
-                    <input
-                        name="Credentials"
-                        type="text"
-                        autoComplete="email username"
-                        required
-                        value={credential}
-                        onChange={(e) => setCredential(e.target.value)}
-                    />
-                </label>
-                <label>
-                    <span>Password:</span>
-                    <input
-                        name="Password"
-                        type="password"
-                        autoComplete="current-password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </label>
+                <input
+                    name="Credentials"
+                    placeholder="Username or email"
+                    type="text"
+                    // autoComplete="email username"
+                    required
+                    value={credential}
+                    onChange={(e) => setCredential(e.target.value)}
+                />
+                <input
+                    name="Password"
+                    placeholder="Passord"
+                    type="password"
+                    // autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                {errors.message && <p className="errors">{errors.message}</p>}
                 {errors.credential && <p className="errors">{errors.credential}</p>}
-                <button className="submit-button" type="submit">Log In</button>
+                {errors.password && <p className="errors">{errors.password}</p>}
+                <button id="login-button" className="submit-button" type="submit" disabled={credential.length < 4 || password.length < 6}>Log In</button>
+                <p id="demo-login" onClick={demoLogin}>Demo User</p>
             </form>
         </section>
     )
