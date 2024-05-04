@@ -25,7 +25,6 @@ const LoginFormModal = () => {
                 if (data?.errors) setErrors(data.errors)
                 else setErrors(data)
             });
-
     };
 
     const demoLogin = () => {

@@ -73,3 +73,8 @@ button {
     border: 2px solid grey;
     box-shadow: 2px 2px grey;
 }
+
+.errors {
+    margin: 0;
+    padding: 0;
+}
