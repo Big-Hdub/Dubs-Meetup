@@ -2,14 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { ImUserTie } from "react-icons/im";
 import * as sessionActions from '../../store/session';
-import OpenModalMenuItem from "./OpenModalMenuItem";
-import LoginFormModal from "../LoginFormModal/LoginFormModal";
-import SignupFormModal from "../SignupFormModal/SignupFormModal";
 
 const ProfileButton = ({ user }) => {
     const dispatch = useDispatch();
     const [showMenu, setShowMenu] = useState(false);
-    const ulRef = useRef();
+    const divRef = useRef();
 
     const toggleMenu = (e) => {
         e.stopPropagation();
@@ -20,7 +17,7 @@ const ProfileButton = ({ user }) => {
         if (!showMenu) return;
 
         const closeMenu = (e) => {
-            if (!ulRef.current.contains(e.target)) setShowMenu(false);
+            if (!divRef.current.contains(e.target)) setShowMenu(false);
         };
         document.addEventListener('click', closeMenu);
         return () => document.removeEventListener('click', closeMenu);
@@ -34,36 +31,18 @@ const ProfileButton = ({ user }) => {
         closeMenu();
     };
 
-    const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
+    const divClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
     return (
         <>
             <button id="profile-button" onClick={toggleMenu}>
                 <ImUserTie />
             </button>
-            <ul className={ulClassName} ref={ulRef}>
-                {user ? (
-                    <>
-                        <li>{user.username}</li>
-                        <li>{user.firstName} {user.lastName}</li>
-                        <li>{user.email}</li>
-                        <li>
-                            <button onClick={logout}>Log Out</button>
-                        </li>
-                    </>
-                ) : (
-                    <>
-                        <OpenModalMenuItem
-                            itemText="Log In"
-                            onItemClick={closeMenu}
-                            modalComponent={<LoginFormModal />} />
-                        <OpenModalMenuItem
-                            itemText="Sign Up"
-                            onItemClick={closeMenu}
-                            modalComponent={<SignupFormModal />} />
-                    </>
-                )}
-            </ul>
+            <div className={divClassName} ref={divRef}>
+                <p className="profile-menu-items">Hello, {user?.username}</p>
+                <p className="profile-menu-items">{user?.email}</p>
+                <p id="profile-menu-logout" className="profile-menu-items" onClick={logout}>Log Out</p>
+            </div>
         </>
     )
 };

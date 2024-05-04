@@ -1,11 +1,12 @@
-// import React from 'react';
 import { useModal } from '../../context/Modal';
 
 function OpenModalMenuItem({
     modalComponent,
     itemText,
     onItemClick,
-    onModalClose
+    onModalClose,
+    url,
+    classname
 }) {
     const { setModalContent, setOnModalClose } = useModal();
 
@@ -16,7 +17,7 @@ function OpenModalMenuItem({
     };
 
     return (
-        <li className='ModalMenuItem' onClick={onClick}>{itemText}</li>
+        <p className={'ModalMenuItem' + classname} to={url} onClick={onClick}>{itemText}</p>
     );
 }
 

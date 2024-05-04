@@ -1,1 +1,25 @@
 /* TODO: Add sitewide styles */
+* {
+    font-family: 'Patrick Hand';
+    font-size: medium;
+}
+
+html,
+body,
+#root {
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    font-size: x-large;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    font-size: 55px;
+}
