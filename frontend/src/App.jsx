@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import * as sessionActions from './store/session';
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
+import GroupsPage from "./components/GroupsPage/GroupsPage";
+import EventsPage from "./components/EventsPage";
 
 const Layout = () => {
   const dispatch = useDispatch();
@@ -30,6 +32,14 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <LandingPage />
+      },
+      {
+        path: '/groups',
+        element: <GroupsPage />
+      },
+      {
+        path: '/events',
+        element: <EventsPage />
       },
       {
         path: '*',

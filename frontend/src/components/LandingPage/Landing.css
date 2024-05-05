@@ -108,3 +108,12 @@
 p.feature-item {
     padding-top: 0;
 }
+
+.feature-link {
+    cursor: pointer;
+    color: teal;
+}
+
+.feature-link:hover {
+    text-decoration-line: underline;
+}

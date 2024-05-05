@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+// import { useNavigate } from "react-router-dom";
 import * as sessionActions from '../../store/session';
 import { useModal } from "../../context/Modal";
 import './LoginForm.css';
+// import { useHistory } from "react-router-dom"
 
-const LoginFormModal = () => {
+const LoginFormModal = ({ navigate }) => {
     const dispatch = useDispatch();
     const [credential, setCredential] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
+    // const navigate = useNavigate();
+    // const history = useHistory();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,7 +23,10 @@ const LoginFormModal = () => {
             password
         }
         dispatch(sessionActions.login(loginData))
-            .then(closeModal)
+            .then(() => {
+                closeModal();
+                navigate('/');
+            })
             .catch(async (res) => {
                 const data = await res.json();
                 if (data?.errors) setErrors(data.errors)
