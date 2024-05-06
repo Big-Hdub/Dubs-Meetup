@@ -1,10 +1,21 @@
+import { useEffect, useState } from "react";
+import { useDispatch } from 'react-redux'
 import { useNavigate } from "react-router-dom";
+import { loadAllGroups } from "../../utils/groups";
 import GroupDetails from "./GroupDetails";
 import './Groups.css'
 
-
 const GroupsPage = () => {
-    const groups = [{ id: 1, name: "Group Name" }, { id: 2, name: "Group Name" }, { id: 3, name: "Group Name" }, { id: 4, name: "Group Name" }, { id: 5, name: "Group Name" }];
+    const dispatch = useDispatch();
+    const [groups, setGroups] = useState([])
+
+    useEffect(() => {
+        const getGroups = async () => {
+            const data = await dispatch(loadAllGroups());
+            setGroups(data.Groups)
+        }
+        getGroups();
+    }, [dispatch])
     const navigate = useNavigate();
 
     return (
