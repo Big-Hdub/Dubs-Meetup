@@ -1,10 +1,11 @@
 
 const GroupDetails = ({ group, group: { name, about, city, state, numMembers, previewImage } }) => {
-
+    let url;
+    previewImage.includes("https://dubs-meetup.onrender.com") ? url = previewImage.slice(32) : previewImage;
 
     return (
         <>
-            <img className="group-details-image" src={previewImage} alt="/api/images/group-thumb" />
+            <img className="group-details-image" src={url} alt="/api/images/group-thumb" />
             <div className="details-wrapper">
                 <h4 className="group-details-h4">{name}</h4>
                 <h5 className="group-details-h5">{city}, {state}</h5>

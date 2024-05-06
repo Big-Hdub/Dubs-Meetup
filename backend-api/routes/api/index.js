@@ -14,6 +14,8 @@ router.use('/images/landing', express.static('./images/pic-for-dubs-meetup.jpg')
 router.use('/images/group-thumb', express.static('./images/group-thumbnail.jpg'));
 router.use('/images/knights', express.static('./images/knights.jpg'));
 router.use('/images/cabin', express.static('./images/cabin.jpg'));
+router.use('/images/dubs-log', express.static('./images/dubs-log.jpg'));
+router.use('/images/volleyball', express.static('./images/volleyball.jpg'));
 
 const sessionRouter = require('./session.js');
 router.use('/session', sessionRouter);
