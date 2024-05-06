@@ -1,6 +1,7 @@
 
 const GroupDetails = ({ group }) => {
 
+
     return (
         <>
             <img className="group-details-image" src={"/api/images/group-thumb"} alt="/api/images/group-thumb" />

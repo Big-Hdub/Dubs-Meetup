@@ -1,9 +1,8 @@
-import { createSelector } from '@reduxjs/toolkit'
-import { csrfFetch } from './csrf'
+import { createSelector } from '@reduxjs/toolkit';
+import { csrfFetch } from './csrf';
 
 export const SET_SESSION = 'session/SET_SESSION';
 export const DELETE_SESSION = 'session/DELETE_SESSION';
-export const CREATE_SESSION = 'session/CREATE_SESSION';
 
 const setSession = (user) => ({
     type: SET_SESSION,
