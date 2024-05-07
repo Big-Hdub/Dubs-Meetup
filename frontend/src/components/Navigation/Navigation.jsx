@@ -22,17 +22,17 @@ const Navigation = ({ isLoaded }) => {
                         <OpenModalMenuItem
                             itemText="Start a new group"
                             classname=" nav-bar-links"
-                            modalComponent={<LoginFormModal />} />
+                            modalComponent={<LoginFormModal navigate={navigate} />} />
                         <ProfileButton user={user} />
                     </> : <>
                         <OpenModalMenuItem
                             itemText="Log In"
                             classname=" nav-bar-links"
-                            modalComponent={<LoginFormModal />} />
+                            modalComponent={<LoginFormModal navigate={navigate} />} />
                         <OpenModalMenuItem
                             itemText="Sign Up"
                             classname=" nav-bar-links"
-                            modalComponent={<SignupFormModal />} />
+                            modalComponent={<SignupFormModal navigate={navigate} />} />
                     </>
                 }
             </span>
