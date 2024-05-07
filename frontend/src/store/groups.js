@@ -19,9 +19,9 @@ export const deleteGroup = (groupId) => ({
     groupId
 });
 
-const selectGroupsObj = (state) => state?.groups;
+const selectGroupsObj = (state) => state.groups;
 
-export const selectGroups = createSelector([selectGroupsObj], (selectGroupsObj) => ({ ...selectGroupsObj }))
+export const selectGroup = createSelector([selectGroupsObj], (selectGroupsObj) => ({ ...selectGroupsObj }))
 
 const initialState = { entities: {}, allIds: [] };
 
@@ -29,7 +29,7 @@ const groupReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_GROUP: {
             const newState = { ...state };
-            newState.entities[action.group.id] = action.group;
+            newState.entities[action.group.id] = { ...action.group, ...newState.entities[action.group.id] };
             if (newState.allIds.indexOf(action.group.id) < 0) newState.allIds.push(action.group.id);
             return newState;
         }
