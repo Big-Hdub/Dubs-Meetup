@@ -28,15 +28,23 @@ const initialState = { entities: {}, allIds: [] };
 const eventReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_EVENT: {
-            return { ...state, entities: { ...state.entities, action }, allIds: [...state.allIds, action.id] }
+            const newState = { ...state };
+            newState.entities[action.event.id] = action.event;
+            if (newState.allIds.indexOf(action.event.id) < 0) newState.allIds.push(action.event.id);
+            return newState;
         }
         case SET_EVENTS: {
-            return { ...state, entities: { ...state.entities, ...action }, allIds: [...state.allIds, ...action.map(event => event.id)] }
+            const newState = { ...state }
+            action.events.forEach(event => {
+                newState.entities[event.id] = event;
+                if (newState.allIds.indexOf(event.id) < 0) newState.allIds.push(event.id)
+            });
+            return newState;
         }
         case DELETE_EVENT: {
             const newState = { ...state };
-            delete newState.entities[action];
-            newState.allIds.splice(newState.allIds.indexOf(action), 1);
+            delete newState.entities[action.eventId];
+            newState.allIds.splice(newState.allIds.indexOf(action.eventId), 1);
             return newState;
         }
         default: return state;

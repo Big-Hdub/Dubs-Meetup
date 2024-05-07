@@ -28,20 +28,23 @@ const initialState = { entities: {}, allIds: [] };
 const groupReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_GROUP: {
-            return { ...state, entities: { ...state.entities, ...action.group }, allIds: [...state.allIds, action.group.id] }
+            const newState = { ...state };
+            newState.entities[action.group.id] = action.group;
+            if (newState.allIds.indexOf(action.group.id) < 0) newState.allIds.push(action.group.id);
+            return newState;
         }
         case SET_GROUPS: {
-            const newState = { ...state, allIds: [] }
+            const newState = { ...state }
             action.groups.forEach(group => {
                 newState.entities[group.id] = group;
-                newState.allIds.push(group.id)
+                if (newState.allIds.indexOf(group.id) < 0) newState.allIds.push(group.id)
             });
             return newState;
         }
         case DELETE_GROUP: {
             const newState = { ...state };
-            delete newState.entities[action];
-            newState.allIds.splice(newState.allIds.indexOf(action), 1);
+            delete newState.entities[action.groupId];
+            newState.allIds.splice(newState.allIds.indexOf(action.groupId), 1);
             return newState;
         }
         default: return state;
