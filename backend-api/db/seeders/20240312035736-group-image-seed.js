@@ -13,7 +13,7 @@ options.validate = true;
 const groupImages = [
   {
     groupId: 1,
-    url: 'www.play.net/images/pic.png',
+    url: 'https://dubs-meetup.onrender.com/api/images/dubs-log',
     preview: true
   },
   {
@@ -27,7 +27,7 @@ const groupImages = [
   },
   {
     groupId: 2,
-    url: 'www.play.net/images/pic4.png',
+    url: 'https://dubs-meetup.onrender.com/api/images/volleyball',
     preview: true
   }
 ]

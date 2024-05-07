@@ -16,8 +16,6 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
 
-app.use(express.static('/images/pic-for-dubs-meetup.jpg'));
-
 // Security Middleware
 if (!isProduction) {
     // enable cors only in development
