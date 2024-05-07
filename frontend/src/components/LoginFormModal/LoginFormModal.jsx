@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-// import { useNavigate } from "react-router-dom";
 import * as sessionActions from '../../store/session';
 import { useModal } from "../../context/Modal";
 import './LoginForm.css';
-// import { useHistory } from "react-router-dom"
 
 const LoginFormModal = ({ navigate }) => {
     const dispatch = useDispatch();
@@ -12,8 +10,6 @@ const LoginFormModal = ({ navigate }) => {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
-    // const navigate = useNavigate();
-    // const history = useHistory();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -56,7 +52,6 @@ const LoginFormModal = ({ navigate }) => {
                     name="Credentials"
                     placeholder="Username or email"
                     type="text"
-                    // autoComplete="email username"
                     required
                     value={credential}
                     onChange={(e) => setCredential(e.target.value)}
@@ -65,7 +60,6 @@ const LoginFormModal = ({ navigate }) => {
                     name="Password"
                     placeholder="Passord"
                     type="password"
-                    // autoComplete="current-password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

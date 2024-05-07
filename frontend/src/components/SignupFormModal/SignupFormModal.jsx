@@ -43,81 +43,79 @@ const SignupFormModal = () => {
         <section className="signup-holder">
             <h1>Sign up</h1>
             <form className="signup-form" onSubmit={handleSubmit}>
-                <label>
-                    <span>First name:</span>
-                    <input
-                        name="first"
-                        type="text"
-                        autoComplete="given-name"
-                        required
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                    />
-                </label>
-                {errors.firstName && <p>{errors.firstName}</p>}
-                <label>
-                    <span>Last name:</span>
-                    <input
-                        name="last"
-                        type="text"
-                        autoComplete="family-name"
-                        required
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                    />
-                </label>
-                {errors.lastName && <p>{errors.lastName}</p>}
-                <label>
-                    <span>E-mail:</span>
-                    <input
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </label>
-                {errors.email && <p>{errors.email}</p>}
-                <label>
-                    <span>Username:</span>
-                    <input
-                        name="user"
-                        type="text"
-                        autoComplete="username"
-                        required
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </label>
-                {errors.username && <p>{errors.username}</p>}
-                <label>
-                    <span>Password:</span>
-                    <input
-                        name="password"
-                        type="password"
-                        autoComplete="new-password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </label>
-                {errors.password && <p>{errors.password}</p>}
-                <label>
-                    <span>Confirm password:</span>
-                    <input
-                        name="confirm"
-                        type="password"
-                        autoComplete="new-password"
-                        required
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                </label>
+                <input
+                    placeholder="First name"
+                    name="first"
+                    type="text"
+                    autoComplete="given-name"
+                    required
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                />
+                {errors.firstName && <p className="errors">{errors.firstName}</p>}
+                <input
+                    placeholder="Last name"
+                    name="last"
+                    type="text"
+                    autoComplete="family-name"
+                    required
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                />
+                {errors.lastName && <p className="errors">{errors.lastName}</p>}
+                <input
+                    placeholder="Email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                {errors.email && <p className="errors">{errors.email}</p>}
+                <input
+                    placeholder="Username"
+                    name="user"
+                    type="text"
+                    autoComplete="username"
+                    required
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                {errors.username && <p className="errors">{errors.username}</p>}
+                <input
+                    placeholder="Password"
+                    name="password"
+                    type="password"
+                    autoComplete="new-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                {errors.password && <p className="errors">{errors.password}</p>}
+                <input
+                    placeholder="Confirm Password"
+                    name="confirm"
+                    type="password"
+                    autoComplete="new-password"
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                />
                 {errors.confirmPassword && (
-                    <p>{errors.confirmPassword}</p>
+                    <p className="errors">{errors.confirmPassword}</p>
                 )}
-                <button className="submit-button" type="submit">Sign up</button>
+                <button id="sign-up-button"
+                    className="submit-button"
+                    type="submit"
+                    disabled={
+                        firstName.length < 1 ||
+                        lastName.length < 1 ||
+                        username.length < 4 ||
+                        password.length < 6 ||
+                        password !== confirmPassword
+                    }
+                >Sign up</button>
             </form>
         </section>
     )
