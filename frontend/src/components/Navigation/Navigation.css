@@ -57,14 +57,17 @@
     padding-bottom: 0;
 }
 
-#right-nav>div>p:nth-child(3) {
-    border-top: 1px black solid;
-}
-
 #right-nav>.profile-dropdown.hidden {
     display: none;
 }
 
 #profile-menu-logout {
     cursor: pointer;
+    border-top: 1px black solid;
+}
+
+#profile-menu-groups {
+    cursor: pointer;
+    border-top: 1px black solid;
+
 }

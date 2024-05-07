@@ -19,7 +19,7 @@ export const deleteGroup = (groupId) => ({
     groupId
 });
 
-const selectGroupsObj = (state) => state.groups;
+const selectGroupsObj = (state) => state?.groups;
 
 export const selectGroups = createSelector([selectGroupsObj], (selectGroupsObj) => ({ ...selectGroupsObj }))
 

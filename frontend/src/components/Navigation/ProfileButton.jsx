@@ -2,9 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { ImUserTie } from "react-icons/im";
 import * as sessionActions from '../../store/session';
+import { useNavigate } from "react-router-dom";
 
 const ProfileButton = ({ user }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
     const divRef = useRef();
 
@@ -25,8 +27,7 @@ const ProfileButton = ({ user }) => {
 
     const closeMenu = () => setShowMenu(false);
 
-    const logout = (e) => {
-        e.preventDefault();
+    const logout = () => {
         dispatch(sessionActions.logout());
         closeMenu();
     };
@@ -41,6 +42,7 @@ const ProfileButton = ({ user }) => {
             <div className={divClassName} ref={divRef}>
                 <p className="profile-menu-items">Hello, {user?.username}</p>
                 <p className="profile-menu-items">{user?.email}</p>
+                <p id="profile-menu-groups" className="profile-menu-items" onClick={() => { navigate("/groups"); closeMenu() }}>View groups</p>
                 <p id="profile-menu-logout" className="profile-menu-items" onClick={logout}>Log Out</p>
             </div>
         </>
