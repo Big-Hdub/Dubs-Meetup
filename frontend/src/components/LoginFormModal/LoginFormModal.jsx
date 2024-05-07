@@ -74,7 +74,7 @@ const LoginFormModal = ({ navigate }) => {
                 {errors.credential && <p className="errors">{errors.credential}</p>}
                 {errors.password && <p className="errors">{errors.password}</p>}
                 <button id="login-button" className="submit-button" type="submit" disabled={credential.length < 4 || password.length < 6}>Log In</button>
-                <p id="demo-login" onClick={demoLogin}>Demo User</p>
+                <p id="demo-login" onClick={demoLogin}>Log in as Demo User</p>
             </form>
         </section>
     )
