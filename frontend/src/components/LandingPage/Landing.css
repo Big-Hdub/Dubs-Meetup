@@ -2,15 +2,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 40px;
+    gap: 30px;
 }
 
 #landing-features {
     display: flex;
     flex-direction: row;
     justify-content: center;
-
-
     height: fit-content;
 }
 
@@ -18,7 +17,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 0;
+    gap: 10px;
 }
 
 #join-dubs-meetup-button {
@@ -35,39 +34,31 @@
     border-radius: 15px;
     border: 2px black solid;
     box-shadow: 1px 1px 10px 5px grey;
-
-
 }
 
 #landing-body-left,
 #landing-body-right {
     width: 35%;
-
 }
 
 #landing-body {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
 }
 
-#landing-body-left {}
-
-#landing-h1 {
-
-    padding-top: 0;
+#landing-body-left {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
 #landing-h2 {
-
-
     margin-top: 10px;
 }
 
 .landing-p {
     font-size: large;
-    font-family: 'Patrick Hand';
-
 }
 
 #landing-summary {
@@ -75,7 +66,7 @@
     flex-direction: column;
     align-items: center;
     width: 400px;
-
+    gap: 10px;
 }
 
 .feature-div {
@@ -91,13 +82,11 @@
 }
 
 .feature-item {
-
     padding: 5px;
 }
 
 .feature-img {
     box-sizing: border-box;
-
     border-radius: 15px;
     border: 2px black solid;
     box-shadow: 1px 1px 10px 5px grey;

@@ -6,6 +6,10 @@
     padding: 0;
 }
 
+h1 {
+    font-size: 55px;
+}
+
 h2 {
     font-size: x-large;
 }
@@ -17,10 +21,6 @@ h3 {
 #root {
     display: flex;
     flex-direction: column;
-}
-
-h1 {
-    font-size: 55px;
 }
 
 .centered-dot {

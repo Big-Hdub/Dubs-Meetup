@@ -9,7 +9,6 @@
 #groups-links-container {
     display: flex;
     margin: 40px 0 25px 0;
-
     align-self: start;
     align-items: start;
     gap: 20px;
@@ -17,15 +16,12 @@
 
 #groups-body>h3 {
     align-self: start;
-
     padding: 0 0 20px 0;
     border-bottom: 2px solid grey;
     width: 100%;
 }
 
 #groupspage-events-link {
-
-
     color: grey;
     font-size: xx-large;
 }
@@ -36,8 +32,6 @@
 }
 
 #groupspage-groups-link {
-
-
     font-size: xx-large;
     color: teal;
     text-decoration-line: underline;
@@ -47,6 +41,7 @@
     display: flex;
     width: 100%;
     border-bottom: 2px solid grey;
+    padding: 15px 0;
     gap: 20px;
 }
 
@@ -59,32 +54,22 @@
 }
 
 .group-details-h4 {
-
-
     font-size: x-large;
 }
 
 .group-details-h5 {
-
-
     font-size: large;
 }
 
 .group-details-h6 {
-
-
     font-size: medium;
 }
 
 .group-details-span {
-
-
     display: flex;
     gap: 15px;
     height: min-content;
 }
-
-.group-details-p {}
 
 .details-wrapper {
     display: flex;
