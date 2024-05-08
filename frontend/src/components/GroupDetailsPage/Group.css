@@ -1,0 +1,125 @@
+#group-details-wrapper {
+    align-self: center;
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    gap: 10px;
+}
+
+#group-breadcrumb-link {
+    padding-left: 15%;
+}
+
+#group-details-header {
+    display: flex;
+    align-self: center;
+    padding: 0 0 30px 15%;
+    height: 55vh;
+    width: 100%;
+    gap: 40px;
+    box-sizing: border-box;
+}
+
+#group-details-header-image {
+    height: 100%;
+    border-radius: 5px;
+    border: 3px solid lightgray;
+    box-shadow: 3px 3px 3px 3px gray;
+}
+
+#group-details-header-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+}
+
+#group-details-header-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#group-details-header-info>span {
+    display: flex;
+    gap: 15px;
+    justify-content: start;
+}
+
+#join-group-button {
+    background-color: red;
+    border: 3px solid black;
+    box-shadow: 3px 3px black;
+    color: white;
+    font-size: larger;
+    width: 50%;
+}
+
+#group-details-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 30px 15% 0 15%;
+    box-sizing: border-box;
+    background-color: lightgray;
+}
+
+#upcoming-events-wrapper {
+    padding-bottom: 50px;
+}
+
+.group-details-event-top {
+    display: flex;
+    gap: 20px;
+}
+
+.group-details-event-bottom {
+    padding: 20px;
+}
+
+.group-details-event-img {
+    margin: 20px 0 0 20px;
+    min-height: 150px;
+    max-height: 100%;
+    min-width: 200px;
+    max-width: 400px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 3px solid lightgray;
+    box-shadow: 3px 3px 3px 3px gray;
+}
+
+.group-details-event-header {
+    margin: 20px 0 0 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.group-details-event-span {
+    display: flex;
+    gap: 15px;
+}
+
+.group-details-event-date {
+    display: flex;
+}
+
+#upcoming-events-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.group-page-event-containers {
+    background-color: white;
+    width: 47%;
+    box-sizing: border-box;
+    border: 1px solid grey;
+    box-shadow: 3px 3px 3px 3px gray;
+    border-radius: 15px;
+    z-index: 2;
+}

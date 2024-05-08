@@ -4,12 +4,14 @@ import sessionReducer from './session';
 import groupReducer from './groups';
 import eventReducer from './events';
 import userReducer from './users';
+import venueReducer from './venues';
 
 const rootReducer = combineReducers({
     session: sessionReducer,
     groups: groupReducer,
     events: eventReducer,
-    users: userReducer
+    users: userReducer,
+    venues: venueReducer
 });
 
 let enhancer;

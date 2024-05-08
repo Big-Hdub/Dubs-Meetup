@@ -9,7 +9,6 @@
 #groups-links-container {
     display: flex;
     margin: 40px 0 25px 0;
-    padding: 0;
     align-self: start;
     align-items: start;
     gap: 20px;
@@ -17,15 +16,12 @@
 
 #groups-body>h3 {
     align-self: start;
-    margin: 0;
     padding: 0 0 20px 0;
     border-bottom: 2px solid grey;
     width: 100%;
 }
 
 #groupspage-events-link {
-    margin: 0;
-    padding: 0;
     color: grey;
     font-size: xx-large;
 }
@@ -36,8 +32,6 @@
 }
 
 #groupspage-groups-link {
-    margin: 0;
-    padding: 0;
     font-size: xx-large;
     color: teal;
     text-decoration-line: underline;
@@ -47,7 +41,12 @@
     display: flex;
     width: 100%;
     border-bottom: 2px solid grey;
+    padding: 15px 0;
     gap: 20px;
+}
+
+.group-details-container:hover {
+    cursor: pointer;
 }
 
 .group-details-image {
@@ -55,33 +54,21 @@
 }
 
 .group-details-h4 {
-    margin: 0;
-    padding: 0;
     font-size: x-large;
 }
 
 .group-details-h5 {
-    margin: 0;
-    padding: 0;
     font-size: large;
 }
 
 .group-details-h6 {
-    margin: 0;
-    padding: 0;
     font-size: medium;
 }
 
 .group-details-span {
-    margin: 0;
-    padding: 0;
     display: flex;
-    gap: 30px;
-}
-
-.group-details-p {
-    margin: 0;
-    padding: 0;
+    gap: 15px;
+    height: min-content;
 }
 
 .details-wrapper {

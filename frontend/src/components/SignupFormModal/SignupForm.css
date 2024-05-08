@@ -1,7 +1,3 @@
-* {
-    padding: 10px;
-}
-
 input {
     padding: 3px;
     background-color: lightgray;
@@ -9,35 +5,44 @@ input {
 
 .errors {
     color: red;
+
+
 }
 
-button {
-    padding: 0;
-    margin: 10px;
+#sign-up-button {
+    width: 100%;
+    height: 50px;
+    background-color: lightgrey;
+    border: 2px solid grey;
+    box-shadow: 2px 2px grey;
+
+
 }
 
-form,
-section {
+.signup-form,
+.signup-holder {
     display: flex;
     flex-direction: column;
 }
 
-.signup-form {
-    align-items: end;
-}
-
-.submit-button {
-    align-self: center;
-}
-
 .signup-holder {
-    width: fit-content;
+    width: 400px;
+    gap: 20px;
     align-self: center;
-    border: 2px solid black;
-    border-radius: 4px;
-    background-color: rgba(59, 55, 55, 0.329);
+    align-items: center;
+    padding: 20px 0;
 }
 
-#root {
-    display: flex;
+.signup-form {
+    width: 90%;
+    gap: 15px;
+}
+
+.signup-holder>h1 {}
+
+#modal-content {
+    border: 1px solid grey;
+    border-radius: 15px;
+
+
 }

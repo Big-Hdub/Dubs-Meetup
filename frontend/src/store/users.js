@@ -28,10 +28,18 @@ const initialState = { entities: {}, allIds: [] };
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_USER: {
-            return { ...state, entities: { ...state.entities, action }, allIds: [...state.allIds, action.id] }
+            const newState = { ...state };
+            newState.entities[action.user.id] = action.user;
+            if (newState.allIds.indexOf(action.user.id) < 0) newState.allIds.push(action.user.id);
+            return newState;
         }
         case SET_USERS: {
-            return { ...state, entities: { ...state.entities, ...action }, allIds: [...state.allIds, ...action.map(user => user.id)] }
+            const newState = { ...state }
+            action.users.forEach(user => {
+                newState.entities[user.id] = user;
+                if (newState.allIds.indexOf(user.id) < 0) newState.allIds.push(user.id)
+            });
+            return newState;
         }
         case DELETE_USER: {
             const newState = { ...state };
