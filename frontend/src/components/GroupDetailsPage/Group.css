@@ -66,10 +66,6 @@
     background-color: lightgray;
 }
 
-#upcoming-events-wrapper {
-    padding-bottom: 50px;
-}
-
 .group-details-event-top {
     display: flex;
     gap: 20px;
@@ -108,10 +104,12 @@
     display: flex;
 }
 
-#upcoming-events-wrapper {
+#upcoming-events-wrapper,
+#past-events-wrapper {
     display: flex;
     flex-direction: column;
     gap: 25px;
+    padding-bottom: 50px;
 }
 
 .group-page-event-containers {
@@ -122,4 +120,25 @@
     box-shadow: 3px 3px 3px 3px gray;
     border-radius: 15px;
     z-index: 2;
+}
+
+.group-page-event-containers:hover {
+    cursor: pointer;
+}
+
+#group-details-action-buttons-wrapper {
+    width: 60%;
+    height: 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.group-details-action-buttons {
+    width: 30%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 2px solid black;
+    box-shadow: 3px 3px black;
+    background-color: grey;
+    color: white;
 }

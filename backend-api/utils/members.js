@@ -21,7 +21,6 @@ const getMembers = async (req, res) => {
                 attributes: ['status'],
                 as: 'Membership',
                 where: { groupId: group.id }
-                // status: { [Op.in]: ['Organizer', 'co-host', 'member', 'pending'] }
             }
         })
     } else {

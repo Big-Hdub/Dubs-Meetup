@@ -1,6 +1,7 @@
-import { csrfFetch } from '../store/csrf';
+import * as memberActions from '../store/members';
 import * as groupActions from '../store/groups';
 import * as eventActions from '../store/events';
+import { csrfFetch } from '../store/csrf';
 
 export const loadAllGroups = () => async (dispatch) => {
     const res = await csrfFetch('/api/groups');
@@ -25,8 +26,15 @@ const getEvents = async (groupId, dispatch) => {
     return data;
 }
 
+const getMembers = async (groupId, dispatch) => {
+    const res = await csrfFetch(`/api/groups/${groupId}/members`);
+    const data = await res.json();
+    if (res.ok) await dispatch(memberActions.setMembers(data.Members));
+}
+
 export const loadGroupDetails = (groupId) => async (dispatch) => {
     const group = await getGroup(groupId, dispatch);
     const events = await getEvents(groupId, dispatch);
-    return { ...group, events: events }
+    const members = await getMembers(groupId, dispatch);
+    return { ...group, events: events, members }
 }

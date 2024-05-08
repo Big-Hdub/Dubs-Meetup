@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { loadGroupDetails } from "../../utils/groups";
+import * as sessionActions from "../../store/session";
+import * as memberActions from "../../store/members";
 import * as groupActions from "../../store/groups";
 import * as eventActions from "../../store/events";
 import { useParams } from "react-router-dom";
@@ -14,7 +16,11 @@ const GroupDetailsPage = () => {
     const [upcoming, setUpcoming] = useState([]);
     const [past, setPast] = useState([]);
     const [loaded, setLoaded] = useState(0);
+    const [join, setJoin] = useState(false);
+    const [groupButtons, setGroupButtons] = useState(false);
     const group = useSelector(groupActions.selectGroup).entities[Number(id)];
+    const members = useSelector(memberActions.selectMember).entities;
+    const session = useSelector(sessionActions.selectSessionUser).user;
     const events = useSelector(eventActions.selectEvents);
 
     useEffect(() => {
@@ -24,6 +30,9 @@ const GroupDetailsPage = () => {
         loader();
     }, [dispatch, id])
 
+    useEffect(() => {
+
+    }, [members, join, groupButtons, setJoin, setGroupButtons])
 
     useEffect(() => {
         let previewImage;
@@ -66,7 +75,14 @@ const GroupDetailsPage = () => {
                         </span>
                         <p className="group-details-p">Organized by: {group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
                     </div>
-                    <button id="join-group-button">Join this group</button>
+                    {!(session === null) && <div id="group-details-buttons-wrapper">
+                        {!members[session.id] && <button id="join-group-button" onClick={() => window.alert('Feature coming soon')}>Join this group</button>}
+                        {members[session.id]?.Membership.status === "Organizer" && <div id="group-details-action-buttons-wrapper">
+                            <button id="action-create-button" className="group-details-action-buttons">Create event</button>
+                            <button className="group-details-action-buttons">Update</button>
+                            <button className="group-details-action-buttons">Delete</button>
+                        </div>}
+                    </div>}
                 </div>
             </div>
             <div id="group-details-body">
@@ -83,7 +99,7 @@ const GroupDetailsPage = () => {
                             - new Date(b.startDate).getTime())
                             .map(event => {
                                 return (<div key={`upcomingId:${event.id}`} className="group-page-event-containers">
-                                    <EventDetails group={group} event={event} />
+                                    <EventDetails event={event} />
                                 </div>)
                             })}
                     </div>
@@ -93,7 +109,7 @@ const GroupDetailsPage = () => {
                         <h2 className="group-details-h2">Past Events ({past.length})</h2>
                         {past.map(event => {
                             return (<div key={`pastId:${event.id}`} className="group-page-event-containers">
-                                <EventDetails event={event} />
+                                <EventDetails id={id} event={event} />
                             </div>)
                         })}
                     </div>
