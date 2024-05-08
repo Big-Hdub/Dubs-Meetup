@@ -9,8 +9,8 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin: 0;
-    padding: 0;
+
+
     height: fit-content;
 }
 
@@ -35,8 +35,8 @@
     border-radius: 15px;
     border: 2px black solid;
     box-shadow: 1px 1px 10px 5px grey;
-    padding: 0;
-    margin: 0;
+
+
 }
 
 #landing-body-left,
@@ -51,25 +51,23 @@
     gap: 20px;
 }
 
-#landing-body-left {
-    padding: 0;
-}
+#landing-body-left {}
 
 #landing-h1 {
-    margin: 0;
+
     padding-top: 0;
 }
 
 #landing-h2 {
-    margin: 0;
-    padding: 0;
+
+
     margin-top: 10px;
 }
 
 .landing-p {
     font-size: large;
     font-family: 'Patrick Hand';
-    margin: 0;
+
 }
 
 #landing-summary {
@@ -77,7 +75,7 @@
     flex-direction: column;
     align-items: center;
     width: 400px;
-    padding: 0;
+
 }
 
 .feature-div {
@@ -93,13 +91,13 @@
 }
 
 .feature-item {
-    margin: 0;
+
     padding: 5px;
 }
 
 .feature-img {
     box-sizing: border-box;
-    padding: 0;
+
     border-radius: 15px;
     border: 2px black solid;
     box-shadow: 1px 1px 10px 5px grey;

@@ -5,8 +5,8 @@ input {
 
 .errors {
     color: red;
-    margin: 0;
-    padding: 0;
+
+
 }
 
 #sign-up-button {
@@ -15,8 +15,8 @@ input {
     background-color: lightgrey;
     border: 2px solid grey;
     box-shadow: 2px 2px grey;
-    padding: 0;
-    margin: 0;
+
+
 }
 
 .signup-form,
@@ -38,14 +38,11 @@ input {
     gap: 15px;
 }
 
-.signup-holder>h1 {
-    margin: 0;
-    padding: 0;
-}
+.signup-holder>h1 {}
 
 #modal-content {
     border: 1px solid grey;
     border-radius: 15px;
-    padding: 0;
-    margin: 0;
+
+
 }

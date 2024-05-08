@@ -1,18 +1,21 @@
-import { useParams } from "react-router-dom";
-// import * as groupActions from "../../store/groups";
-// import * as eventActions from "../../store/events";
-// import * as userActions from "../../store/users";
-// import * as venueActions from "../../store/venues";
 import { useDispatch, useSelector } from "react-redux"
-import './Group.css'
-import { useEffect, useState } from "react";
 import { loadGroupDetails } from "../../utils/groups";
 import * as groupActions from "../../store/groups";
+import * as eventActions from "../../store/events";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import EventDetails from "./EventDetails";
+import './Group.css'
 
 const GroupDetailsPage = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const [preview, setPreview] = useState('');
+    const [upcoming, setUpcoming] = useState([]);
+    const [past, setPast] = useState([]);
+    const [loaded, setLoaded] = useState(0);
+    const group = useSelector(groupActions.selectGroup).entities[Number(id)];
+    const events = useSelector(eventActions.selectEvents);
 
     useEffect(() => {
         const loader = async () => {
@@ -21,19 +24,31 @@ const GroupDetailsPage = () => {
         loader();
     }, [dispatch, id])
 
-    const groupState = useSelector(groupActions.selectGroup).entities[Number(id)];
 
     useEffect(() => {
         let previewImage;
-        if (groupState?.GroupImages?.length) {
-            previewImage = groupState.GroupImages.find(image => image.preview === true).url;
+        if (group?.GroupImages?.length) {
+            previewImage = group.GroupImages.find(image => image.preview === true).url;
         }
         previewImage?.includes("https://dubs-meetup.onrender.com") ?
             setPreview(previewImage.slice(32)) :
             setPreview(previewImage);
-    }, [groupState])
+    }, [group])
 
-    console.log("preview url:", preview, "groupState:", groupState);
+    useEffect(() => {
+        const { entities, allIds } = events;
+        if (loaded < allIds.length) {
+            for (let i = 0; i < allIds.length; i++) {
+                const event = entities[allIds[i]];
+                if (past.find(el => el.id === event.id) === undefined && upcoming.find(el => el.id === event.id) === undefined) {
+                    new Date(event.startDate).getTime() < new Date().getTime() ?
+                        setPast([...past, event]) :
+                        setUpcoming([...upcoming, event]);
+                    setLoaded(loaded + 1)
+                }
+            }
+        }
+    }, [events, past, upcoming, loaded])
 
     return (
         <div id="group-details-wrapper">
@@ -42,26 +57,47 @@ const GroupDetailsPage = () => {
                 <img id="group-details-header-image" src={preview} />
                 <div id="group-details-header-wrapper">
                     <div id="group-details-header-info">
-                        <h1 id="group-details-h1">{groupState?.name}</h1>
-                        <p className="group-details-p">{groupState?.city}, {groupState?.state}</p>
+                        <h1 id="group-details-h1">{group?.name}</h1>
+                        <p className="group-details-p">{group?.city}, {group?.state}</p>
                         <span>
-                            <p className="group-details-p">{groupState?.numMembers}, members </p>
-                            <p id="centered-dot" className="group-details-p">.</p>
-                            <p className="group-details-p">{groupState?.private ? "Private" : "Public"}</p>
+                            <p className="group-details-p">{group?.numMembers}, members </p>
+                            <p className="group-details-p centered-dot">.</p>
+                            <p className="group-details-p">{group?.private ? "Private" : "Public"}</p>
                         </span>
-                        <p className="group-details-p">Organized by {groupState?.Organizer?.firstName} {groupState?.Organizer?.lastName}</p>
+                        <p className="group-details-p">Organized by: {group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
                     </div>
                     <button id="join-group-button">Join this group</button>
                 </div>
             </div>
             <div id="group-details-body">
                 <h2 className="group-details-h2">Organizer</h2>
-                <p className="group-details-p">{groupState?.Organizer?.firstName} {groupState?.Organizer?.lastName}</p>
+                <p className="group-details-p">{group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
                 <h2 className="group-details-h2">What we&apos;re about</h2>
-                <p className="group-details-p">{groupState?.about} Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti in adipisci vel sunt quam quaerat eos enim, incidunt ad molestias. Iusto libero aliquid facilis accusantium sapiente blanditiis architecto consequatur vitae! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex veritatis possimus laudantium quia, quo quos delectus neque iusto magni fugit et quas nisi laboriosam consequatur optio! Fugit quod quas eaque.
+                <p className="group-details-p">{group?.about} Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti in adipisci vel sunt quam quaerat eos enim, incidunt ad molestias. Iusto libero aliquid facilis accusantium sapiente blanditiis architecto consequatur vitae! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex veritatis possimus laudantium quia, quo quos delectus neque iusto magni fugit et quas nisi laboriosam consequatur optio! Fugit quod quas eaque.
                     Voluptate eaque error itaque maiores illum velit quo totam incidunt dolorem, alias excepturi ab! Expedita nihil, exercitationem tenetur sunt at aperiam aut molestias nesciunt corrupti assumenda magni, dolor debitis atque?</p>
-                <h2 className="group-details-h2">Upcoming Events</h2>
-                <h2 className="group-details-h2">Past Events</h2>
+                {upcoming.length > 0 &&
+                    <div id="upcoming-events-wrapper">
+                        <h2 className="group-details-h2">Upcoming Events ({upcoming.length})</h2>
+                        {upcoming.sort((a, b) =>
+                            new Date(a.startDate).getTime()
+                            - new Date(b.startDate).getTime())
+                            .map(event => {
+                                return (<div key={`upcomingId:${event.id}`} className="group-page-event-containers">
+                                    <EventDetails group={group} event={event} />
+                                </div>)
+                            })}
+                    </div>
+                }
+                {past.length > 0 &&
+                    <div id="past-events-wrapper">
+                        <h2 className="group-details-h2">Past Events ({past.length})</h2>
+                        {past.map(event => {
+                            return (<div key={`pastId:${event.id}`} className="group-page-event-containers">
+                                <EventDetails event={event} />
+                            </div>)
+                        })}
+                    </div>
+                }
             </div>
         </div >
     )

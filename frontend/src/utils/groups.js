@@ -12,7 +12,9 @@ export const loadAllGroups = () => async (dispatch) => {
 const getGroup = async (groupId, dispatch) => {
     const res = await csrfFetch(`/api/groups/${groupId}`);
     const data = await res.json();
-    if (res.ok) await dispatch(groupActions.setGroup(data));
+    const group = { ...data };
+    delete group.Venues
+    if (res.ok) await dispatch(groupActions.setGroup(group));
     return data;
 }
 

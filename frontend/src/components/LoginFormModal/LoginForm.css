@@ -5,8 +5,8 @@ input {
 
 .errors {
     color: red;
-    margin: 0;
-    padding: 0;
+
+
 }
 
 #login-button {
@@ -15,8 +15,8 @@ input {
     background-color: lightgrey;
     border: 2px solid grey;
     box-shadow: 2px 2px grey;
-    padding: 0;
-    margin: 0;
+
+
 }
 
 .login-form,
@@ -38,16 +38,13 @@ input {
     gap: 15px;
 }
 
-.login-holder>h2 {
-    margin: 0;
-    padding: 0;
-}
+.login-holder>h2 {}
 
 #modal-content {
     border: 1px solid grey;
     border-radius: 15px;
-    padding: 0;
-    margin: 0;
+
+
 }
 
 
@@ -56,8 +53,8 @@ input {
 }
 
 #demo-login {
-    padding: 0;
-    margin: 0;
+
+
     text-decoration-line: underline;
     color: teal;
     cursor: pointer;

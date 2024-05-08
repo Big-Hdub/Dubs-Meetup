@@ -2,12 +2,6 @@
 * {
     font-family: 'Patrick Hand';
     font-size: medium;
-    padding: 10px;
-}
-
-html,
-body,
-#root {
     margin: 0;
     padding: 0;
 }
@@ -27,4 +21,14 @@ h3 {
 
 h1 {
     font-size: 55px;
+}
+
+.centered-dot {
+    box-sizing: border-box;
+    position: relative;
+    bottom: 25%;
+}
+
+#root>div:nth-child(3) {
+    background-color: lightgrey;
 }

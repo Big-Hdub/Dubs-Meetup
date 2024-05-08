@@ -36,7 +36,11 @@ const eventReducer = (state = initialState, action) => {
         case SET_EVENTS: {
             const newState = { ...state }
             action.events.forEach(event => {
-                newState.entities[event.id] = event;
+                const newEvent = { ...event };
+                delete newEvent.Venue;
+                delete newEvent.GroupImages;
+                delete newEvent.Group;
+                newState.entities[event.id] = newEvent;
                 if (newState.allIds.indexOf(event.id) < 0) newState.allIds.push(event.id)
             });
             return newState;
