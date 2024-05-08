@@ -7,6 +7,7 @@ import LandingPage from "./components/LandingPage";
 import GroupsPage from "./components/GroupsPage";
 import EventsPage from "./components/EventsPage";
 import GroupDetailsPage from "./components/GroupDetailsPage";
+import EventDetailsPage from "./components/EventDetailsPage";
 
 const Layout = () => {
   const dispatch = useDispatch();
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
           {
             path: '',
             element: <EventsPage />
+          },
+          {
+            path: ':id',
+            element: <EventDetailsPage />
           }
         ]
       },

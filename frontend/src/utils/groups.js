@@ -11,30 +11,46 @@ export const loadAllGroups = () => async (dispatch) => {
 }
 
 const getGroup = async (groupId, dispatch) => {
-    const res = await csrfFetch(`/api/groups/${groupId}`);
-    const data = await res.json();
-    const group = { ...data };
-    delete group.Venues
-    if (res.ok) await dispatch(groupActions.setGroup(group));
-    return data;
+    try {
+        const res = await csrfFetch(`/api/groups/${groupId}`);
+        const data = await res.json();
+        const group = { ...data };
+        delete group.Venues
+        if (res.ok) await dispatch(groupActions.setGroup(group));
+        return data;
+    } catch {
+        console.log('error in group');
+        return;
+    }
 }
 
 const getEvents = async (groupId, dispatch) => {
-    const res = await csrfFetch(`/api/groups/${groupId}/events`);
-    const data = await res.json();
-    if (res.ok) await dispatch(eventActions.setEvents(data.Events));
-    return data;
+    try {
+        const res = await csrfFetch(`/api/groups/${groupId}/events`);
+        const data = await res.json();
+        if (res.ok) await dispatch(eventActions.setEvents(data.Events));
+        return data;
+    } catch {
+        console.log('error in event');
+        return;
+    }
 }
 
 const getMembers = async (groupId, dispatch) => {
-    const res = await csrfFetch(`/api/groups/${groupId}/members`);
-    const data = await res.json();
-    if (res.ok) await dispatch(memberActions.setMembers(data.Members));
+    try {
+        const res = await csrfFetch(`/api/groups/${groupId}/members`);
+        const data = await res.json();
+        if (res.ok) await dispatch(memberActions.setMembers(data.Members));
+        return data;
+    } catch {
+        console.log('error in member');
+        return;
+    }
 }
 
 export const loadGroupDetails = (groupId) => async (dispatch) => {
-    const group = await getGroup(groupId, dispatch);
-    const events = await getEvents(groupId, dispatch);
-    const members = await getMembers(groupId, dispatch);
-    return { ...group, events: events, members }
+    await getGroup(groupId, dispatch);
+    await getEvents(groupId, dispatch);
+    await getMembers(groupId, dispatch);
+    return
 }

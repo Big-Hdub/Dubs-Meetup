@@ -4,7 +4,7 @@ import * as sessionActions from "../../store/session";
 import * as memberActions from "../../store/members";
 import * as groupActions from "../../store/groups";
 import * as eventActions from "../../store/events";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import EventDetails from "./EventDetails";
 import './Group.css'
@@ -12,6 +12,7 @@ import './Group.css'
 const GroupDetailsPage = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [preview, setPreview] = useState('');
     const [upcoming, setUpcoming] = useState([]);
     const [past, setPast] = useState([]);
@@ -45,10 +46,11 @@ const GroupDetailsPage = () => {
     }, [group])
 
     useEffect(() => {
-        const { entities, allIds } = events;
-        if (loaded < allIds.length) {
-            for (let i = 0; i < allIds.length; i++) {
-                const event = entities[allIds[i]];
+        const { entities } = events;
+        const filtered = Object.values(entities).filter((event) => event.groupId === +id)
+        if (loaded < filtered.length) {
+            for (let i = 0; i < filtered.length; i++) {
+                const event = filtered[i];
                 if (past.find(el => el.id === event.id) === undefined && upcoming.find(el => el.id === event.id) === undefined) {
                     new Date(event.startDate).getTime() < new Date().getTime() ?
                         setPast([...past, event]) :
@@ -57,11 +59,14 @@ const GroupDetailsPage = () => {
                 }
             }
         }
-    }, [events, past, upcoming, loaded])
+    }, [events, past, upcoming, loaded, id])
 
     return (
         <div id="group-details-wrapper">
-            <p id="group-breadcrumb-link" className="group-details-p">Groups</p>
+            <span id="group-breadcrumb-span">
+                <p className="group-details-p">{"<"}</p>
+                <p id="group-breadcrumb-link" className="group-details-p" onClick={() => navigate('/groups')}>Groups</p>
+            </span>
             <div id="group-details-header">
                 <img id="group-details-header-image" src={preview} />
                 <div id="group-details-header-wrapper">
@@ -98,7 +103,10 @@ const GroupDetailsPage = () => {
                             new Date(a.startDate).getTime()
                             - new Date(b.startDate).getTime())
                             .map(event => {
-                                return (<div key={`upcomingId:${event.id}`} className="group-page-event-containers">
+                                return (<div
+                                    key={`upcomingId:${event.id}`}
+                                    className="group-page-event-containers"
+                                    onClick={() => navigate(`/events/${event.id}`)}>
                                     <EventDetails event={event} />
                                 </div>)
                             })}
@@ -108,7 +116,10 @@ const GroupDetailsPage = () => {
                     <div id="past-events-wrapper">
                         <h2 className="group-details-h2">Past Events ({past.length})</h2>
                         {past.map(event => {
-                            return (<div key={`pastId:${event.id}`} className="group-page-event-containers">
+                            return (<div
+                                key={`pastId:${event.id}`}
+                                className="group-page-event-containers"
+                                onClick={() => navigate(`/events/${event.id}`)}>
                                 <EventDetails id={id} event={event} />
                             </div>)
                         })}

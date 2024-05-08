@@ -6,6 +6,14 @@
     padding: 0;
 }
 
+/* html {
+    background-color: lightgrey;
+}
+
+#root {
+    background-color: white;
+} */
+
 h1 {
     font-size: 55px;
 }
@@ -27,6 +35,7 @@ h3 {
     box-sizing: border-box;
     position: relative;
     bottom: 25%;
+    font-weight: bolder;
 }
 
 #root>div:nth-child(3) {

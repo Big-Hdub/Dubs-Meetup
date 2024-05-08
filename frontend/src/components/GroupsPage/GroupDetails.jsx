@@ -12,9 +12,7 @@ const GroupDetails = ({ group, group: { name, about, city, state, numMembers, pr
                 <h6 className="group-details-h6">{about}</h6>
                 <span className="group-details-span">
                     <p className="group-details-p">{numMembers} members</p>
-                    {/* <div id="centered-dot"> */}
-                    <p id="centered-dot" className="group-details-p">.</p>
-                    {/* </div> */}
+                    <p className="group-details-p centered-dot">.</p>
                     <p className="group-details-p">{group.private ? "private" : "public"}</p>
                 </span>
             </div>
