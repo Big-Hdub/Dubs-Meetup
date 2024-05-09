@@ -42,3 +42,15 @@ export const loadEventDetails = (eventId) => (dispatch) => {
     getAttendees(eventId, dispatch);
     return;
 };
+
+const getEvents = async (dispatch) => {
+    const res = await csrfFetch('/api/events');
+    const data = await res.json();
+    if (res.ok) await dispatch(eventActions.setEvents(data.Events));
+    return data;
+}
+
+export const loadEvents = () => (dispatch) => {
+    getEvents(dispatch);
+    return;
+}
