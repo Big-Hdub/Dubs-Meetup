@@ -70,7 +70,7 @@ const getEventsByGroupId = async (req, res, next) => {
     const group = req.group;
     let events = await Event.findAll({
         attributes: {
-            exclude: ['capacity', 'price', 'description', 'createdAt', 'updatedAt']
+            exclude: ['capacity', 'price', 'createdAt', 'updatedAt']
         },
         where: { groupId: group.id },
         include: [{
@@ -146,7 +146,7 @@ const getEventByEventId = async (req, res, next) => {
         numAttending: await Attendee.count({
             where: {
                 eventId: event.id,
-                status: 'attending'
+                status: ['host', 'co-host', 'attending']
             }
         }),
         startDate: event.startDate.toLocaleString(),

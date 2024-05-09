@@ -28,6 +28,7 @@ const initialState = { entities: {}, allIds: [] };
 const venueReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_VENUE: {
+            console.log(action.venue)
             const newState = { ...state };
             newState.entities[action.venue.id] = action.venue;
             if (newState.allIds.indexOf(action.venue.id) < 0) newState.allIds.push(action.venue.id);

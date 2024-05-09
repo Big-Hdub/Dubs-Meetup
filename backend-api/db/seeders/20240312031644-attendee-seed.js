@@ -14,11 +14,12 @@ const attendees = [
   {
     eventId: 1,
     userId: 1,
-    status: 'attending'
+    status: 'host'
   },
   {
     eventId: 2,
-    userId: 1
+    userId: 1,
+    status: 'co-host'
   },
   {
     eventId: 1,
@@ -28,7 +29,7 @@ const attendees = [
   {
     eventId: 1,
     userId: 3,
-    status: 'pending'
+    status: 'co-host'
   },
   {
     eventId: 2,
@@ -47,7 +48,7 @@ const attendees = [
   {
     eventId: 2,
     userId: 2,
-    status: 'pending'
+    status: 'host'
   }
 ]
 
