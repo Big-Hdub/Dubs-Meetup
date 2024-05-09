@@ -1,7 +1,7 @@
 import * as groupActions from "../../store/groups";
 import { useSelector } from "react-redux";
 
-const EventDetails = ({ id, event: { name, previewImage, startDate } }) => {
+const EventDetails = ({ id, event: { name, description, previewImage, startDate } }) => {
     const group = useSelector(groupActions.selectGroup).entities[Number(id)];
     const date = new Date(startDate);
     const day = date.getDay();
@@ -26,7 +26,7 @@ const EventDetails = ({ id, event: { name, previewImage, startDate } }) => {
                 </div>
             </div>
             <div className="group-details-event-bottom">
-                <p className="group-details-event-p">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, perferendis! Nam fugit aliquam voluptatum eius aut nobis laudantium iste. Quam natus accusantium, recusandae deleniti voluptates rem quis assumenda! Voluptatibus, est.
+                <p className="group-details-event-p">{description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, perferendis! Nam fugit aliquam voluptatum eius aut nobis laudantium iste. Quam natus accusantium, recusandae deleniti voluptates rem quis assumenda! Voluptatibus, est.
                     Commodi ut suscipit quibusdam laborum laboriosam? Earum quia corporis quisquam, nisi facere nihil molestiae nesciunt mollitia nulla esse velit molestias quam totam iure vitae nostrum, perferendis deleniti, minima reiciendis dolores?
                     Ratione, dolorum maxime iste non eos aspernatur exercitationem temporibus magnam perspiciatis recusandae rerum modi beatae culpa aliquid in perferendis cupiditate architecto nobis consectetur porro, nesciunt cumque quia assumenda tempore. Ducimus.</p>
             </div>

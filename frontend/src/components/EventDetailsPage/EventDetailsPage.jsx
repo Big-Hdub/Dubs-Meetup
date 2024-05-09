@@ -2,20 +2,23 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadEventDetails } from "../../utils/events";
 import * as attendeeActions from "../../store/attendees";
-import * as sessionActions from "../../store/session";
-import * as memberActions from "../../store/members";
+// import * as sessionActions from "../../store/session";
+// import * as memberActions from "../../store/members";
 import * as groupActions from "../../store/groups";
 import * as eventActions from "../../store/events";
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faClock } from "@fortawesome/free-regular-svg-icons";
+import { faMapPin, faCoins } from "@fortawesome/free-solid-svg-icons";
 import './Event.css'
 
 const EventDetailsPage = () => {
     const attendees = useSelector(attendeeActions.selectAttendees);
-    const session = useSelector(sessionActions.selectSessionUser).user;
-    const members = useSelector(memberActions.selectMember).entities;
+    // const session = useSelector(sessionActions.selectSessionUser).user;
+    // const members = useSelector(memberActions.selectMember).entities;
     const events = useSelector(eventActions.selectEvents).entities;
     const groups = useSelector(groupActions.selectGroup).entities;
-    const [host, setHost] = useState("")
+    const [host, setHost] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { id } = useParams();
@@ -25,13 +28,13 @@ const EventDetailsPage = () => {
             await dispatch(loadEventDetails(+id, dispatch));
         }
         loader();
-    }, [dispatch, id])
+    }, [dispatch, id]);
 
     useEffect(() => {
         let hostId = attendees.allIds.find(id => attendees.entities[id].Attendance.status === 'host');
         const host = attendees.entities[hostId];
         setHost(`${host?.firstName} ${host?.lastName}`);
-    }, [groups, members, session, attendees])
+    }, [attendees]);
 
     return (
         <div id="event-details-page-wrapper">
@@ -56,7 +59,29 @@ const EventDetailsPage = () => {
                         </div>
                         <div id="event-details-main-info-container">
                             <div id="event-details-date-container">
-                                <div id="event-details-clock-holder"></div>
+                                <span id="event-details-clock-holder"><FontAwesomeIcon className="icons" icon={faClock} /></span>
+                                <div id="event-details-dates-holder">
+                                    <span className="event-details-date-span">
+                                        <p className="event-detail-dates-p event-detail-label">START</p>
+                                        <p className="event-detail-dates-p event-detail-dates">start date</p>
+                                        <p className="event-detail-dates-p centered-dot">.</p>
+                                        <p className="event-detail-dates-p event-detail-dates">start time</p>
+                                    </span>
+                                    <span className="event-details-date-span">
+                                        <p className="event-detail-dates-p event-detail-label">END</p>
+                                        <p className="event-detail-dates-p event-detail-dates">end....date</p>
+                                        <p className="event-detail-dates-p centered-dot">.</p>
+                                        <p className="event-detail-dates-p event-detail-dates">end....time</p>
+                                    </span>
+                                </div>
+                            </div>
+                            <div id="event-details-price-container">
+                                <span id="currency"><FontAwesomeIcon className="icons" icon={faCoins} /></span>
+                                <p id="event-detail-price">{events[+id]?.price > 0 ? "$ " + events[+id]?.price : "FREE"}</p>
+                            </div>
+                            <div id="event-details-map-container">
+                                <span id="map-pin"><FontAwesomeIcon className="icons" icon={faMapPin} /></span>
+                                <p id="event-details-type">{events[+id]?.type}</p>
                             </div>
                         </div>
                     </div>

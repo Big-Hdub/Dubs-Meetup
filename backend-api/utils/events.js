@@ -70,7 +70,7 @@ const getEventsByGroupId = async (req, res, next) => {
     const group = req.group;
     let events = await Event.findAll({
         attributes: {
-            exclude: ['capacity', 'price', 'description', 'createdAt', 'updatedAt']
+            exclude: ['capacity', 'price', 'createdAt', 'updatedAt']
         },
         where: { groupId: group.id },
         include: [{
