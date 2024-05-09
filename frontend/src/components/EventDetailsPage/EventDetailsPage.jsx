@@ -2,8 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadEventDetails } from "../../utils/events";
 import * as attendeeActions from "../../store/attendees";
-// import * as sessionActions from "../../store/session";
-// import * as memberActions from "../../store/members";
 import * as groupActions from "../../store/groups";
 import * as eventActions from "../../store/events";
 import { useEffect, useState } from "react";
@@ -14,8 +12,6 @@ import './Event.css'
 
 const EventDetailsPage = () => {
     const attendees = useSelector(attendeeActions.selectAttendees);
-    // const session = useSelector(sessionActions.selectSessionUser).user;
-    // const members = useSelector(memberActions.selectMember).entities;
     const events = useSelector(eventActions.selectEvents).entities;
     const groups = useSelector(groupActions.selectGroup).entities;
     const [host, setHost] = useState("");
@@ -35,6 +31,25 @@ const EventDetailsPage = () => {
         const host = attendees.entities[hostId];
         setHost(`${host?.firstName} ${host?.lastName}`);
     }, [attendees]);
+
+    const dateConstructor = (data) => {
+        const date = new Date(data);
+        const day = date.getDay();
+        const month = date.getMonth();
+        const year = date.getFullYear();
+        let time = date.toLocaleTimeString();
+        const amOrPm = time.slice(time.indexOf('M') - 1);
+        time = time.split(':').splice(0, 2).join(':');
+
+        return (
+            <span className="event-details-date-span">
+                <p className="event-detail-dates-p event-detail-label">START</p>
+                <p className="event-detail-dates-p event-detail-dates">{year}-{month}-{day}</p>
+                <p className="event-detail-dates-p centered-dot">.</p>
+                <p className="event-detail-dates-p event-detail-dates">{time} {amOrPm}</p>
+            </span>
+        )
+    }
 
     return (
         <div id="event-details-page-wrapper">
@@ -61,18 +76,8 @@ const EventDetailsPage = () => {
                             <div id="event-details-date-container">
                                 <span id="event-details-clock-holder"><FontAwesomeIcon className="icons" icon={faClock} /></span>
                                 <div id="event-details-dates-holder">
-                                    <span className="event-details-date-span">
-                                        <p className="event-detail-dates-p event-detail-label">START</p>
-                                        <p className="event-detail-dates-p event-detail-dates">start date</p>
-                                        <p className="event-detail-dates-p centered-dot">.</p>
-                                        <p className="event-detail-dates-p event-detail-dates">start time</p>
-                                    </span>
-                                    <span className="event-details-date-span">
-                                        <p className="event-detail-dates-p event-detail-label">END</p>
-                                        <p className="event-detail-dates-p event-detail-dates">end....date</p>
-                                        <p className="event-detail-dates-p centered-dot">.</p>
-                                        <p className="event-detail-dates-p event-detail-dates">end....time</p>
-                                    </span>
+                                    {dateConstructor(events[+id]?.startDate)}
+                                    {dateConstructor(events[+id]?.endDate)}
                                 </div>
                             </div>
                             <div id="event-details-price-container">
