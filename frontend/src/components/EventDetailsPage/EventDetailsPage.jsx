@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadEventDetails } from "../../utils/events";
 import * as attendeeActions from "../../store/attendees";
+import * as sessionActions from "../../store/session";
 import * as groupActions from "../../store/groups";
 import * as eventActions from "../../store/events";
 import { useEffect, useState } from "react";
@@ -12,8 +13,10 @@ import './Event.css'
 
 const EventDetailsPage = () => {
     const attendees = useSelector(attendeeActions.selectAttendees);
+    const session = useSelector(sessionActions.selectSessionUser);
     const events = useSelector(eventActions.selectEvents).entities;
     const groups = useSelector(groupActions.selectGroup).entities;
+    const [hostId, setHostId] = useState(null);
     const [host, setHost] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -28,6 +31,7 @@ const EventDetailsPage = () => {
 
     useEffect(() => {
         let hostId = attendees.allIds.find(id => attendees.entities[id].Attendance.status === 'host');
+        setHostId(hostId);
         const host = attendees.entities[hostId];
         setHost(`${host?.firstName} ${host?.lastName}`);
     }, [attendees]);
@@ -84,9 +88,18 @@ const EventDetailsPage = () => {
                                 <span id="currency"><FontAwesomeIcon className="icons" icon={faCoins} /></span>
                                 <p id="event-detail-price">{events[+id]?.price > 0 ? "$ " + events[+id]?.price : "FREE"}</p>
                             </div>
-                            <div id="event-details-map-container">
-                                <span id="map-pin"><FontAwesomeIcon className="icons" icon={faMapPin} /></span>
-                                <p id="event-details-type">{events[+id]?.type}</p>
+                            <div id="event-details-type-modify-delete-container">
+                                <div id="event-details-type-container">
+                                    <span id="map-pin"><FontAwesomeIcon className="icons" icon={faMapPin} /></span>
+                                    <p id="event-details-type">{events[+id]?.type}</p>
+                                </div>
+                                <div id="event-details-action-buttons-container">
+                                    {session?.user && hostId && console.log("session:", session, "host:", hostId)}
+                                    {session?.user?.id === hostId ? <>
+                                        <button className="event-details-action-buttons">Update</button>
+                                        <button className="event-details-action-buttons">Delete</button>
+                                    </> : <></>}
+                                </div>
                             </div>
                         </div>
                     </div>

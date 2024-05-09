@@ -155,7 +155,7 @@
     font-weight: bold;
 }
 
-#event-details-map-container {
+#event-details-type-container {
     display: flex;
     gap: 30px;
     align-items: center;
@@ -165,4 +165,25 @@
     font-size: large;
     font-weight: bold;
     color: grey;
+}
+
+#event-details-type-modify-delete-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#event-details-action-buttons-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.event-details-action-buttons {
+    width: 70px;
+    padding: 3px;
+    color: white;
+    background-color: grey;
+    border: 2px solid black;
+    box-shadow: 2px 2px black;
 }
