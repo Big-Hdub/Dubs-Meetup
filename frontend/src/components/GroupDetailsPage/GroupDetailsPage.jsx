@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { loadGroupDetails } from "../../utils/groups";
 import * as sessionActions from "../../store/session";
 import * as memberActions from "../../store/members";
 import * as groupActions from "../../store/groups";
 import * as eventActions from "../../store/events";
-import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import EventDetails from "./EventDetails";
-import './Group.css'
+import './Group.css';
 
 const GroupDetailsPage = () => {
     const { id } = useParams();
@@ -17,8 +17,6 @@ const GroupDetailsPage = () => {
     const [upcoming, setUpcoming] = useState([]);
     const [past, setPast] = useState([]);
     const [loaded, setLoaded] = useState(0);
-    const [join, setJoin] = useState(false);
-    const [groupButtons, setGroupButtons] = useState(false);
     const group = useSelector(groupActions.selectGroup).entities[Number(id)];
     const members = useSelector(memberActions.selectMember).entities;
     const session = useSelector(sessionActions.selectSessionUser).user;
@@ -32,13 +30,9 @@ const GroupDetailsPage = () => {
     }, [dispatch, id])
 
     useEffect(() => {
-
-    }, [members, join, groupButtons, setJoin, setGroupButtons])
-
-    useEffect(() => {
         let previewImage;
         if (group?.GroupImages?.length) {
-            previewImage = group.GroupImages.find(image => image.preview === true).url;
+            previewImage = group.GroupImages.find(image => image.preview === true)?.url;
         }
         previewImage?.includes("https://dubs-meetup.onrender.com") ?
             setPreview(previewImage.slice(32)) :

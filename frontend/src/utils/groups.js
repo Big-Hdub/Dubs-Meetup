@@ -48,9 +48,9 @@ const getMembers = async (groupId, dispatch) => {
     }
 }
 
-export const loadGroupDetails = (groupId) => async (dispatch) => {
-    await getGroup(groupId, dispatch);
-    await getEvents(groupId, dispatch);
-    await getMembers(groupId, dispatch);
+export const loadGroupDetails = (groupId) => (dispatch) => {
+    getGroup(groupId, dispatch);
+    getEvents(groupId, dispatch);
+    getMembers(groupId, dispatch);
     return
 }

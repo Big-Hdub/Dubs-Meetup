@@ -1,19 +1,21 @@
 import { legacy_createStore as createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { thunk } from 'redux-thunk';
+import attendeeReducer from './attendees';
 import sessionReducer from './session';
+import memberReducer from './members';
+import { thunk } from 'redux-thunk';
 import groupReducer from './groups';
 import eventReducer from './events';
-import userReducer from './users';
 import venueReducer from './venues';
-import memberReducer from './members';
+import userReducer from './users';
 
 const rootReducer = combineReducers({
+    attendees: attendeeReducer,
     session: sessionReducer,
+    members: memberReducer,
     groups: groupReducer,
     events: eventReducer,
-    users: userReducer,
     venues: venueReducer,
-    members: memberReducer
+    users: userReducer
 });
 
 let enhancer;

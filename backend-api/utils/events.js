@@ -146,7 +146,7 @@ const getEventByEventId = async (req, res, next) => {
         numAttending: await Attendee.count({
             where: {
                 eventId: event.id,
-                status: 'attending'
+                status: ['host', 'co-host', 'attending']
             }
         }),
         startDate: event.startDate.toLocaleString(),
