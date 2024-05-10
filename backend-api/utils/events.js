@@ -21,7 +21,7 @@ const getEvents = async (req, res) => {
 
     let events = await Event.findAll({
         attributes: {
-            exclude: ['capacity', 'price', 'description', 'createdAt', 'updatedAt']
+            exclude: ['capacity', 'price', 'createdAt', 'updatedAt']
         },
         include: [{
             model: EventImage,

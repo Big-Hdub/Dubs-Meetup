@@ -6,7 +6,7 @@ import * as memberActions from "../../store/members";
 import * as groupActions from "../../store/groups";
 import * as eventActions from "../../store/events";
 import { useEffect, useState } from "react";
-import EventDetails from "./EventDetails";
+import EventDetails from "../EventDetails";
 import './Group.css';
 
 const GroupDetailsPage = () => {

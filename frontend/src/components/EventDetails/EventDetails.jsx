@@ -1,8 +1,14 @@
+import { useEffect } from "react";
 import * as groupActions from "../../store/groups";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { loadGroupDetails } from "../../utils/groups";
 
-const EventDetails = ({ id, event: { name, description, previewImage, startDate } }) => {
-    const group = useSelector(groupActions.selectGroup).entities[Number(id)];
+const EventDetails = ({ id, event: { name, groupId, description, previewImage, startDate } }) => {
+    const dispatch = useDispatch();
+    let GroupId;
+    if (id === undefined) GroupId = groupId;
+    else GroupId = id;
+    const group = useSelector(groupActions.selectGroup).entities[GroupId]
     const date = new Date(startDate);
     const day = date.getDay();
     const month = date.getMonth();
@@ -10,6 +16,13 @@ const EventDetails = ({ id, event: { name, description, previewImage, startDate 
     let time = date.toLocaleTimeString();
     const amOrPm = time.slice(time.indexOf('M') - 1);
     time = time.split(':').splice(0, 2).join(':');
+
+    useEffect(() => {
+        const loader = async () => {
+            await dispatch(loadGroupDetails(groupId))
+        };
+        loader();
+    }, [dispatch, groupId]);
 
     return (
         <>
