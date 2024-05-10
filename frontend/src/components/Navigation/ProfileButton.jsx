@@ -43,6 +43,7 @@ const ProfileButton = ({ user }) => {
                 <p className="profile-menu-items">Hello, {user?.username}</p>
                 <p className="profile-menu-items">{user?.email}</p>
                 <p id="profile-menu-groups" className="profile-menu-items" onClick={() => { navigate("/groups"); closeMenu() }}>View groups</p>
+                <p id="profile-menu-events" className="profile-menu-items" onClick={() => { navigate("/events"); closeMenu() }}>View events</p>
                 <p id="profile-menu-logout" className="profile-menu-items" onClick={logout}>Log Out</p>
             </div>
         </>

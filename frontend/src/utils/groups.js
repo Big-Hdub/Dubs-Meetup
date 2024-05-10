@@ -19,7 +19,6 @@ const getGroup = async (groupId, dispatch) => {
         if (res.ok) await dispatch(groupActions.setGroup(group));
         return data;
     } catch {
-        console.log('error in group');
         return;
     }
 }
@@ -31,7 +30,6 @@ const getEvents = async (groupId, dispatch) => {
         if (res.ok) await dispatch(eventActions.setEvents(data.Events));
         return data;
     } catch {
-        console.log('error in event');
         return;
     }
 }
@@ -43,7 +41,6 @@ const getMembers = async (groupId, dispatch) => {
         if (res.ok) await dispatch(memberActions.setMembers(data.Members));
         return data;
     } catch {
-        console.log('error in member');
         return;
     }
 }
