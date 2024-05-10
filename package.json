@@ -1,0 +1,17 @@
+{
+    "name": "dubs-meetup",
+    "version": "1.0.0",
+    "description": "Creating a mock-up of Meetup for my first solo App Academy project.",
+    "main": "index.js",
+    "scripts": {
+        "install": "npm --prefix backend-api install backend",
+        "dev:backend": "npm install --prefix backend-api start",
+        "sequelize": "npm run --prefix backend-api sequelize",
+        "sequelize-cli": "npm run --prefix backend-api sequelize-cli",
+        "start": "npm start --prefix backend-api",
+        "build": "npm run --prefix backend-api build"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}
