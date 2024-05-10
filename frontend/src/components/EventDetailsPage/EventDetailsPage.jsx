@@ -94,7 +94,6 @@ const EventDetailsPage = () => {
                                     <p id="event-details-type">{events[+id]?.type}</p>
                                 </div>
                                 <div id="event-details-action-buttons-container">
-                                    {session?.user && hostId && console.log("session:", session, "host:", hostId)}
                                     {session?.user?.id === hostId ? <>
                                         <button className="event-details-action-buttons">Update</button>
                                         <button className="event-details-action-buttons">Delete</button>
