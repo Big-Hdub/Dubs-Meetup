@@ -77,7 +77,7 @@ const GroupDetailsPage = () => {
                     {!(session === null) && <div id="group-details-buttons-wrapper">
                         {!members[session.id] && <button id="join-group-button" onClick={() => window.alert('Feature coming soon')}>Join this group</button>}
                         {members[session.id]?.Membership.status === "Organizer" && <div id="group-details-action-buttons-wrapper">
-                            <button id="action-create-button" className="group-details-action-buttons">Create event</button>
+                            <button id="action-create-button" className="group-details-action-buttons" onClick={() => navigate('/events/create')}>Create event</button>
                             <button className="group-details-action-buttons">Update</button>
                             <button className="group-details-action-buttons">Delete</button>
                         </div>}
