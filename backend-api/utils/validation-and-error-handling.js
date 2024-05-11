@@ -341,8 +341,8 @@ const validateEventCreate = async (req, _res, next) => {
     if (!venueId || Number(venueId) !== venueId || venueId % 1 !== 0 || !venue) errors.venueId = 'Venue does not exist';
     if (!name || name.length < 5 || name !== name.toString()) errors.name = 'Name must be at least 5 characters';
     if (!type || !(type === 'Online' || type === 'In person')) errors.type = 'Type must be Online or In person';
-    if (!capacity || capacity % 1 !== 0) errors.capacity = 'Capacity must be an integer';
-    if (!price || DECIMAL(price) === NaN || price < 0) errors.price = 'Price is invalid';
+    if (!capacity || capacity % 1 !== 0) errors.capacity = 'Capacity must be greater than 0';
+    if (DECIMAL(price) === NaN || price < 0) errors.price = 'Price is invalid';
     if (!description || description.length < 30 || description !== description.toString()) errors.description = 'Description is required to have at least 30 characters';
     const curr = new Date().getTime(), start = new Date(startDate).getTime(), end = new Date(endDate).getTime();
     if (curr > start) errors.startDate = 'Start date must be in the future';

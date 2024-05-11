@@ -12,7 +12,7 @@ const CreateEvent = () => {
     const [eventName, setEventName] = useState('');
     const [type, setType] = useState('');
     const [price, setPrice] = useState(0);
-    const [capacity, setCapacity] = useState(0);
+    const [capacity, setCapacity] = useState(1);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [url, setUrl] = useState('');
@@ -31,8 +31,9 @@ const CreateEvent = () => {
             description,
             groupId: group.id,
             venueId: 1,
-            capacity
+            capacity: +capacity
         }
+        console.log(eventData);
         const imageData = {
             url,
             preview: true
@@ -85,7 +86,7 @@ const CreateEvent = () => {
                         <input type='number'
                             name="price"
                             id="create-event-price"
-                            placeholder={0}
+                            // placeholder="0"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
                         />
@@ -97,7 +98,7 @@ const CreateEvent = () => {
                         <input type='number'
                             name="capacity"
                             id="create-event-capacity"
-                            placeholder="0"
+                            // placeholder="0"
                             value={capacity}
                             onChange={(e) => setCapacity(e.target.value)}
                         />
@@ -142,7 +143,7 @@ const CreateEvent = () => {
             <section id='section-four' className='create-event-sections'>
                 <label className='create-event-label'>Please describe your event
                     <textarea id='create-event-description'
-                        placeholder='Please inclue at least 30 characters'
+                        placeholder='Please include at least 30 characters'
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
