@@ -56,7 +56,7 @@ const EventDetailsPage = () => {
         } else {
             setPreview("/api/images/knights");
         }
-    }, [events, id])
+    }, [event, events, id])
 
     const dateConstructor = (data) => {
         const date = new Date(data);
