@@ -1,0 +1,21 @@
+#create-event-form {
+    padding: 0 30vw 0 30vw;
+}
+
+#header {
+    padding-bottom: 15px;
+}
+
+.create-event-sections {
+    border-top: 2px solid grey;
+    padding-top: 15px;
+}
+
+.create-event-label {
+    padding-bottom: 15px;
+    gap: 10px;
+}
+
+#create-event-price {
+    text-align: end;
+}
