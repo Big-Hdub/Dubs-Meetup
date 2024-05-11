@@ -75,6 +75,7 @@ const newEventImage = async (data, eventId) => {
 
 export const createEvent = (eventData, imageData) => async dispatch => {
     const event = await newEvent(eventData, dispatch);
-    await newEventImage(imageData, event.id, dispatch)
+    const image = await newEventImage(imageData, event.id, dispatch);
+    event.previewImage = image.url;
     return event;
 };

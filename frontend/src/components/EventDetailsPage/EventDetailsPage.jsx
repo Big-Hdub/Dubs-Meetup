@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadEventDetails } from "../../utils/events";
 import * as attendeeActions from "../../store/attendees";
@@ -13,6 +13,7 @@ import './Event.css'
 
 const EventDetailsPage = () => {
     document.querySelector('title').innerText = 'Dubs Family Meetup';
+    const event = useLocation().state.event;
     const attendees = useSelector(attendeeActions.selectAttendees);
     const session = useSelector(sessionActions.selectSessionUser);
     const events = useSelector(eventActions.selectEvents).entities;
@@ -39,17 +40,21 @@ const EventDetailsPage = () => {
     }, [attendees]);
 
     useEffect(() => {
-        if (events[+id]?.previewImage)
+        if (event?.previewImage) {
+            event.previewImage.includes("https://dubs-meetup.onrender.com") ?
+                setPreview(event.previewImage.slice(32)) :
+                setPreview(event.previewImage);
+        } else if (events[+id]?.previewImage) {
             events[+id].previewImage.includes("https://dubs-meetup.onrender.com") ?
                 setPreview(events[+id].previewImage.slice(32)) :
                 setPreview(events[+id].previewImage);
-        else if (events[+id] && events[+id].EventImages?.length) {
+        } else if (events[+id] && events[+id].EventImages?.length) {
             const previewImage = events[+id].EventImages.find(image => image.preview === true).url;
             previewImage.includes("https://dubs-meetup.onrender.com") ?
                 setPreview(events[+id].previewImage.slice(32)) :
                 setPreview(events[+id].previewImage);
         } else {
-            setPreview("/api/images/knights")
+            setPreview("/api/images/knights");
         }
     }, [events, id])
 
