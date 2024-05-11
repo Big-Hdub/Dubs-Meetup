@@ -1,10 +1,12 @@
+import { createGroup } from "../../utils/groups";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import "./CreateGroup.css"
-import { createGroup } from "../../utils/groups";
 
 const CreateGroup = () => {
     document.querySelector('title').innerText = 'Start a New Group';
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [location, setLocation] = useState('');
     const [name, setName] = useState('');
@@ -14,7 +16,7 @@ const CreateGroup = () => {
     const [url, setUrl] = useState('');
     const [errors, setErrors] = useState({});
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
         setErrors({});
         const locationArray = location.split(', ');
@@ -30,14 +32,15 @@ const CreateGroup = () => {
             url,
             preview: true
         }
-        return dispatch(createGroup(groupData, imageObj))
-            .then()
+        const newGroup = await dispatch(createGroup(groupData, imageObj))
             .catch(
                 async (res) => {
                     const data = await res.json();
-                    if (data?.errors) setErrors(data.errors)
+                    if (data?.errors) {
+                        setErrors(data.errors)
+                    }
                 });
-
+        navigate(`/groups/${newGroup.id}`)
     }
 
     return (
@@ -89,37 +92,50 @@ const CreateGroup = () => {
                 {errors.about && <p className="errors">{errors.about}</p>}
             </div>
             <div className="create-group-sections">
-                <label>Is this an in-person or online group?</label>
-                <select name="type"
-                    className="create-group-selects"
-                    id="create-group-type"
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                >
-                    <option value="" disabled>(select one)</option>
-                    <option value="In person">In Person</option>
-                    <option value="Online">Online</option>
-                </select>
+                <label className="create-group-labels" name="type">
+                    <p>
+                        Is this an in-person or online group?
+                    </p>
+                    <select name="type"
+                        className="create-group-selects"
+                        id="create-group-type"
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                    >
+                        <option value="" disabled>(select one)</option>
+                        <option value="In person">In Person</option>
+                        <option value="Online">Online</option>
+                    </select>
+                </label>
                 {errors.type && <p className="errors">{errors.type}</p>}
-                <label>Is this group private or public?</label>
-                <select name="private"
-                    className="create-group-selects"
-                    id="create-group-private"
-                    value={isPrivate}
-                    onChange={(e) => setIsPrivate(e.target.value)}
-                >
-                    <option value="" disabled>(select one)</option>
-                    <option value="true">Private</option>
-                    <option value="false">Public</option>
-                </select>
+                <label className="create-group-labels" name="private">
+                    <p>
+                        Is this group private or public?
+                    </p>
+                    <select name="private"
+                        className="create-group-selects"
+                        id="create-group-private"
+                        value={isPrivate}
+                        onChange={(e) => setIsPrivate(e.target.value)}
+                    >
+                        <option value="" disabled>(select one)</option>
+                        <option value="true">Private</option>
+                        <option value="false">Public</option>
+                    </select>
+                </label>
                 {errors.private && <p className="errors">{errors.private}</p>}
-                <label> Please add an image URL for your group below.</label>
-                <input type="text"
-                    className="create-group-inputs"
-                    placeholder="Image Url"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                />
+                <label className="create-group-labels" name="imageUrl">
+                    <p>
+                        Please add an image URL for your group below.
+                    </p>
+                    <input type="text"
+                        name="imageUrl"
+                        className="create-group-inputs"
+                        placeholder="Image Url"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                    />
+                </label>
                 {errors.preview && <p className="errors">{errors.preview}</p>}
             </div>
             <button id="create-group-button"

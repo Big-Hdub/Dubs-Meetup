@@ -51,3 +51,9 @@ ol {
     border: 2px solid black;
     box-shadow: 2px 2px black;
 }
+
+.create-group-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

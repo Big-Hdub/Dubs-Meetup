@@ -62,7 +62,7 @@ const newGroup = async (data) => {
 };
 
 const addGroupImage = async (data, groupId) => {
-    const res = await csrfFetch(`/api/goups/${groupId}/images`, {
+    const res = await csrfFetch(`/api/groups/${groupId}/images`, {
         method: 'POST',
         body: JSON.stringify(data)
     });
