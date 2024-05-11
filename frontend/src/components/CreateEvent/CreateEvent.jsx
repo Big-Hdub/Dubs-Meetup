@@ -2,15 +2,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './CreateEvent.css'
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { createEvent } from '../../utils/events';
 
 const CreateEvent = () => {
-    const name = useLocation().state.group.name;
-    document.querySelector('title').innerText = `Create a new event for ${name}`;
+    const group = useLocation().state.group;
+    document.querySelector('title').innerText = `Create a new event for ${group.name}`;
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [eventName, setEventName] = useState('');
     const [type, setType] = useState('');
-    const [price, setPrice] = useState('');
+    const [price, setPrice] = useState(0);
+    const [capacity, setCapacity] = useState(0);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [url, setUrl] = useState('');
@@ -26,13 +28,16 @@ const CreateEvent = () => {
             price,
             startDate,
             endDate,
-            description
+            description,
+            groupId: group.id,
+            venueId: 1,
+            capacity
         }
         const imageData = {
             url,
             preview: true
         }
-        const newEvent = await dispatch()
+        const newEvent = await dispatch(createEvent(eventData, imageData))
             .catch(
                 async (res) => {
                     const data = await res.json();
@@ -40,7 +45,7 @@ const CreateEvent = () => {
                         setErrors(data.errors)
                     }
                 });
-        navigate(`/events/${newEvent.id}`)
+        if (newEvent?.id) navigate(`/events/${newEvent.id}`)
     }
 
     return (
@@ -48,7 +53,7 @@ const CreateEvent = () => {
             onSubmit={handleSubmit}>
             <section id='header'
             >
-                <h1>Create a new event for {name}</h1>
+                <h1>Create a new event for {group.name}</h1>
                 <label className='create-event-label'>What is the name of your event?
                     <input type="text"
                         id='create-event-name'
@@ -56,8 +61,8 @@ const CreateEvent = () => {
                         value={eventName}
                         onChange={(e) => setEventName(e.target.value)}
                     />
+                    {errors.name && <p className="errors">{errors.name}</p>}
                 </label>
-                {errors.name && <p className="errors">{errors.name}</p>}
             </section>
             <section id='section-one'
                 className='create-event-sections'>
@@ -70,8 +75,8 @@ const CreateEvent = () => {
                         <option value="In person">In person</option>
                         <option value="Online">Online</option>
                     </select>
+                    {errors.type && <p className="errors">{errors.type}</p>}
                 </label>
-                {errors.type && <p className="errors">{errors.type}</p>}
                 <label className='create-event-label'>What is the price for your event?
                     <span>
                         <p>
@@ -80,13 +85,25 @@ const CreateEvent = () => {
                         <input type='number'
                             name="price"
                             id="create-event-price"
-                            placeholder="0"
+                            placeholder={0}
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
                         />
                     </span>
+                    {errors.price && <p className="errors">{errors.price}</p>}
                 </label>
-                {errors.price && <p className="errors">{errors.price}</p>}
+                <label className='create-event-label'>How many people can attend your event?
+                    <span>
+                        <input type='number'
+                            name="capacity"
+                            id="create-event-capacity"
+                            placeholder="0"
+                            value={capacity}
+                            onChange={(e) => setCapacity(e.target.value)}
+                        />
+                    </span>
+                    {errors.capacity && <p className="errors">{errors.capacity}</p>}
+                </label>
             </section>
             <section id='section-two' className='create-event-sections'>
                 <label className='create-event-label'>When does your event start?
@@ -94,19 +111,21 @@ const CreateEvent = () => {
                         name="startDate"
                         id="create-event-start"
                         value={startDate}
+                        required
                         onChange={(e) => setStartDate(e.target.value)}
                     />
+                    {errors.startDate && <p className="errors">{errors.startDate}</p>}
                 </label>
-                {errors.startDate && <p className="errors">{errors.startDate}</p>}
                 <label className='create-event-label'>When does your event end?
                     <input type="datetime-local"
                         name="endDate"
                         id="create-event-end"
                         value={endDate}
+                        required
                         onChange={(e) => setEndDate(e.target.value)}
                     />
+                    {errors.endDate && <p className="errors">{errors.endDate}</p>}
                 </label>
-                {errors.endDate && <p className="errors">{errors.endDate}</p>}
             </section>
             <section id='section-three' className='create-event-sections'>
                 <label className='create-event-label'>Please add an image url for your event below.
@@ -117,8 +136,8 @@ const CreateEvent = () => {
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
                     />
+                    {errors.url && <p className="errors">{errors.url}</p>}
                 </label>
-                {errors.url && <p className="errors">{errors.url}</p>}
             </section>
             <section id='section-four' className='create-event-sections'>
                 <label className='create-event-label'>Please describe your event
@@ -127,8 +146,8 @@ const CreateEvent = () => {
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
+                    {errors.description && <p className="errors">{errors.description}</p>}
                 </label>
-                {errors.description && <p className="errors">{errors.description}</p>}
             </section>
             <button type='submit'>Create Event</button>
         </form>

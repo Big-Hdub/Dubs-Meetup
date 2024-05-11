@@ -38,7 +38,8 @@
 }
 
 #event-details-main-img {
-    width: 40vw;
+    max-width: 40vw;
+    max-height: 47vh;
     border: 2px solid gray;
     border-radius: 5px;
     box-shadow: 3px 3px gray;

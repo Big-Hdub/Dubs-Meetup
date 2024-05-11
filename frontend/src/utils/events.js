@@ -28,14 +28,14 @@ const getEvent = async (eventId, dispatch) => {
         }
     }
     return data;
-}
+};
 
 const getAttendees = async (eventId, dispatch) => {
     const res = await csrfFetch(`/api/events/${eventId}/attendees`);
     const data = await res.json();
     if (res.ok) await dispatch(attendeeActions.setAttendees(data))
     return data;
-}
+};
 
 export const loadEventDetails = (eventId) => (dispatch) => {
     getEvent(eventId, dispatch);
@@ -48,9 +48,33 @@ const getEvents = async (dispatch) => {
     const data = await res.json();
     if (res.ok) await dispatch(eventActions.setEvents(data.Events));
     return data;
-}
+};
 
 export const loadEvents = () => (dispatch) => {
     getEvents(dispatch);
     return;
-}
+};
+
+const newEvent = async (data) => {
+    const res = await csrfFetch(`/api/groups/${data.groupId}/events`, {
+        method: 'POST',
+        body: JSON.stringify(data)
+    });
+    const event = await res.json();
+    return event;
+};
+
+const newEventImage = async (data, eventId) => {
+    const res = await csrfFetch(`/api/events/${eventId}/images`, {
+        method: 'POST',
+        body: JSON.stringify(data)
+    });
+    const image = await res.json();
+    return image;
+};
+
+export const createEvent = (eventData, imageData) => async dispatch => {
+    const event = await newEvent(eventData, dispatch);
+    await newEventImage(imageData, event.id, dispatch)
+    return event;
+};
