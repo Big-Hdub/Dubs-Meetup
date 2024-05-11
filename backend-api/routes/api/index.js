@@ -10,12 +10,16 @@ router.get("/csrf/restore", (req, res) => {
         'XSRF-Token': csrfToken
     });
 });
+
 router.use('/images/landing', express.static('./images/pic-for-dubs-meetup.jpg'));
 router.use('/images/group-thumb', express.static('./images/group-thumbnail.jpg'));
 router.use('/images/knights', express.static('./images/knights.jpg'));
 router.use('/images/cabin', express.static('./images/cabin.jpg'));
 router.use('/images/dubs-log', express.static('./images/dubs-log.jpg'));
 router.use('/images/volleyball', express.static('./images/volleyball.jpg'));
+router.use('/images/coaches', express.static('./images/coaches.jpg'));
+router.use('/images/finalFantasy', express.static('./images/finalFantasy.jpg'));
+router.use('/images/trunks', express.static('./images/trunks.jpg'));
 
 const sessionRouter = require('./session.js');
 router.use('/session', sessionRouter);

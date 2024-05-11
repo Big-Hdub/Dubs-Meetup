@@ -4,7 +4,7 @@
 }
 
 #nav-bar {
-    display: flex;
+    flex-direction: row;
     justify-content: space-between;
     border-bottom: 1px solid grey;
     align-items: center;
@@ -14,7 +14,6 @@
 
 #left-nav,
 #right-nav {
-    display: flex;
     flex-direction: row;
     margin: 10px;
     height: fit-content;
@@ -40,8 +39,6 @@
 .profile-dropdown {
     border: 1px black solid;
     background-color: lightgray;
-    display: flex;
-    flex-direction: column;
     position: absolute;
     top: 90px;
     box-sizing: border-box;

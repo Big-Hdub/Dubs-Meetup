@@ -1,21 +1,16 @@
 #landing-main {
-    display: flex;
-    flex-direction: column;
     align-items: center;
     margin-top: 40px;
     gap: 30px;
 }
 
 #landing-features {
-    display: flex;
     flex-direction: row;
     justify-content: center;
     height: fit-content;
 }
 
 #landing-footer {
-    display: flex;
-    flex-direction: column;
     align-items: center;
     gap: 10px;
 }
@@ -42,14 +37,12 @@
 }
 
 #landing-body {
-    display: flex;
+    flex-direction: row;
     justify-content: center;
     gap: 30px;
 }
 
 #landing-body-left {
-    display: flex;
-    flex-direction: column;
     gap: 30px;
 }
 
@@ -62,8 +55,6 @@
 }
 
 #landing-summary {
-    display: flex;
-    flex-direction: column;
     align-items: center;
     width: 400px;
     gap: 10px;
@@ -72,8 +63,6 @@
 .feature-div {
     width: 200px;
     height: fit-content;
-    display: flex;
-    flex-direction: column;
     align-items: center;
 }
 

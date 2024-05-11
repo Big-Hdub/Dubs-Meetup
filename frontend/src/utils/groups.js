@@ -74,7 +74,7 @@ export const createGroup = (groupData, imageData) => async (dispatch) => {
     const group = await newGroup(groupData);
     const image = await addGroupImage(imageData, group.id);
     group.preview = image;
-    await dispatch(groupActions.setGroup(group))
+    await dispatch(groupActions.setGroup(group));
     return group;
 };
 

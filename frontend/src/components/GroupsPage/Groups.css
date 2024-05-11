@@ -1,13 +1,11 @@
 #groups-body {
-    display: flex;
-    flex-direction: column;
     align-self: center;
     align-items: center;
     width: 55%;
 }
 
 #groups-links-container {
-    display: flex;
+    flex-direction: row;
     margin: 40px 0 25px 0;
     align-self: start;
     align-items: start;
@@ -38,7 +36,7 @@
 }
 
 .group-details-container {
-    display: flex;
+    flex-direction: row;
     width: 100%;
     border-bottom: 2px solid grey;
     padding: 15px 0;
@@ -66,13 +64,11 @@
 }
 
 .group-details-span {
-    display: flex;
+    flex-direction: row;
     gap: 15px;
     height: min-content;
 }
 
 .details-wrapper {
-    display: flex;
-    flex-direction: column;
     gap: 10px;
 }

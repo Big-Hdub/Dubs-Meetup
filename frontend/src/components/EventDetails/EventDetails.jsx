@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import * as groupActions from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
 import { loadGroupDetails } from "../../utils/groups";
 
-const EventDetails = ({ id, event: { name, groupId, description, previewImage, startDate } }) => {
+const EventDetails = ({ id, event: { name, groupId, description, previewImage, startDate, EventImages } }) => {
     const dispatch = useDispatch();
+    const [preview, setPreview] = useState('');
     let GroupId;
     if (id === undefined) GroupId = groupId;
     else GroupId = id;
@@ -24,10 +25,25 @@ const EventDetails = ({ id, event: { name, groupId, description, previewImage, s
         loader();
     }, [dispatch, groupId]);
 
+    useEffect(() => {
+        if (previewImage)
+            previewImage.includes("https://dubs-meetup.onrender.com") ?
+                setPreview(previewImage.slice(32)) :
+                setPreview(previewImage);
+        else if (EventImages?.length) {
+            const previewImage = EventImages.find(image => image.preview === true).url;
+            previewImage.includes("https://dubs-meetup.onrender.com") ?
+                setPreview(previewImage.slice(32)) :
+                setPreview(previewImage);
+        } else {
+            setPreview("/api/images/knights")
+        }
+    }, [previewImage, EventImages, id])
+
     return (
         <>
             <div className="group-details-event-top">
-                <img src={previewImage} className="group-details-event-img" />
+                <img src={preview} className="group-details-event-img" />
                 <div className="group-details-event-header">
                     <span className="group-details-event-span">
                         <p className="group-details-event-date">{year}-{month}-{day}</p>
