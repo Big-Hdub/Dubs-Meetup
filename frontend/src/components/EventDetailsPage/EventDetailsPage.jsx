@@ -12,11 +12,13 @@ import { faMapPin, faCoins } from "@fortawesome/free-solid-svg-icons";
 import './Event.css'
 
 const EventDetailsPage = () => {
+    document.querySelector('title').innerText = 'Dubs Family Meetup';
     const attendees = useSelector(attendeeActions.selectAttendees);
     const session = useSelector(sessionActions.selectSessionUser);
     const events = useSelector(eventActions.selectEvents).entities;
     const groups = useSelector(groupActions.selectGroup).entities;
     const [hostId, setHostId] = useState(null);
+    const [preview, setPreview] = useState('');
     const [host, setHost] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -35,6 +37,21 @@ const EventDetailsPage = () => {
         const host = attendees.entities[hostId];
         setHost(`${host?.firstName} ${host?.lastName}`);
     }, [attendees]);
+
+    useEffect(() => {
+        if (events[+id]?.previewImage)
+            events[+id].previewImage.includes("https://dubs-meetup.onrender.com") ?
+                setPreview(events[+id].previewImage.slice(32)) :
+                setPreview(events[+id].previewImage);
+        else if (events[+id] && events[+id].EventImages?.length) {
+            const previewImage = events[+id].EventImages.find(image => image.preview === true).url;
+            previewImage.includes("https://dubs-meetup.onrender.com") ?
+                setPreview(events[+id].previewImage.slice(32)) :
+                setPreview(events[+id].previewImage);
+        } else {
+            setPreview("/api/images/knights")
+        }
+    }, [events, id])
 
     const dateConstructor = (data) => {
         const date = new Date(data);
@@ -67,7 +84,7 @@ const EventDetailsPage = () => {
             </div>
             <div id="event-details-page-main">
                 <div id="event-details-main-header">
-                    <img id="event-details-main-img" src={events[+id]?.EventImages?.length ? events[+id].EventImages.find(image => image.preview === true) : "/api/images/knights"} />
+                    <img id="event-details-main-img" src={preview} />
                     <div id="event-details-main-header-right">
                         <div id="event-details-main-group-container" onClick={() => navigate(`/groups/${events[+id]?.groupId}`)}>
                             <img id="event-details-group-image" src={groups[events[+id]?.groupId]?.preview} />

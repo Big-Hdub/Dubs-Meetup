@@ -7,6 +7,7 @@ import { useModal } from "../../context/Modal";
 import './Landing.css'
 
 const LandingPage = () => {
+    document.querySelector('title').innerText = 'Dubs Family Meetup';
     const user = useSelector(sessionActions.selectSessionUser).user;
     const navigate = useNavigate();
     const { setModalContent, setOnModalClose } = useModal();

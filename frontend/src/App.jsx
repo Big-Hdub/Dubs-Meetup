@@ -10,6 +10,7 @@ import GroupDetailsPage from "./components/GroupDetailsPage";
 import EventDetailsPage from "./components/EventDetailsPage";
 import CreateGroup from "./components/CreateGroup";
 import YourGroupsPage from "./components/GroupsPage/YourGroupsPage";
+import CreateEvent from "./components/CreateEvent";
 
 const Layout = () => {
   const dispatch = useDispatch();
@@ -71,7 +72,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'create',
-            element: <h1>Not created yet!</h1>
+            element: <CreateEvent />
           }
         ]
       },

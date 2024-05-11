@@ -1,8 +1,6 @@
 #group-details-wrapper {
     align-self: center;
     padding-top: 80px;
-    display: flex;
-    flex-direction: column;
     box-sizing: border-box;
     width: 100%;
     gap: 10px;
@@ -19,12 +17,11 @@
 
 #group-breadcrumb-span {
     padding-left: 15%;
-    display: flex;
     flex-direction: row;
 }
 
 #group-details-header {
-    display: flex;
+    flex-direction: row;
     align-self: center;
     padding: 0 0 30px 15%;
     height: 55vh;
@@ -41,20 +38,16 @@
 }
 
 #group-details-header-wrapper {
-    display: flex;
-    flex-direction: column;
     justify-content: space-between;
     width: 30%;
 }
 
 #group-details-header-info {
-    display: flex;
-    flex-direction: column;
     gap: 20px;
 }
 
 #group-details-header-info>span {
-    display: flex;
+    flex-direction: row;
     gap: 15px;
     justify-content: start;
 }
@@ -69,8 +62,6 @@
 }
 
 #group-details-body {
-    display: flex;
-    flex-direction: column;
     gap: 20px;
     padding: 30px 15% 20px 15%;
     box-sizing: border-box;
@@ -78,7 +69,7 @@
 }
 
 .group-details-event-top {
-    display: flex;
+    flex-direction: row;
     gap: 20px;
 }
 
@@ -101,24 +92,15 @@
 .group-details-event-header {
     margin: 20px 0 0 0;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
     gap: 10px;
 }
 
 .group-details-event-span {
-    display: flex;
     gap: 15px;
-}
-
-.group-details-event-date {
-    display: flex;
 }
 
 #upcoming-events-wrapper,
 #past-events-wrapper {
-    display: flex;
-    flex-direction: column;
     gap: 25px;
     padding-bottom: 50px;
 }
@@ -140,7 +122,6 @@
 #group-details-action-buttons-wrapper {
     width: 60%;
     height: 30px;
-    display: flex;
     gap: 15px;
 }
 

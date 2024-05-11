@@ -1,8 +1,5 @@
 #create-group-form,
-.create-group-sections {
-    display: flex;
-    flex-direction: column;
-}
+.create-group-sections {}
 
 .create-group-sections {
     gap: 15px;
@@ -53,7 +50,7 @@ ol {
 }
 
 .create-group-labels {
-    display: flex;
-    flex-direction: column;
+
+
     gap: 15px;
 }

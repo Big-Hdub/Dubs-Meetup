@@ -1,13 +1,11 @@
 #events-body {
-    display: flex;
-    flex-direction: column;
     align-self: center;
     align-items: center;
     width: 55%;
 }
 
 #events-links-container {
-    display: flex;
+    flex-direction: row;
     margin: 40px 0 25px 0;
     align-self: start;
     align-items: start;
@@ -38,8 +36,6 @@
 }
 
 .event-details-container {
-    display: flex;
-    flex-direction: column;
     width: 100%;
     border-bottom: 2px solid grey;
     padding: 15px 0;
@@ -48,6 +44,10 @@
 
 .event-details-container:hover {
     cursor: pointer;
+}
+
+.group-details-event-span {
+    flex-direction: row;
 }
 
 .group-details-image {
@@ -67,13 +67,10 @@
 }
 
 .group-details-span {
-    display: flex;
     gap: 15px;
     height: min-content;
 }
 
 .details-wrapper {
-    display: flex;
-    flex-direction: column;
     gap: 10px;
 }
