@@ -77,3 +77,11 @@ export const createGroup = (groupData, imageData) => async (dispatch) => {
     await dispatch(groupActions.setGroup(group))
     return group;
 };
+
+
+export const loadUsersGroups = () => async dispatch => {
+    const res = await csrfFetch('/api/groups/current');
+    const data = await res.json();
+    if (res.ok) dispatch(groupActions.setGroups(data.Groups));
+    return data;
+}
