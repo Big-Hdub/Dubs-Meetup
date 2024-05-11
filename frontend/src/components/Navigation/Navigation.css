@@ -33,6 +33,10 @@
     cursor: pointer;
 }
 
+#create-group-link:hover {
+    cursor: pointer;
+}
+
 .profile-dropdown {
     border: 1px black solid;
     background-color: lightgray;

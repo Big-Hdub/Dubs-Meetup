@@ -1,7 +1,8 @@
 
 const GroupDetails = ({ group, group: { name, about, city, state, numMembers, previewImage } }) => {
     let url;
-    previewImage.includes("https://dubs-meetup.onrender.com") ? url = previewImage.slice(32) : url = previewImage;
+    if (previewImage) previewImage.includes("https://dubs-meetup.onrender.com") ? url = previewImage.slice(32) : url = previewImage;
+    else url = "/api/images/group-thumb"
 
     return (
         <>

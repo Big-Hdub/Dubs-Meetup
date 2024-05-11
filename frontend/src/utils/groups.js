@@ -49,5 +49,39 @@ export const loadGroupDetails = (groupId) => (dispatch) => {
     getGroup(groupId, dispatch);
     getEvents(groupId, dispatch);
     getMembers(groupId, dispatch);
-    return
+    return;
+}
+
+const newGroup = async (data) => {
+    const res = await csrfFetch('/api/groups', {
+        method: 'POST',
+        body: JSON.stringify(data)
+    });
+    const group = await res.json();
+    return group;
+};
+
+const addGroupImage = async (data, groupId) => {
+    const res = await csrfFetch(`/api/groups/${groupId}/images`, {
+        method: 'POST',
+        body: JSON.stringify(data)
+    });
+    const image = await res.json();
+    return image;
+};
+
+export const createGroup = (groupData, imageData) => async (dispatch) => {
+    const group = await newGroup(groupData);
+    const image = await addGroupImage(imageData, group.id);
+    group.preview = image;
+    await dispatch(groupActions.setGroup(group))
+    return group;
+};
+
+
+export const loadUsersGroups = () => async dispatch => {
+    const res = await csrfFetch('/api/groups/current');
+    const data = await res.json();
+    if (res.ok) dispatch(groupActions.setGroups(data.Groups));
+    return data;
 }

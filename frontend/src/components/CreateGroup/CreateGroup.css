@@ -1,0 +1,59 @@
+#create-group-form,
+.create-group-sections {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-group-sections {
+    gap: 15px;
+    padding: 20px 0 20px 0;
+    border-bottom: 2px solid grey;
+}
+
+#create-group-form {
+    padding: 30px 15vw 40px 15vw;
+}
+
+#create-group-form-top-p {
+    color: teal;
+    font-weight: bold;
+}
+
+#create-group-h1 {
+    margin: 0;
+}
+
+.create-group-inputs {
+    width: 30vw;
+    background-color: lightsteelblue;
+}
+
+textarea.create-group-inputs {
+    height: 150px;
+}
+
+.create-group-selects {
+    width: 100px;
+    background-color: lightsteelblue;
+}
+
+ol {
+    margin-left: 1em;
+}
+
+#create-group-button {
+    margin-top: 20px;
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    background-color: red;
+    color: white;
+    border: 2px solid black;
+    box-shadow: 2px 2px black;
+}
+
+.create-group-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

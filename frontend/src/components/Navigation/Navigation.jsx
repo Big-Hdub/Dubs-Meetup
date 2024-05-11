@@ -19,10 +19,7 @@ const Navigation = ({ isLoaded }) => {
             <span id="right-nav">
                 {isLoaded && user ?
                     <>
-                        <OpenModalMenuItem
-                            itemText="Start a new group"
-                            classname=" nav-bar-links"
-                            modalComponent={<LoginFormModal navigate={navigate} />} />
+                        <p id="create-group-link" className="nav-bar-links" onClick={() => navigate("/groups/create")}>Start a new group</p>
                         <ProfileButton user={user} />
                     </> : <>
                         <OpenModalMenuItem
