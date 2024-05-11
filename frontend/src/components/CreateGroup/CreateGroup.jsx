@@ -19,6 +19,8 @@ const CreateGroup = () => {
     const handleSubmit = async e => {
         e.preventDefault();
         setErrors({});
+        const errors = {}
+        if (!location.includes(', ')) errors.location = 'Must be in this format: "City, ST"';
         const locationArray = location.split(', ');
         const groupData = {
             city: locationArray[0],
@@ -37,7 +39,7 @@ const CreateGroup = () => {
                 async (res) => {
                     const data = await res.json();
                     if (data?.errors) {
-                        setErrors(data.errors)
+                        setErrors({ ...data.errors, ...errors })
                     }
                 });
         navigate(`/groups/${newGroup.id}`)
@@ -60,8 +62,14 @@ const CreateGroup = () => {
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                 />
-                {errors.city && <p className="errors">{errors.city}</p>}
-                {errors.state && <p className="errors">{errors.state} in form of &quot;WA&quot;</p>}
+                {errors.location ?
+                    <>
+                        {errors.location && <p className="errors">{errors.location}</p>}
+                    </> : <>
+                        {errors.city && <p className="errors">{errors.city}</p>}
+                        {errors.state && <p className="errors">{errors.state} in form of &quot;WA&quot;</p>}
+                    </>
+                }
             </div>
             <div className="create-group-sections">
                 <h2>What will your group&apos;s name be?</h2>
