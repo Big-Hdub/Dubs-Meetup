@@ -10,6 +10,7 @@ import EventDetails from "../EventDetails";
 import './Group.css';
 
 const GroupDetailsPage = () => {
+    document.querySelector('title').innerText = 'Dubs Family Meetup';
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();

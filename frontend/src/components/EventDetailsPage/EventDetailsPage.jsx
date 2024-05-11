@@ -12,6 +12,7 @@ import { faMapPin, faCoins } from "@fortawesome/free-solid-svg-icons";
 import './Event.css'
 
 const EventDetailsPage = () => {
+    document.querySelector('title').innerText = 'Dubs Family Meetup';
     const attendees = useSelector(attendeeActions.selectAttendees);
     const session = useSelector(sessionActions.selectSessionUser);
     const events = useSelector(eventActions.selectEvents).entities;
