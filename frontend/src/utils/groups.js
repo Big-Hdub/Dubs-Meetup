@@ -85,3 +85,20 @@ export const loadUsersGroups = () => async dispatch => {
     if (res.ok) dispatch(groupActions.setGroups(data.Groups));
     return data;
 }
+
+const updateGroupDb = async (groupData, groupId) => {
+    const res = await csrfFetch(`/api/groups/${groupId}`, {
+        method: 'PUT',
+        body: JSON.stringify(groupData)
+    });
+    const data = await res.json();
+    return data;
+};
+
+export const updateGroup = (groupData, imageData, groupId) => async dispatch => {
+    const updatedGroup = await updateGroupDb(groupData, groupId);
+    const image = await addGroupImage(imageData, groupId);
+    updatedGroup.preview = image;
+    await dispatch(groupActions.setGroup(updatedGroup));
+    return updatedGroup;
+}

@@ -101,13 +101,17 @@ const createGroup = async (req, res) => {
 
 const createGroupImage = async (req, res) => {
     const imageObj = req.body;
-    imageObj.groupId = Number(req.params.id);
-    const groupImage = await GroupImage.create(imageObj);
-    res.json({
-        id: groupImage.id,
-        url: groupImage.url,
-        preview: groupImage.preview
-    });
+    imageObj.groupId = +req.params.id;
+    const preview = await GroupImage.findOne({ where: { preview: true } });
+    if (preview) await preview.update({ preview: false })
+    const check = await GroupImage.findOne({ where: { groupId: imageObj.groupId, url: imageObj.url } });
+    if (!check) {
+        const groupImage = await GroupImage.create(imageObj);
+        res.json(groupImage);
+    } else {
+        check.update({ preview: true })
+        res.json(check);
+    }
 };
 
 const editGroup = async (req, res) => {

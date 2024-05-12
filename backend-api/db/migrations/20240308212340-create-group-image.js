@@ -28,7 +28,6 @@ module.exports = {
       url: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
       preview: {
         type: Sequelize.BOOLEAN,
@@ -45,8 +44,10 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, options);
+    await queryInterface.addIndex(options, ['groupId', 'url'], { unique: true });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable(options);
+    await queryInterface.removeIndex(options, ['groupId', 'url'], { unique: true });
   }
 };

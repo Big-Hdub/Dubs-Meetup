@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadGroupDetails } from "../../utils/groups";
 import * as sessionActions from "../../store/session";
@@ -12,6 +12,7 @@ import './Group.css';
 const GroupDetailsPage = () => {
     document.querySelector('title').innerText = 'Dubs Family Meetup';
     const { id } = useParams();
+    const history = useLocation().state?.group;
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [preview, setPreview] = useState('');
@@ -32,13 +33,14 @@ const GroupDetailsPage = () => {
 
     useEffect(() => {
         let previewImage;
-        if (group?.GroupImages?.length) {
+        if (history?.id === +id) previewImage = history.preview.url;
+        else if (group?.GroupImages?.length) {
             previewImage = group.GroupImages.find(image => image.preview === true)?.url;
         }
         previewImage?.includes("https://dubs-meetup.onrender.com") ?
             setPreview(previewImage.slice(32)) :
             setPreview(previewImage);
-    }, [group])
+    }, [group, history, id])
 
     useEffect(() => {
         const { entities } = events;
@@ -79,7 +81,7 @@ const GroupDetailsPage = () => {
                         {!members[session.id] && <button id="join-group-button" onClick={() => window.alert('Feature coming soon')}>Join this group</button>}
                         {members[session.id]?.Membership.status === "Organizer" && <div id="group-details-action-buttons-wrapper">
                             <button id="action-create-button" className="group-details-action-buttons" onClick={() => navigate('/events/create', { state: { group } })}>Create event</button>
-                            <button className="group-details-action-buttons">Update</button>
+                            <button className="group-details-action-buttons" onClick={() => navigate(`/groups/${group?.id}/update`)}>Update</button>
                             <button className="group-details-action-buttons">Delete</button>
                         </div>}
                     </div>}
