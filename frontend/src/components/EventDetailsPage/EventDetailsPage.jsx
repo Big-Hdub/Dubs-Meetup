@@ -13,7 +13,7 @@ import './Event.css'
 
 const EventDetailsPage = () => {
     document.querySelector('title').innerText = 'Dubs Family Meetup';
-    const event = useLocation().state.event;
+    const event = useLocation().state?.event;
     const attendees = useSelector(attendeeActions.selectAttendees);
     const session = useSelector(sessionActions.selectSessionUser);
     const events = useSelector(eventActions.selectEvents).entities;
