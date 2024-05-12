@@ -68,12 +68,12 @@ const GroupDetailsPage = () => {
                 <img id="group-details-header-image" src={preview} />
                 <div id="group-details-header-wrapper">
                     <div id="group-details-header-info">
-                        <h1 id="group-details-h1">{group?.name}</h1>
-                        <p className="group-details-p">{group?.city}, {group?.state}</p>
+                        <h1 id="group-details-h1">{history ? history.name : group?.name}</h1>
+                        <p className="group-details-p">{history ? history.city : group?.city}, {history ? history.state : group?.state}</p>
                         <span>
                             <p className="group-details-p">{group?.numMembers}, members </p>
                             <p className="group-details-p centered-dot">.</p>
-                            <p className="group-details-p">{group?.private ? "Private" : "Public"}</p>
+                            <p className="group-details-p">{history ? history.private : group?.private ? "Private" : "Public"}</p>
                         </span>
                         <p className="group-details-p">Organized by: {group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
                     </div>
@@ -91,7 +91,7 @@ const GroupDetailsPage = () => {
                 <h2 className="group-details-h2">Organizer</h2>
                 <p className="group-details-p">{group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
                 <h2 className="group-details-h2">What we&apos;re about</h2>
-                <p className="group-details-p">{group?.about} Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti in adipisci vel sunt quam quaerat eos enim, incidunt ad molestias. Iusto libero aliquid facilis accusantium sapiente blanditiis architecto consequatur vitae! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex veritatis possimus laudantium quia, quo quos delectus neque iusto magni fugit et quas nisi laboriosam consequatur optio! Fugit quod quas eaque.
+                <p className="group-details-p">{history ? history.about : group?.about} Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti in adipisci vel sunt quam quaerat eos enim, incidunt ad molestias. Iusto libero aliquid facilis accusantium sapiente blanditiis architecto consequatur vitae! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex veritatis possimus laudantium quia, quo quos delectus neque iusto magni fugit et quas nisi laboriosam consequatur optio! Fugit quod quas eaque.
                     Voluptate eaque error itaque maiores illum velit quo totam incidunt dolorem, alias excepturi ab! Expedita nihil, exercitationem tenetur sunt at aperiam aut molestias nesciunt corrupti assumenda magni, dolor debitis atque?</p>
                 {upcoming.length > 0 &&
                     <div id="upcoming-events-wrapper">

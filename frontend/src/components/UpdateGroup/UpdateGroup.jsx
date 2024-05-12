@@ -1,22 +1,28 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import * as sessionActions from "../../store/session";
 import * as groupActions from "../../store/groups";
 import { updateGroup } from "../../utils/groups";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const UpdateGroup = () => {
     document.querySelector('title').innerText = 'Update your group';
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { id } = useParams();
+    const session = useSelector(sessionActions.selectSessionUser).user;
     const group = useSelector(groupActions.selectGroup).entities[+id];
     const [location, setLocation] = useState(`${group?.city}, ${group?.state}`);
     const [name, setName] = useState(group?.name);
     const [about, setAbout] = useState(group?.about);
     const [type, setType] = useState(group?.type);
     const [isPrivate, setIsPrivate] = useState(group?.private);
-    const [url, setUrl] = useState(group?.previewImage ? group.previewImage : group.GroupImages.find(image => image.preview === true).url);
+    const [url, setUrl] = useState(group?.previewImage ? group.previewImage : group?.GroupImages.find(image => image.preview === true).url);
     const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        if (session === null || session.id !== group.organizerId) navigate('/');
+    }, [navigate, session, group])
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -151,7 +157,7 @@ const UpdateGroup = () => {
             <button id="create-group-button"
                 type="submit"
                 disabled={
-                    name.length < 1
+                    name?.length < 1
                 }
             >Update group</button>
         </form >
