@@ -32,6 +32,28 @@ const events = [
     description: 'A warrior of light time',
     startDate: new Date(new Date('2024-05-08 12:00:00.000 +00:00').toISOString()),
     endDate: new Date(new Date('2024-06-08 12:00:00.000 +00:00').toISOString())
+  },
+  {
+    groupId: 2,
+    venueId: 1,
+    name: 'Fishing time',
+    type: 'In person',
+    capacity: 4,
+    price: 0,
+    description: 'Fishing on the Ocean with family.  Stock the freezer with Salmon, Halibut, and Lingcod.',
+    startDate: new Date(new Date('2024-05-08 12:00:00 +00:00').toISOString()),
+    endDate: new Date(new Date('2024-05-09 12:00:00 +00:00').toISOString())
+  },
+  {
+    groupId: 2,
+    venueId: 2,
+    name: 'Lord of the rings marathon',
+    type: 'Online',
+    capacity: 200,
+    price: 9.99,
+    description: 'The battles of middle earth.',
+    startDate: new Date(new Date('2024-05-08 12:00:00.000 +00:00').toISOString()),
+    endDate: new Date(new Date('2024-06-08 12:00:00.000 +00:00').toISOString())
   }
 ]
 
