@@ -26,7 +26,7 @@ const EventsPage = () => {
             </div>
             <h3>Events in Dubs Family Meetup</h3>
             {events.allIds.map((id) => (
-                <div className="event-details-container" key={`event:${id}`} onClick={() => navigate(`/events/${id}`)}>
+                <div className="event-details-container" key={`event:${id}`} onClick={() => navigate(`/events/${id}`, { state: { event: events.entities[id] } })}>
                     <EventDetails event={events.entities[id]} />
                 </div>
             ))}

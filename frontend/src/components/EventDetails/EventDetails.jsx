@@ -6,13 +6,11 @@ import { loadGroupDetails } from "../../utils/groups";
 const EventDetails = ({ id, event: { name, groupId, description, previewImage, startDate, EventImages } }) => {
     const dispatch = useDispatch();
     const [preview, setPreview] = useState('');
+    const [date, setDate] = useState({});
     let GroupId;
     if (id === undefined) GroupId = groupId;
     else GroupId = id;
     const group = useSelector(groupActions.selectGroup).entities[GroupId]
-    const dateTime = new Date(startDate).toLocaleString().split(", ");
-    const [month, day, year] = dateTime[0].split("/");
-    const [time, amOrPm] = dateTime[1].split(':00 ')
 
     useEffect(() => {
         const loader = async () => {
@@ -36,15 +34,24 @@ const EventDetails = ({ id, event: { name, groupId, description, previewImage, s
         }
     }, [previewImage, EventImages, id])
 
+    useEffect(() => {
+        if (startDate) {
+            const dateTime = new Date(startDate)?.toLocaleString().split(", ");
+            const [month, day, year] = dateTime[0].split("/");
+            const [time, amOrPm] = dateTime[1].split(':00 ')
+            setDate({ month, day, year, time, amOrPm });
+        }
+    }, [startDate])
+
     return (
         <>
             <div className="group-details-event-top">
                 <img src={preview} className="group-details-event-img" />
                 <div className="group-details-event-header">
                     <span className="group-details-event-span">
-                        <p className="group-details-event-date">{year}-{month}-{day}</p>
+                        <p className="group-details-event-date">{date?.year}-{date?.month}-{date?.day}</p>
                         <p className="group-details-event-date centered-dot">.</p>
-                        <p className="group-details-event-date">{time} {amOrPm}</p>
+                        <p className="group-details-event-date">{date?.time} {date?.amOrPm}</p>
                     </span>
                     <h2 className="group-details-event-h2">{name}</h2>
                     <p className="group-details-event-p">{group?.city}, {group?.state}</p>
