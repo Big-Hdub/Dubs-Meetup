@@ -102,3 +102,12 @@ export const updateGroup = (groupData, imageData, groupId) => async dispatch => 
     await dispatch(groupActions.setGroup(updatedGroup));
     return updatedGroup;
 }
+
+export const deleteGroup = groupId => async dispatch => {
+    const res = await csrfFetch(`/api/groups/${groupId}`, {
+        method: 'DELETE'
+    });
+    const data = res.json();
+    if (res.ok && data.message === "Successfully deleted") await dispatch(groupActions.deleteGroup(groupId));
+    return data;
+};

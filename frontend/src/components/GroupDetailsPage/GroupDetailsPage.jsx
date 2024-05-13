@@ -8,6 +8,8 @@ import * as eventActions from "../../store/events";
 import { useEffect, useState } from "react";
 import EventDetails from "../EventDetails";
 import './Group.css';
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import DeleteGroupModal from "./DeleteGroupModal";
 
 const GroupDetailsPage = () => {
     document.querySelector('title').innerText = 'Dubs Family Meetup';
@@ -73,7 +75,7 @@ const GroupDetailsPage = () => {
                         <span>
                             <p className="group-details-p">{group?.numMembers}, members </p>
                             <p className="group-details-p centered-dot">.</p>
-                            <p className="group-details-p">{history ? history.private : group?.private ? "Private" : "Public"}</p>
+                            <p className="group-details-p">{history ? history.private ? "Private" : "Public" : group?.private ? "Private" : "Public"}</p>
                         </span>
                         <p className="group-details-p">Organized by: {group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
                     </div>
@@ -82,7 +84,8 @@ const GroupDetailsPage = () => {
                         {members[session.id]?.Membership.status === "Organizer" && <div id="group-details-action-buttons-wrapper">
                             <button id="action-create-button" className="group-details-action-buttons" onClick={() => navigate('/events/create', { state: { group } })}>Create event</button>
                             <button className="group-details-action-buttons" onClick={() => navigate(`/groups/${group?.id}/update`)}>Update</button>
-                            <button className="group-details-action-buttons">Delete</button>
+                            {/* <button className="group-details-action-buttons">Delete</button> */}
+                            <OpenModalButton classname="group-details-action-buttons" buttonText="Delete" modalComponent={<DeleteGroupModal group={history ? history : group} navigate={navigate} />} />
                         </div>}
                     </div>}
                 </div>
