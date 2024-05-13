@@ -59,13 +59,9 @@ const EventDetailsPage = () => {
     }, [event, events, id])
 
     const dateConstructor = (data) => {
-        const date = new Date(data);
-        const day = date.getDay();
-        const month = date.getMonth();
-        const year = date.getFullYear();
-        let time = date.toLocaleTimeString();
-        const amOrPm = time.slice(time.indexOf('M') - 1);
-        time = time.split(':').splice(0, 2).join(':');
+        const dateTime = data.toLocaleString().split(", ");
+        const [month, day, year] = dateTime[0].split("/");
+        const [time, amOrPm] = dateTime[1].split(':00 ')
 
         return (
             <span className="event-details-date-span">

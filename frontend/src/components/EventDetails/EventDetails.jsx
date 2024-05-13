@@ -10,13 +10,9 @@ const EventDetails = ({ id, event: { name, groupId, description, previewImage, s
     if (id === undefined) GroupId = groupId;
     else GroupId = id;
     const group = useSelector(groupActions.selectGroup).entities[GroupId]
-    const date = new Date(startDate);
-    const day = date.getDay();
-    const month = date.getMonth();
-    const year = date.getFullYear();
-    let time = date.toLocaleTimeString();
-    const amOrPm = time.slice(time.indexOf('M') - 1);
-    time = time.split(':').splice(0, 2).join(':');
+    const dateTime = new Date(startDate).toLocaleString().split(", ");
+    const [month, day, year] = dateTime[0].split("/");
+    const [time, amOrPm] = dateTime[1].split(':00 ')
 
     useEffect(() => {
         const loader = async () => {

@@ -84,7 +84,6 @@ const GroupDetailsPage = () => {
                         {members[session.id]?.Membership.status === "Organizer" && <div id="group-details-action-buttons-wrapper">
                             <button id="action-create-button" className="group-details-action-buttons" onClick={() => navigate('/events/create', { state: { group } })}>Create event</button>
                             <button className="group-details-action-buttons" onClick={() => navigate(`/groups/${group?.id}/update`)}>Update</button>
-                            {/* <button className="group-details-action-buttons">Delete</button> */}
                             <OpenModalButton classname="group-details-action-buttons" buttonText="Delete" modalComponent={<DeleteGroupModal group={history ? history : group} navigate={navigate} />} />
                         </div>}
                     </div>}

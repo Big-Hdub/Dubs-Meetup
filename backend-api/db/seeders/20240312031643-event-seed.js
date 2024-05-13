@@ -19,8 +19,8 @@ const events = [
     capacity: 20,
     price: 89.99,
     description: 'Fun in the sun',
-    startDate: new Date(new Date('2024-05-08 12:00:00 +00:00').toISOString()),
-    endDate: new Date(new Date('2024-06-08 12:00:00 +00:00').toISOString())
+    startDate: new Date('2024-05-08 12:00:00 -08:00'),
+    endDate: new Date('2024-06-08 12:00:00 -08:00')
   },
   {
     groupId: 1,
@@ -30,8 +30,8 @@ const events = [
     capacity: 200,
     price: 9.99,
     description: 'A warrior of light time',
-    startDate: new Date(new Date('2024-05-08 12:00:00.000 +00:00').toISOString()),
-    endDate: new Date(new Date('2024-06-08 12:00:00.000 +00:00').toISOString())
+    startDate: new Date('2024-05-08 12:00:00 -08:00'),
+    endDate: new Date('2024-06-08 12:00:00 -08:00')
   },
   {
     groupId: 2,
@@ -41,8 +41,8 @@ const events = [
     capacity: 4,
     price: 0,
     description: 'Fishing on the Ocean with family.  Stock the freezer with Salmon, Halibut, and Lingcod.',
-    startDate: new Date(new Date('2024-05-08 12:00:00 +00:00').toISOString()),
-    endDate: new Date(new Date('2024-05-09 12:00:00 +00:00').toISOString())
+    startDate: new Date('2024-05-08 12:00:00 -08:00'),
+    endDate: new Date('2024-06-08 12:00:00 -08:00')
   },
   {
     groupId: 2,
@@ -52,8 +52,8 @@ const events = [
     capacity: 200,
     price: 9.99,
     description: 'The battles of middle earth.',
-    startDate: new Date(new Date('2024-05-08 12:00:00.000 +00:00').toISOString()),
-    endDate: new Date(new Date('2024-06-08 12:00:00.000 +00:00').toISOString())
+    startDate: new Date('2024-05-08 12:00:00 -08:00'),
+    endDate: new Date('2024-06-08 12:00:00 -08:00')
   }
 ]
 

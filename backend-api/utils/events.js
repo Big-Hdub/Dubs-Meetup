@@ -21,7 +21,7 @@ const getEvents = async (req, res) => {
 
     let events = await Event.findAll({
         attributes: {
-            exclude: ['capacity', 'price', 'createdAt', 'updatedAt']
+            exclude: ['createdAt', 'updatedAt']
         },
         include: [{
             model: EventImage,
@@ -56,8 +56,8 @@ const getEvents = async (req, res) => {
             Group: event.Group || null,
             Venue: event.Venue || null,
             previewImage: event.previewImage[0]?.url || null,
-            startDate: event.startDate.toLocaleString(),
-            endDate: event.endDate.toLocaleString()
+            startDate: event.startDate,
+            endDate: event.endDate
         };
     }));
     response.Events = events;
@@ -176,8 +176,8 @@ const createEvent = async (req, res, next) => {
     }
     if (typeof eventObj.price === 'number') eventObj.price = formatDecimal(eventObj.price);
     eventObj.groupId = Number(req.params.id);
-    eventObj.startDate = new Date(new Date(eventObj.startDate).toISOString());
-    eventObj.endDate = new Date(new Date(eventObj.endDate).toISOString());
+    eventObj.startDate = new Date(new Date(eventObj.startDate).toLocaleString());
+    eventObj.endDate = new Date(new Date(eventObj.endDate).toLocaleString());
     const newEvent = await Event.create(eventObj);
     await Attendee.create({
         eventId: newEvent.id,
