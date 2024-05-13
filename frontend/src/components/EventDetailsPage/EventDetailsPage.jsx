@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { faMapPin, faCoins } from "@fortawesome/free-solid-svg-icons";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import DeleteEventModal from "./DeleteEventModal";
 import './Event.css'
 
 const EventDetailsPage = () => {
@@ -22,7 +24,6 @@ const EventDetailsPage = () => {
     const [hostId, setHostId] = useState(null);
     const [preview, setPreview] = useState('');
     const [host, setHost] = useState("");
-    // const [date, setDate] = useState({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -61,7 +62,6 @@ const EventDetailsPage = () => {
 
     const dateConstructor = (data) => {
         if (data) {
-            console.log(data)
             const dateTime = new Date(data).toLocaleString().split(", ");
             const [month, day, year] = dateTime[0].split("/");
             const [time, amOrPm] = dateTime[1].split(':00 ')
@@ -75,7 +75,6 @@ const EventDetailsPage = () => {
                 </span>
             )
         }
-
     }
 
     return (
@@ -119,7 +118,7 @@ const EventDetailsPage = () => {
                                 <div id="event-details-action-buttons-container">
                                     {session?.user?.id === hostId ? <>
                                         <button className="event-details-action-buttons">Update</button>
-                                        <button className="event-details-action-buttons">Delete</button>
+                                        <OpenModalButton classname="event-details-action-buttons" buttonText="Delete" modalComponent={<DeleteEventModal event={event ? event : events[+id]} navigate={navigate} />} />
                                     </> : <></>}
                                 </div>
                             </div>

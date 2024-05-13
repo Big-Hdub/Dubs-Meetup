@@ -79,3 +79,12 @@ export const createEvent = (eventData, imageData) => async dispatch => {
     event.previewImage = image.url;
     return event;
 };
+
+export const deleteEvent = eventId => async dispatch => {
+    const res = await csrfFetch(`/api/events/${eventId}`, {
+        method: 'DELETE'
+    });
+    const data = res.json();
+    if (res.ok && data.message === "Successfully deleted") await dispatch(eventActions.deleteEvent(eventId));
+    return data;
+}
