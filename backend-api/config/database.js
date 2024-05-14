@@ -8,7 +8,7 @@ module.exports = {
     seederStorage: "sequelize",
     logQueryParameters: true,
     typeValidation: true,
-    // logging: false
+    logging: false
   },
   production: {
     use_env_variable: 'DATABASE_URL',

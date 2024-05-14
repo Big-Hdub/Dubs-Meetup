@@ -43,16 +43,13 @@ export const loadEventDetails = (eventId) => (dispatch) => {
     return;
 };
 
-const getEvents = async (dispatch) => {
+export const loadEvents = () => async (dispatch) => {
     const res = await csrfFetch('/api/events');
     const data = await res.json();
+    console.log("events:", data)
+    // data.previewImage = data.EventImages.find(image => image.preview === true)
     if (res.ok) await dispatch(eventActions.setEvents(data.Events));
     return data;
-};
-
-export const loadEvents = () => (dispatch) => {
-    getEvents(dispatch);
-    return;
 };
 
 const newEvent = async (data) => {

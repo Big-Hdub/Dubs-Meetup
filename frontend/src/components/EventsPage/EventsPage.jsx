@@ -1,9 +1,9 @@
-import EventDetails from "../EventDetails";
-import * as eventActions from "../../store/events";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import * as eventActions from "../../store/events";
 import { loadEvents } from "../../utils/events";
+import { useNavigate } from "react-router-dom";
+import EventDetails from "../EventDetails";
+import { useEffect } from "react";
 import './Events.css'
 
 const EventsPage = () => {
@@ -26,8 +26,8 @@ const EventsPage = () => {
             </div>
             <h3>Events in Dubs Family Meetup</h3>
             {events.allIds.map((id) => (
-                <div className="event-details-container" key={`event:${id}`} onClick={() => navigate(`/events/${id}`, { state: { event: events.entities[id] } })}>
-                    <EventDetails event={events.entities[id]} />
+                <div className="event-details-container" key={`event:${id}`} onClick={() => navigate(`/events/${id}`)}>
+                    <EventDetails eventId={id} />
                 </div>
             ))}
         </div>

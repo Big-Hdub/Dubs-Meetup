@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadGroupDetails } from "../../utils/groups";
 import * as sessionActions from "../../store/session";
@@ -14,50 +14,26 @@ import DeleteGroupModal from "./DeleteGroupModal";
 const GroupDetailsPage = () => {
     document.querySelector('title').innerText = 'Dubs Family Meetup';
     const { id } = useParams();
-    const history = useLocation().state?.group;
-    const deleted = useLocation().state?.deleted;
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [preview, setPreview] = useState('');
     const [upcoming, setUpcoming] = useState([]);
     const [past, setPast] = useState([]);
     const [loaded, setLoaded] = useState(0);
-    const group = useSelector(groupActions.selectGroup).entities[Number(id)];
+    const group = useSelector(groupActions.selectGroup).entities[+id];
     const members = useSelector(memberActions.selectMember).entities;
     const session = useSelector(sessionActions.selectSessionUser).user;
     const events = useSelector(eventActions.selectEvents);
-
-    // useEffect(() => {
-    //     const loader = async () => {
-    //         await dispatch(loadGroupDetails(+id));
-    //     }
-
-    //     if (deleted) {
-    //         loader
-    //     }
-    // })
 
     useEffect(() => {
         const loader = async () => {
             await dispatch(loadGroupDetails(+id));
         }
         loader();
-    }, [dispatch, id, deleted])
-
-    useEffect(() => {
-        let previewImage;
-        if (history?.id === +id) previewImage = history.preview.url;
-        else if (group?.GroupImages?.length) {
-            previewImage = group.GroupImages.find(image => image.preview === true)?.url;
-        }
-        previewImage?.includes("https://dubs-meetup.onrender.com") ?
-            setPreview(previewImage.slice(32)) :
-            setPreview(previewImage);
-    }, [group, history, id])
+    }, [dispatch, id])
 
     useEffect(() => {
         const { entities } = events;
-        const filtered = Object.values(entities).filter((event) => event.groupId === +id)
+        const filtered = Object.values(entities).filter(event => event.groupId === +id)
         if (loaded < filtered.length) {
             for (let i = 0; i < filtered.length; i++) {
                 const event = filtered[i];
@@ -78,15 +54,15 @@ const GroupDetailsPage = () => {
                 <p id="group-breadcrumb-link" className="group-details-p" onClick={() => navigate('/groups')}>Groups</p>
             </span>
             <div id="group-details-header">
-                <img id="group-details-header-image" src={preview} />
+                <img id="group-details-header-image" src={group?.previewImage} />
                 <div id="group-details-header-wrapper">
                     <div id="group-details-header-info">
-                        <h1 id="group-details-h1">{history ? history.name : group?.name}</h1>
-                        <p className="group-details-p">{history ? history.city : group?.city}, {history ? history.state : group?.state}</p>
+                        <h1 id="group-details-h1">{group?.name}</h1>
+                        <p className="group-details-p">{group?.city}, {group?.state}</p>
                         <span>
                             <p className="group-details-p">{group?.numMembers}, members </p>
                             <p className="group-details-p centered-dot">.</p>
-                            <p className="group-details-p">{history ? history.private ? "Private" : "Public" : group?.private ? "Private" : "Public"}</p>
+                            <p className="group-details-p">{group?.private ? "Private" : "Public"}</p>
                         </span>
                         <p className="group-details-p">Organized by: {group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
                     </div>
@@ -95,7 +71,7 @@ const GroupDetailsPage = () => {
                         {members[session.id]?.Membership.status === "Organizer" && <div id="group-details-action-buttons-wrapper">
                             <button id="action-create-button" className="group-details-action-buttons" onClick={() => navigate('/events/create', { state: { group } })}>Create event</button>
                             <button className="group-details-action-buttons" onClick={() => navigate(`/groups/${group?.id}/update`)}>Update</button>
-                            <OpenModalButton classname="group-details-action-buttons" buttonText="Delete" modalComponent={<DeleteGroupModal group={history ? history : group} navigate={navigate} />} />
+                            <OpenModalButton classname="group-details-action-buttons" buttonText="Delete" modalComponent={<DeleteGroupModal group={group} navigate={navigate} />} />
                         </div>}
                     </div>}
                 </div>
@@ -104,7 +80,7 @@ const GroupDetailsPage = () => {
                 <h2 className="group-details-h2">Organizer</h2>
                 <p className="group-details-p">{group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
                 <h2 className="group-details-h2">What we&apos;re about</h2>
-                <p className="group-details-p">{history ? history.about : group?.about} Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti in adipisci vel sunt quam quaerat eos enim, incidunt ad molestias. Iusto libero aliquid facilis accusantium sapiente blanditiis architecto consequatur vitae! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex veritatis possimus laudantium quia, quo quos delectus neque iusto magni fugit et quas nisi laboriosam consequatur optio! Fugit quod quas eaque.
+                <p className="group-details-p">{group?.about} Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti in adipisci vel sunt quam quaerat eos enim, incidunt ad molestias. Iusto libero aliquid facilis accusantium sapiente blanditiis architecto consequatur vitae! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex veritatis possimus laudantium quia, quo quos delectus neque iusto magni fugit et quas nisi laboriosam consequatur optio! Fugit quod quas eaque.
                     Voluptate eaque error itaque maiores illum velit quo totam incidunt dolorem, alias excepturi ab! Expedita nihil, exercitationem tenetur sunt at aperiam aut molestias nesciunt corrupti assumenda magni, dolor debitis atque?</p>
                 {upcoming.length > 0 &&
                     <div id="upcoming-events-wrapper">
@@ -117,7 +93,7 @@ const GroupDetailsPage = () => {
                                     key={`upcomingId:${event.id}`}
                                     className="group-page-event-containers"
                                     onClick={() => navigate(`/events/${event.id}`)}>
-                                    <EventDetails event={event} />
+                                    <EventDetails eventId={event.id} />
                                 </div>)
                             })}
                     </div>
@@ -130,7 +106,7 @@ const GroupDetailsPage = () => {
                                 key={`pastId:${event.id}`}
                                 className="group-page-event-containers"
                                 onClick={() => navigate(`/events/${event.id}`)}>
-                                <EventDetails id={id} event={event} />
+                                <EventDetails eventId={event.id} />
                             </div>)
                         })}
                     </div>

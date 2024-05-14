@@ -17,7 +17,7 @@ const getEvents = async (req, res) => {
     const where = {};
     if (name) where.name = name.split("_").join(" ")
     if (type) where.type = type.split("_").join(" ");
-    if (startDate) where.startDate = new Date(new Date(startDate).toISOString());
+    if (startDate) where.startDate = new Date(startDate).toLocaleString;
 
     let events = await Event.findAll({
         attributes: {
