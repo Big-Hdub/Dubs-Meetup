@@ -9,9 +9,11 @@ const DeleteEventModal = ({ event, navigate }) => {
     const dispatch = useDispatch();
 
     const handleDelete = async () => {
-        await dispatch(deleteEvent(event.id));
-        closeModal();
-        navigate(`/groups/${event.groupId}`);
+        const data = await dispatch(deleteEvent(event.id));
+        if (data.message === "Successfully deleted") {
+            closeModal();
+            navigate(`/groups/${event.groupId}`, { state: { deleted: true } });
+        }
     }
 
     return (

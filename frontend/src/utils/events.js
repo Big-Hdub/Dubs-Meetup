@@ -85,6 +85,6 @@ export const deleteEvent = eventId => async dispatch => {
         method: 'DELETE'
     });
     const data = res.json();
-    if (res.ok && data.message === "Successfully deleted") await dispatch(eventActions.deleteEvent(eventId));
+    if (res.ok) await dispatch(eventActions.deleteEvent(eventId));
     return data;
 }

@@ -15,6 +15,7 @@ const GroupDetailsPage = () => {
     document.querySelector('title').innerText = 'Dubs Family Meetup';
     const { id } = useParams();
     const history = useLocation().state?.group;
+    const deleted = useLocation().state?.deleted;
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [preview, setPreview] = useState('');
@@ -26,12 +27,22 @@ const GroupDetailsPage = () => {
     const session = useSelector(sessionActions.selectSessionUser).user;
     const events = useSelector(eventActions.selectEvents);
 
+    // useEffect(() => {
+    //     const loader = async () => {
+    //         await dispatch(loadGroupDetails(+id));
+    //     }
+
+    //     if (deleted) {
+    //         loader
+    //     }
+    // })
+
     useEffect(() => {
         const loader = async () => {
-            await dispatch(loadGroupDetails(Number(id)));
+            await dispatch(loadGroupDetails(+id));
         }
         loader();
-    }, [dispatch, id])
+    }, [dispatch, id, deleted])
 
     useEffect(() => {
         let previewImage;

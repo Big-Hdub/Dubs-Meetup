@@ -46,9 +46,11 @@ const eventReducer = (state = initialState, action) => {
             return newState;
         }
         case DELETE_EVENT: {
+            console.log("action: ", action);
             const newState = { ...state };
             delete newState.entities[action.eventId];
             newState.allIds.splice(newState.allIds.indexOf(action.eventId), 1);
+            console.log("newState: ", newState);
             return newState;
         }
         default: return state;
