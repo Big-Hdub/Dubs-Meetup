@@ -28,21 +28,21 @@ const initialState = { entities: {}, allIds: [] };
 const venueReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_VENUE: {
-            const newState = { ...state };
-            newState.entities[action.venue.id] = action.venue;
+            const newState = structuredClone(state);
+            newState.entities[action.venue.id] = structuredClone(action.venue);
             if (newState.allIds.indexOf(action.venue.id) < 0) newState.allIds.push(action.venue.id);
             return newState;
         }
         case SET_VENUES: {
-            const newState = { ...state }
+            const newState = structuredClone(state)
             action.venues.forEach(venue => {
-                newState.entities[venue.id] = venue;
+                newState.entities[venue.id] = structuredClone(venue);
                 if (newState.allIds.indexOf(venue.id) < 0) newState.allIds.push(venue.id)
             });
             return newState;
         }
         case DELETE_VENUE: {
-            const newState = { ...state };
+            const newState = structuredClone(state);
             delete newState.entities[action.venueId];
             newState.allIds.splice(newState.allIds.indexOf(action.venueId), 1);
             return newState;

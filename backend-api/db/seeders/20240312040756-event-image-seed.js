@@ -26,6 +26,16 @@ const eventImages = [
     url: 'https://dubs-meetup.onrender.com/api/images/finalFantasy',
     preview: true
   },
+  {
+    eventId: 3,
+    url: 'https://dubs-meetup.onrender.com/api/images/sturgeon',
+    preview: true
+  },
+  {
+    eventId: 4,
+    url: 'https://dubs-meetup.onrender.com/api/images/knights',
+    preview: true
+  },
 ]
 
 module.exports = {

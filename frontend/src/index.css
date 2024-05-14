@@ -9,6 +9,12 @@
     flex-wrap: wrap;
 }
 
+button {
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
 span {
     flex-direction: row;
     align-items: center;

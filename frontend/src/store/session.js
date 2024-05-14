@@ -54,10 +54,15 @@ const initialState = { user: null }
 const sessionReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_SESSION: {
-            return { ...state, user: action.user }
+            const newState = structuredClone(state);
+            newState.user = structuredClone(action.user);
+            return newState;
+
         }
         case DELETE_SESSION: {
-            return { ...state, user: null }
+            const newState = structuredClone(state)
+            newState.user = null;
+            return newState;
         }
         default:
             return state;

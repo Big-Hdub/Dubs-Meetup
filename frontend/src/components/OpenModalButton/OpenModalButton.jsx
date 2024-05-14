@@ -1,6 +1,6 @@
 import { useModal } from "../../context/Modal";
 
-const OpenModalButton = ({ modalComponent, buttonText, onButtonClick, onModalClose }) => {
+const OpenModalButton = ({ classname, modalComponent, buttonText, onButtonClick, onModalClose }) => {
     const { setModalContent, setOnModalClose } = useModal();
 
     const onClick = () => {
@@ -9,7 +9,7 @@ const OpenModalButton = ({ modalComponent, buttonText, onButtonClick, onModalClo
         if (typeof onButtonClick === "function") onButtonClick();
     };
 
-    return <button onClick={onClick}>{buttonText}</button>;
+    return <button className={classname} onClick={onClick}>{buttonText}</button>;
 };
 
 export default OpenModalButton;

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadEventDetails } from "../../utils/events";
 import * as attendeeActions from "../../store/attendees";
@@ -9,10 +9,14 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { faMapPin, faCoins } from "@fortawesome/free-solid-svg-icons";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import DeleteEventModal from "./DeleteEventModal";
 import './Event.css'
 
 const EventDetailsPage = () => {
     document.querySelector('title').innerText = 'Dubs Family Meetup';
+    const event = useLocation().state?.event;
+    const { id } = useParams();
     const attendees = useSelector(attendeeActions.selectAttendees);
     const session = useSelector(sessionActions.selectSessionUser);
     const events = useSelector(eventActions.selectEvents).entities;
@@ -22,7 +26,6 @@ const EventDetailsPage = () => {
     const [host, setHost] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { id } = useParams();
 
     useEffect(() => {
         const loader = async () => {
@@ -39,37 +42,39 @@ const EventDetailsPage = () => {
     }, [attendees]);
 
     useEffect(() => {
-        if (events[+id]?.previewImage)
+        if (event?.previewImage) {
+            event.previewImage.includes("https://dubs-meetup.onrender.com") ?
+                setPreview(event.previewImage.slice(32)) :
+                setPreview(event.previewImage);
+        } else if (events[+id]?.previewImage) {
             events[+id].previewImage.includes("https://dubs-meetup.onrender.com") ?
                 setPreview(events[+id].previewImage.slice(32)) :
                 setPreview(events[+id].previewImage);
-        else if (events[+id] && events[+id].EventImages?.length) {
+        } else if (events[+id] && events[+id].EventImages?.length) {
             const previewImage = events[+id].EventImages.find(image => image.preview === true).url;
             previewImage.includes("https://dubs-meetup.onrender.com") ?
-                setPreview(events[+id].previewImage.slice(32)) :
-                setPreview(events[+id].previewImage);
+                setPreview(previewImage.slice(32)) :
+                setPreview(previewImage);
         } else {
-            setPreview("/api/images/knights")
+            setPreview("/api/images/knights");
         }
-    }, [events, id])
+    }, [event, events, id])
 
     const dateConstructor = (data) => {
-        const date = new Date(data);
-        const day = date.getDay();
-        const month = date.getMonth();
-        const year = date.getFullYear();
-        let time = date.toLocaleTimeString();
-        const amOrPm = time.slice(time.indexOf('M') - 1);
-        time = time.split(':').splice(0, 2).join(':');
+        if (data) {
+            const dateTime = new Date(data).toLocaleString().split(", ");
+            const [month, day, year] = dateTime[0].split("/");
+            const [time, amOrPm] = dateTime[1].split(':00 ')
 
-        return (
-            <span className="event-details-date-span">
-                <p className="event-detail-dates-p event-detail-label">START</p>
-                <p className="event-detail-dates-p event-detail-dates">{year}-{month}-{day}</p>
-                <p className="event-detail-dates-p centered-dot">.</p>
-                <p className="event-detail-dates-p event-detail-dates">{time} {amOrPm}</p>
-            </span>
-        )
+            return (
+                <span className="event-details-date-span">
+                    <p className="event-detail-dates-p event-detail-label">START</p>
+                    <p className="event-detail-dates-p event-detail-dates">{year}-{month}-{day}</p>
+                    <p className="event-detail-dates-p centered-dot">.</p>
+                    <p className="event-detail-dates-p event-detail-dates">{time} {amOrPm}</p>
+                </span>
+            )
+        }
     }
 
     return (
@@ -97,8 +102,8 @@ const EventDetailsPage = () => {
                             <div id="event-details-date-container">
                                 <span id="event-details-clock-holder"><FontAwesomeIcon className="icons" icon={faClock} /></span>
                                 <div id="event-details-dates-holder">
-                                    {dateConstructor(events[+id]?.startDate)}
-                                    {dateConstructor(events[+id]?.endDate)}
+                                    {event ? dateConstructor(event.startDate) : events[+id] && events[+id].startDate && dateConstructor(events[+id]?.startDate)}
+                                    {event ? dateConstructor(event.endDate) : events[+id] && events[+id].endDate && dateConstructor(events[+id]?.endDate)}
                                 </div>
                             </div>
                             <div id="event-details-price-container">
@@ -113,7 +118,7 @@ const EventDetailsPage = () => {
                                 <div id="event-details-action-buttons-container">
                                     {session?.user?.id === hostId ? <>
                                         <button className="event-details-action-buttons">Update</button>
-                                        <button className="event-details-action-buttons">Delete</button>
+                                        <OpenModalButton classname="event-details-action-buttons" buttonText="Delete" modalComponent={<DeleteEventModal event={event ? event : events[+id]} navigate={navigate} />} />
                                     </> : <></>}
                                 </div>
                             </div>

@@ -8,41 +8,32 @@ import * as eventActions from "../../store/events";
 import { useEffect, useState } from "react";
 import EventDetails from "../EventDetails";
 import './Group.css';
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import DeleteGroupModal from "./DeleteGroupModal";
 
 const GroupDetailsPage = () => {
     document.querySelector('title').innerText = 'Dubs Family Meetup';
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [preview, setPreview] = useState('');
     const [upcoming, setUpcoming] = useState([]);
     const [past, setPast] = useState([]);
     const [loaded, setLoaded] = useState(0);
-    const group = useSelector(groupActions.selectGroup).entities[Number(id)];
+    const group = useSelector(groupActions.selectGroup).entities[+id];
     const members = useSelector(memberActions.selectMember).entities;
     const session = useSelector(sessionActions.selectSessionUser).user;
     const events = useSelector(eventActions.selectEvents);
 
     useEffect(() => {
         const loader = async () => {
-            await dispatch(loadGroupDetails(Number(id)));
+            await dispatch(loadGroupDetails(+id));
         }
         loader();
     }, [dispatch, id])
 
     useEffect(() => {
-        let previewImage;
-        if (group?.GroupImages?.length) {
-            previewImage = group.GroupImages.find(image => image.preview === true)?.url;
-        }
-        previewImage?.includes("https://dubs-meetup.onrender.com") ?
-            setPreview(previewImage.slice(32)) :
-            setPreview(previewImage);
-    }, [group])
-
-    useEffect(() => {
         const { entities } = events;
-        const filtered = Object.values(entities).filter((event) => event.groupId === +id)
+        const filtered = Object.values(entities).filter(event => event.groupId === +id)
         if (loaded < filtered.length) {
             for (let i = 0; i < filtered.length; i++) {
                 const event = filtered[i];
@@ -63,7 +54,7 @@ const GroupDetailsPage = () => {
                 <p id="group-breadcrumb-link" className="group-details-p" onClick={() => navigate('/groups')}>Groups</p>
             </span>
             <div id="group-details-header">
-                <img id="group-details-header-image" src={preview} />
+                <img id="group-details-header-image" src={group?.previewImage} />
                 <div id="group-details-header-wrapper">
                     <div id="group-details-header-info">
                         <h1 id="group-details-h1">{group?.name}</h1>
@@ -79,8 +70,8 @@ const GroupDetailsPage = () => {
                         {!members[session.id] && <button id="join-group-button" onClick={() => window.alert('Feature coming soon')}>Join this group</button>}
                         {members[session.id]?.Membership.status === "Organizer" && <div id="group-details-action-buttons-wrapper">
                             <button id="action-create-button" className="group-details-action-buttons" onClick={() => navigate('/events/create', { state: { group } })}>Create event</button>
-                            <button className="group-details-action-buttons">Update</button>
-                            <button className="group-details-action-buttons">Delete</button>
+                            <button className="group-details-action-buttons" onClick={() => navigate(`/groups/${group?.id}/update`)}>Update</button>
+                            <OpenModalButton classname="group-details-action-buttons" buttonText="Delete" modalComponent={<DeleteGroupModal group={group} navigate={navigate} />} />
                         </div>}
                     </div>}
                 </div>
@@ -102,7 +93,7 @@ const GroupDetailsPage = () => {
                                     key={`upcomingId:${event.id}`}
                                     className="group-page-event-containers"
                                     onClick={() => navigate(`/events/${event.id}`)}>
-                                    <EventDetails event={event} />
+                                    <EventDetails eventId={event.id} />
                                 </div>)
                             })}
                     </div>
@@ -115,7 +106,7 @@ const GroupDetailsPage = () => {
                                 key={`pastId:${event.id}`}
                                 className="group-page-event-containers"
                                 onClick={() => navigate(`/events/${event.id}`)}>
-                                <EventDetails id={id} event={event} />
+                                <EventDetails eventId={event.id} />
                             </div>)
                         })}
                     </div>

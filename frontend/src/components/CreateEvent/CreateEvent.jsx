@@ -31,13 +31,12 @@ const CreateEvent = () => {
             description,
             groupId: group.id,
             venueId: 1,
-            capacity: +capacity
-        }
-        console.log(eventData);
+            capacity
+        };
         const imageData = {
             url,
             preview: true
-        }
+        };
         const newEvent = await dispatch(createEvent(eventData, imageData))
             .catch(
                 async (res) => {
@@ -46,7 +45,7 @@ const CreateEvent = () => {
                         setErrors(data.errors)
                     }
                 });
-        if (newEvent?.id) navigate(`/events/${newEvent.id}`)
+        if (newEvent?.id) navigate(`/events/${newEvent.id}`, { state: { event: newEvent } });
     }
 
     return (
@@ -86,7 +85,6 @@ const CreateEvent = () => {
                         <input type='number'
                             name="price"
                             id="create-event-price"
-                            // placeholder="0"
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
                         />
@@ -98,7 +96,6 @@ const CreateEvent = () => {
                         <input type='number'
                             name="capacity"
                             id="create-event-capacity"
-                            // placeholder="0"
                             value={capacity}
                             onChange={(e) => setCapacity(e.target.value)}
                         />

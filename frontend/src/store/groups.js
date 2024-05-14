@@ -28,21 +28,21 @@ const initialState = { entities: {}, allIds: [] };
 const groupReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_GROUP: {
-            const newState = { ...state };
-            newState.entities[action.group.id] = { ...action.group, ...newState.entities[action.group.id] };
+            const newState = structuredClone(state);
+            newState.entities[action.group.id] = structuredClone(action.group);
             if (newState.allIds.indexOf(action.group.id) < 0) newState.allIds.push(action.group.id);
             return newState;
         }
         case SET_GROUPS: {
-            const newState = { ...state }
+            const newState = structuredClone(state);
             action.groups.forEach(group => {
-                newState.entities[group.id] = group;
+                newState.entities[group.id] = structuredClone(group);
                 if (newState.allIds.indexOf(group.id) < 0) newState.allIds.push(group.id)
             });
             return newState;
         }
         case DELETE_GROUP: {
-            const newState = { ...state };
+            const newState = structuredClone(state);
             delete newState.entities[action.groupId];
             newState.allIds.splice(newState.allIds.indexOf(action.groupId), 1);
             return newState;

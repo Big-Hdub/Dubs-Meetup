@@ -43,16 +43,13 @@ export const loadEventDetails = (eventId) => (dispatch) => {
     return;
 };
 
-const getEvents = async (dispatch) => {
+export const loadEvents = () => async (dispatch) => {
     const res = await csrfFetch('/api/events');
     const data = await res.json();
+    console.log("events:", data)
+    // data.previewImage = data.EventImages.find(image => image.preview === true)
     if (res.ok) await dispatch(eventActions.setEvents(data.Events));
     return data;
-};
-
-export const loadEvents = () => (dispatch) => {
-    getEvents(dispatch);
-    return;
 };
 
 const newEvent = async (data) => {
@@ -75,6 +72,16 @@ const newEventImage = async (data, eventId) => {
 
 export const createEvent = (eventData, imageData) => async dispatch => {
     const event = await newEvent(eventData, dispatch);
-    await newEventImage(imageData, event.id, dispatch)
+    const image = await newEventImage(imageData, event.id, dispatch);
+    event.previewImage = image.url;
     return event;
 };
+
+export const deleteEvent = eventId => async dispatch => {
+    const res = await csrfFetch(`/api/events/${eventId}`, {
+        method: 'DELETE'
+    });
+    const data = res.json();
+    if (res.ok) await dispatch(eventActions.deleteEvent(eventId));
+    return data;
+}
