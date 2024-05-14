@@ -28,25 +28,23 @@ const initialState = { entities: {}, allIds: [] };
 const eventReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_EVENT: {
-            const newState = { ...state };
-            newState.entities[action.event.id] = action.event;
+            const newState = structuredClone(state);
+            newState.entities[action.event.id] = structuredClone(action.event);
             if (newState.allIds.indexOf(action.event.id) < 0) newState.allIds.push(action.event.id);
             return newState;
         }
         case SET_EVENTS: {
-            const newState = { ...state }
+            const newState = structuredClone(state)
             action.events.forEach(event => {
-                const newEvent = { ...event };
-                delete newEvent.Venue;
-                delete newEvent.GroupImages;
+                const newEvent = structuredClone(event);
                 delete newEvent.Group;
-                newState.entities[event.id] = newEvent;
+                newState.entities[event.id] = structuredClone(newEvent);
                 if (newState.allIds.indexOf(event.id) < 0) newState.allIds.push(event.id)
             });
             return newState;
         }
         case DELETE_EVENT: {
-            const newState = { ...state };
+            const newState = structuredClone(state);
             delete newState.entities[action.eventId];
             newState.allIds.splice(newState.allIds.indexOf(action.eventId), 1);
             return newState;

@@ -1,0 +1,31 @@
+#confirm-delete-container {
+    align-items: center;
+    width: 500px;
+    height: fit-content;
+    box-sizing: border-box;
+    padding: 20px;
+    gap: 20px;
+}
+
+#delete-group-h1 {
+    margin: 0;
+}
+
+#delete-group-p {
+    font-size: x-large;
+}
+
+#delete-group-yes,
+#delete-group-no {
+    width: 100%;
+    height: 50px;
+    color: white;
+}
+
+#delete-group-yes {
+    background-color: red;
+}
+
+#delete-group-no {
+    background-color: grey;
+}

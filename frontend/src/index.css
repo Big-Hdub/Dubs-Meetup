@@ -4,6 +4,25 @@
     font-size: medium;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+button {
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+span {
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+head {
+    display: none;
 }
 
 /* html {
@@ -24,11 +43,6 @@ h2 {
 
 h3 {
     font-size: large;
-}
-
-#root {
-    display: flex;
-    flex-direction: column;
 }
 
 .centered-dot {

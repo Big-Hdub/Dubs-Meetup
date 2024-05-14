@@ -13,7 +13,7 @@ options.validate = true;
 const eventImages = [
   {
     eventId: 1,
-    url: 'www.play.net/images/pic.png',
+    url: 'https://dubs-meetup.onrender.com/api/images/coaches',
     preview: true
   },
   {
@@ -22,8 +22,19 @@ const eventImages = [
     preview: false
   },
   {
-    eventId: 1,
-    url: 'www.play.net/images/pic3.png',
+    eventId: 2,
+    url: 'https://dubs-meetup.onrender.com/api/images/finalFantasy',
+    preview: true
+  },
+  {
+    eventId: 3,
+    url: 'https://dubs-meetup.onrender.com/api/images/sturgeon',
+    preview: true
+  },
+  {
+    eventId: 4,
+    url: 'https://dubs-meetup.onrender.com/api/images/knights',
+    preview: true
   },
 ]
 

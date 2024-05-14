@@ -28,21 +28,21 @@ const initialState = { entities: {}, allIds: [] };
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_USER: {
-            const newState = { ...state };
-            newState.entities[action.user.id] = action.user;
+            const newState = structuredClone(state);
+            newState.entities[action.user.id] = structuredClone(action.user);
             if (newState.allIds.indexOf(action.user.id) < 0) newState.allIds.push(action.user.id);
             return newState;
         }
         case SET_USERS: {
-            const newState = { ...state }
+            const newState = structuredClone(state)
             action.users.forEach(user => {
-                newState.entities[user.id] = user;
+                newState.entities[user.id] = structuredClone(user);
                 if (newState.allIds.indexOf(user.id) < 0) newState.allIds.push(user.id)
             });
             return newState;
         }
         case DELETE_USER: {
-            const newState = { ...state };
+            const newState = structuredClone(state);
             delete newState.entities[action];
             newState.allIds.splice(newState.allIds.indexOf(action), 1);
             return newState;
