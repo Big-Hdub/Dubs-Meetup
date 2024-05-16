@@ -112,6 +112,7 @@ const SignupFormModal = ({ navigate }) => {
                     disabled={
                         firstName.length < 1 ||
                         lastName.length < 1 ||
+                        email.length < 1 ||
                         username.length < 4 ||
                         password.length < 6 ||
                         password !== confirmPassword

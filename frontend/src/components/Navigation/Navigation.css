@@ -36,6 +36,12 @@
     cursor: pointer;
 }
 
+#profile-button {
+    padding: 5px;
+    border-radius: 20px;
+    background-color: palevioletred;
+}
+
 .profile-dropdown {
     border: 1px black solid;
     background-color: lightgray;

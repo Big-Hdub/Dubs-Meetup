@@ -21,7 +21,7 @@ const UpdateGroup = () => {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        if (session === null || session.id !== group.organizerId) navigate('/');
+        if (session === null || session.id !== group?.organizerId) navigate('/');
     }, [navigate, session, group])
 
     const handleSubmit = async e => {
@@ -50,7 +50,7 @@ const UpdateGroup = () => {
                         setErrors({ ...data.errors, ...errors })
                     }
                 });
-        navigate(`/groups/${updatedGroup.id}`, { state: { group: updatedGroup } })
+        navigate(`/groups/${updatedGroup.id}`)
     }
 
     return (
