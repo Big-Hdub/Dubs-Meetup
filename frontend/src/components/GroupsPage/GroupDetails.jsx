@@ -6,7 +6,7 @@ const GroupDetails = ({ group, group: { name, about, city, state, numMembers, pr
 
     return (
         <>
-            <img className="group-details-image" src={url} alt="/api/images/group-thumb" />
+            <img className="group-details-image" src={url} alt={previewImage} />
             <div className="details-wrapper">
                 <h4 className="group-details-h4">{name}</h4>
                 <h5 className="group-details-h5">{city}, {state}</h5>

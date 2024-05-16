@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { ImUserTie } from "react-icons/im";
 import * as sessionActions from '../../store/session';
 import { useNavigate } from "react-router-dom";
+import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ProfileButton = ({ user }) => {
     const dispatch = useDispatch();
@@ -29,6 +31,7 @@ const ProfileButton = ({ user }) => {
 
     const logout = () => {
         dispatch(sessionActions.logout());
+        navigate('/');
         closeMenu();
     };
 
@@ -36,9 +39,12 @@ const ProfileButton = ({ user }) => {
 
     return (
         <>
-            <button id="profile-button" onClick={toggleMenu}>
-                <ImUserTie />
-            </button>
+            <span>
+                <button id="profile-button" onClick={toggleMenu}>
+                    <ImUserTie />
+                </button>
+                {showMenu ? <FontAwesomeIcon icon={faAngleDown} /> : <FontAwesomeIcon icon={faAngleUp} />}
+            </span>
             <div className={divClassName} ref={divRef}>
                 <p className="profile-menu-items">Hello, {user?.username}</p>
                 <p className="profile-menu-items">{user?.email}</p>
