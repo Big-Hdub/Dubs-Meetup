@@ -1,16 +1,19 @@
-import { useDispatch } from 'react-redux';
-import { useModal } from '../../context/Modal';
-import './DeleteGroup.css'
+// import { redirect } from "react-router-dom"
 import { deleteGroup } from '../../utils/groups';
+import { useModal } from '../../context/Modal';
+import { useDispatch } from 'react-redux';
+import './DeleteGroup.css'
 
 const DeleteGroupModal = ({ group, navigate }) => {
     const { closeModal } = useModal();
     const dispatch = useDispatch();
 
     const handleDelete = async () => {
-        await dispatch(deleteGroup(group.id))
-        closeModal();
-        navigate('/groups');
+        const data = await dispatch(deleteGroup(group.id))
+        if (data.message === "Successfully deleted") {
+            closeModal();
+            navigate('/groups');
+        }
     }
 
     return (

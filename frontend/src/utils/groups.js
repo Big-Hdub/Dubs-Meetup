@@ -45,10 +45,10 @@ const getMembers = async (groupId, dispatch) => {
     }
 }
 
-export const loadGroupDetails = (groupId) => (dispatch) => {
-    getGroup(groupId, dispatch);
-    getEvents(groupId, dispatch);
-    getMembers(groupId, dispatch);
+export const loadGroupDetails = (groupId) => async (dispatch) => {
+    await getGroup(groupId, dispatch);
+    await getEvents(groupId, dispatch);
+    await getMembers(groupId, dispatch);
     return;
 }
 
@@ -108,6 +108,6 @@ export const deleteGroup = groupId => async dispatch => {
         method: 'DELETE'
     });
     const data = res.json();
-    if (res.ok && data.message === "Successfully deleted") await dispatch(groupActions.deleteGroup(groupId));
+    if (res.ok) await dispatch(groupActions.deleteGroup(groupId));
     return data;
 };

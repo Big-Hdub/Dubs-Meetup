@@ -93,3 +93,7 @@ p.feature-item {
 .feature-link:hover {
     text-decoration-line: underline;
 }
+
+.feature-item.disabled {
+    color: lightgrey;
+}

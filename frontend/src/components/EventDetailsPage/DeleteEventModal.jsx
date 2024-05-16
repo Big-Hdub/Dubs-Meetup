@@ -12,7 +12,7 @@ const DeleteEventModal = ({ event, navigate }) => {
         const data = await dispatch(deleteEvent(event.id));
         if (data.message === "Successfully deleted") {
             closeModal();
-            navigate(`/groups/${event.groupId}`, { state: { deleted: true } });
+            navigate(`/groups/${event.groupId}`);
         }
     }
 

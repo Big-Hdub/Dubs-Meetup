@@ -20,7 +20,7 @@ const events = [
     price: 89.99,
     description: 'Fun in the sun',
     startDate: new Date('2024-05-08 12:00:00 -08:00'),
-    endDate: new Date('2024-06-08 12:00:00 -08:00')
+    endDate: new Date('2024-05-09 12:00:00 -08:00')
   },
   {
     groupId: 1,
@@ -30,8 +30,8 @@ const events = [
     capacity: 200,
     price: 9.99,
     description: 'A warrior of light time',
-    startDate: new Date('2024-05-08 12:00:00 -08:00'),
-    endDate: new Date('2024-06-08 12:00:00 -08:00')
+    startDate: new Date('2024-05-12 12:00:00 -08:00'),
+    endDate: new Date('2024-05-12 14:00:00 -08:00')
   },
   {
     groupId: 2,
@@ -41,8 +41,8 @@ const events = [
     capacity: 4,
     price: 0,
     description: 'Fishing on the Ocean with family.  Stock the freezer with Salmon, Halibut, and Lingcod.',
-    startDate: new Date('2024-05-08 12:00:00 -08:00'),
-    endDate: new Date('2024-06-08 12:00:00 -08:00')
+    startDate: new Date('2024-05-21 12:00:00 -08:00'),
+    endDate: new Date('2024-05-23 12:00:00 -08:00')
   },
   {
     groupId: 2,
@@ -52,8 +52,8 @@ const events = [
     capacity: 200,
     price: 9.99,
     description: 'The battles of middle earth.',
-    startDate: new Date('2024-05-08 12:00:00 -08:00'),
-    endDate: new Date('2024-06-08 12:00:00 -08:00')
+    startDate: new Date('2024-05-24 12:00:00 -08:00'),
+    endDate: new Date('2024-05-25 12:00:00 -08:00')
   }
 ]
 
