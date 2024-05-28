@@ -1,8 +1,7 @@
 # Dubs Meetup
 ![alt text](<images/Screenshot 2024-05-27 190841.png>)
 ## Introduction
-Dubs Meetup is a mock version of Meetup.com, tailored specifically for use with my extended family.
-This platform allows family members to schedule events and socially network, making it easier to
+Dubs Meetup is a mock up of Meetup.com, that I created as one of my projects at App Academy.  I am currently working on tailoring it specifically for use with my extended family.  This platform will allow family members to schedule events and socially network, making it easier to
 stay connected and organized.
 
 ## Technologies Used
