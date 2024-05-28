@@ -9,7 +9,9 @@ const EventDetails = ({ eventId }) => {
     useEffect(() => {
         if (event?.startDate) {
             const dateTime = new Date(event?.startDate)?.toLocaleString().split(", ");
-            const [month, day, year] = dateTime[0].split("/");
+            let [month, day, year] = dateTime[0].split("/");
+            if (month.length == 1) month = "0" + month
+            if (day.length == 1) day = "0" + day
             const [time, amOrPm] = dateTime[1].split(':00 ')
             setDate({ month, day, year, time, amOrPm });
         }

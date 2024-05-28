@@ -21,7 +21,7 @@
 }
 
 #event-details-hosted {
-    color: lightgray;
+    color: gray;
 }
 
 #event-details-page-main {
@@ -79,6 +79,7 @@
 #event-details-main-info-container {
     height: 29vh;
     width: 27vw;
+    min-width: fit-content;
     background-color: white;
     border-radius: 15px;
     justify-content: space-around;

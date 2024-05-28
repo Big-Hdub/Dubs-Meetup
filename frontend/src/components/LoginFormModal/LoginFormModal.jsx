@@ -58,7 +58,7 @@ const LoginFormModal = ({ navigate }) => {
                 />
                 <input
                     name="Password"
-                    placeholder="Passord"
+                    placeholder="Password"
                     type="password"
                     required
                     value={password}

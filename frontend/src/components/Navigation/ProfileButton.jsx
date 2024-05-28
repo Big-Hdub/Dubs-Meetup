@@ -43,7 +43,7 @@ const ProfileButton = ({ user }) => {
                 <button id="profile-button" onClick={toggleMenu}>
                     <ImUserTie />
                 </button>
-                {showMenu ? <FontAwesomeIcon icon={faAngleDown} /> : <FontAwesomeIcon icon={faAngleUp} />}
+                {showMenu ? <FontAwesomeIcon icon={faAngleDown} /> : <FontAwesomeIcon icon={faAngleUp} onClick={toggleMenu} />}
             </span>
             <div className={divClassName} ref={divRef}>
                 <p className="profile-menu-items">Hello, {user?.username}</p>

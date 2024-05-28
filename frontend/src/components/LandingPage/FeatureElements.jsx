@@ -5,7 +5,10 @@ const FeatureElements = ({ url, linktext, linkheader, disabled, linkUrl }) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        if (!disabled) navigate(linkUrl);
+        if (!disabled) {
+            navigate(linkUrl);
+            window.scroll(0, 0);
+        }
     };
 
     return (

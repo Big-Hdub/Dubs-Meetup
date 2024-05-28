@@ -114,8 +114,7 @@ const SignupFormModal = ({ navigate }) => {
                         lastName.length < 1 ||
                         email.length < 1 ||
                         username.length < 4 ||
-                        password.length < 6 ||
-                        password !== confirmPassword
+                        password.length < 6
                     }
                 >Sign up</button>
             </form>

@@ -86,7 +86,7 @@ const CreateEvent = () => {
                             name="price"
                             id="create-event-price"
                             value={price}
-                            onChange={(e) => setPrice(e.target.value)}
+                            onChange={(e) => e.target.value > -1 ? setPrice(e.target.value) : setPrice(0)}
                         />
                     </span>
                     {errors.price && <p className="errors">{errors.price}</p>}
@@ -97,7 +97,7 @@ const CreateEvent = () => {
                             name="capacity"
                             id="create-event-capacity"
                             value={capacity}
-                            onChange={(e) => setCapacity(e.target.value)}
+                            onChange={(e) => e.target.value > 0 ? setCapacity(e.target.value) : setCapacity(1)}
                         />
                     </span>
                     {errors.capacity && <p className="errors">{errors.capacity}</p>}

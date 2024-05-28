@@ -21,6 +21,7 @@ const CreateGroup = () => {
         setErrors({});
         const errors = {}
         if (!location.includes(', ')) errors.location = 'Must be in this format: "City, ST"';
+        if (url == '') errors.preview = 'Image required.'
         const locationArray = location.split(', ');
         const groupData = {
             city: locationArray[0],
@@ -42,7 +43,9 @@ const CreateGroup = () => {
                         setErrors({ ...data.errors, ...errors })
                     }
                 });
-        navigate(`/groups/${newGroup.id}`)
+        if (newGroup) {
+            navigate(`/groups/${newGroup.id}`)
+        }
     }
 
     return (
@@ -74,26 +77,27 @@ const CreateGroup = () => {
             <div className="create-group-sections">
                 <h2>What will your group&apos;s name be?</h2>
                 <p>Choose a name that will give people a clear idea of what the group is about.  Feel free to get creative!  You can edit this later if you change your mind.</p>
-                <input type="text" name="group-name"
+                <input type="text"
+                    name="group-name"
                     className="create-group-inputs"
-                    placeholder="What is your groups name?"
+                    placeholder="What is your group's name?"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
-                {errors.name && <p className="errors">{errors.name}</p>}
+                {errors.name && <p className="errors">{"Needs a group name."}</p>}
             </div>
             <div className="create-group-sections">
                 <h2>Describe the purpose of your group.</h2>
                 <p>People will see this when we promote your group, but you&apos;ll be able to add to it later, too.</p>
                 <ol>
-                    <li>What&apos;s the purpose of the group?</li>
-                    <li>Who should join?</li>
-                    <li>What will you do at your events?</li>
+                    <li>1. What&apos;s the purpose of the group?</li>
+                    <li>2. Who should join?</li>
+                    <li>3. What will you do at your events?</li>
                 </ol>
                 <textarea name="about"
                     className="create-group-inputs"
                     id="create-group-about"
-                    placeholder="Please write at least 30 characters."
+                    placeholder="Please write at least 50 characters."
                     value={about}
                     onChange={(e) => setAbout(e.target.value)}
                 ></textarea>
@@ -148,9 +152,6 @@ const CreateGroup = () => {
             </div>
             <button id="create-group-button"
                 type="submit"
-                disabled={
-                    name.length < 1
-                }
             >Create group</button>
         </form >
     )

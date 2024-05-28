@@ -60,7 +60,7 @@ const GroupDetailsPage = () => {
                         <h1 id="group-details-h1">{group?.name}</h1>
                         <p className="group-details-p">{group?.city}, {group?.state}</p>
                         <span>
-                            <p className="group-details-p">{group?.numMembers}, members </p>
+                            <p className="group-details-p">{group?.numMembers} members </p>
                             <p className="group-details-p centered-dot">.</p>
                             <p className="group-details-p">{group?.private ? "Private" : "Public"}</p>
                         </span>
