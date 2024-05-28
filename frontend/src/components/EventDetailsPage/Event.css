@@ -48,6 +48,7 @@
 #event-details-main-header-right {
     height: 47vh;
     justify-content: space-between;
+    gap: 20px;
 }
 
 #event-details-main-group-container {
