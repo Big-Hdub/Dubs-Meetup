@@ -3,21 +3,24 @@ const { Attendee, Member, User } = require('../db/models');
 
 const getAttendees = async (req, res, next) => {
     const { id, groupId } = req.event;
+    console.log(id)
     let attendees;
-    const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } });
-    if (member?.status !== 'co-host' && member?.status !== 'Organizer') {
-        attendees = await User.findAll({
-            include: {
-                model: Attendee,
-                as: 'Attendance',
-                where: [
-                    { eventId: id },
-                    { status: { [Op.or]: ['host', 'co-host', 'attending', 'waitlist'] } }
-                ],
-                attributes: ['status']
-            },
-            attributes: ['id', 'firstName', 'lastName'],
-        });
+    if (req.user) {
+        const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } });
+        if (member?.status !== 'co-host' && member?.status !== 'Organizer') {
+            attendees = await User.findAll({
+                include: {
+                    model: Attendee,
+                    as: 'Attendance',
+                    where: [
+                        { eventId: id },
+                        { status: { [Op.or]: ['host', 'co-host', 'attending', 'waitlist'] } }
+                    ],
+                    attributes: ['status']
+                },
+                attributes: ['id', 'firstName', 'lastName'],
+            });
+        }
     } else {
         attendees = await User.findAll({
             include: {

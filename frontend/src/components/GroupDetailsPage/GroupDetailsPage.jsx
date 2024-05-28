@@ -80,8 +80,7 @@ const GroupDetailsPage = () => {
                 <h2 className="group-details-h2">Organizer</h2>
                 <p className="group-details-p">{group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
                 <h2 className="group-details-h2">What we&apos;re about</h2>
-                <p className="group-details-p">{group?.about} Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti in adipisci vel sunt quam quaerat eos enim, incidunt ad molestias. Iusto libero aliquid facilis accusantium sapiente blanditiis architecto consequatur vitae! Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex veritatis possimus laudantium quia, quo quos delectus neque iusto magni fugit et quas nisi laboriosam consequatur optio! Fugit quod quas eaque.
-                    Voluptate eaque error itaque maiores illum velit quo totam incidunt dolorem, alias excepturi ab! Expedita nihil, exercitationem tenetur sunt at aperiam aut molestias nesciunt corrupti assumenda magni, dolor debitis atque?</p>
+                <p className="group-details-p">{group?.about}</p>
                 {upcoming.length > 0 &&
                     <div id="upcoming-events-wrapper">
                         <h2 className="group-details-h2">Upcoming Events ({upcoming.length})</h2>

@@ -37,9 +37,7 @@ const EventDetails = ({ eventId }) => {
                 </div>
             </div>
             <div className="group-details-event-bottom">
-                <p className="group-details-event-p">{event?.description} Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, perferendis! Nam fugit aliquam voluptatum eius aut nobis laudantium iste. Quam natus accusantium, recusandae deleniti voluptates rem quis assumenda! Voluptatibus, est.
-                    Commodi ut suscipit quibusdam laborum laboriosam? Earum quia corporis quisquam, nisi facere nihil molestiae nesciunt mollitia nulla esse velit molestias quam totam iure vitae nostrum, perferendis deleniti, minima reiciendis dolores?
-                    Ratione, dolorum maxime iste non eos aspernatur exercitationem temporibus magnam perspiciatis recusandae rerum modi beatae culpa aliquid in perferendis cupiditate architecto nobis consectetur porro, nesciunt cumque quia assumenda tempore. Ducimus.</p>
+                <p className="group-details-event-p">{event?.description}</p>
             </div>
         </>
     )

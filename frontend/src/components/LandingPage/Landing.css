@@ -50,14 +50,27 @@
     margin-top: 10px;
 }
 
+#landing-about {
+    padding-right: 30px;
+    font-size: x-large;
+}
+
 .landing-p {
     font-size: large;
 }
 
 #landing-summary {
     align-items: center;
-    width: 400px;
+    width: fit-content;
     gap: 10px;
+}
+
+#landing-ol {
+    gap: 5px;
+}
+
+.landing-li {
+    font-weight: bold;
 }
 
 .feature-div {
@@ -72,6 +85,7 @@
 
 .feature-item {
     padding: 5px;
+    text-align: center;
 }
 
 .feature-img {

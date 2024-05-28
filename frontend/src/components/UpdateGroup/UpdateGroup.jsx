@@ -30,13 +30,14 @@ const UpdateGroup = () => {
         const errors = {}
         if (!location.includes(', ')) errors.location = 'Must be in this format: "City, ST"';
         const locationArray = location.split(', ');
+        console.log(isPrivate)
         const groupData = {
             city: locationArray[0],
             state: locationArray[1],
             name,
             about,
             type,
-            private: new Boolean(isPrivate)
+            private: isPrivate
         };
         const imageObj = {
             url,
