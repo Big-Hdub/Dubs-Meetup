@@ -13,6 +13,10 @@ stay connected and organized.
 - Express
 - Sequelize
 
+## Live Site:
+
+https://dubs-meetup.onrender.com
+
 ## Setup Instructions for Local Use
 
 ### Prerequisites
@@ -31,6 +35,14 @@ stay connected and organized.
 
 2. **Backend Setup**
 
+    **Create dotenv file**
+
+    ```sh
+    touch .env
+    ```
+
+    **Copy what is in .env.example to .env**
+
     **Install dependencies:**
 
     ```sh
@@ -40,6 +52,7 @@ stay connected and organized.
     ```
 
     **Start the backend server:**
+
     ```sh
     npm start
     ```
