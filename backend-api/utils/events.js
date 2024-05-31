@@ -33,7 +33,7 @@ const getEvents = async (req, res) => {
         {
             model: Group,
             attributes: ['id', 'name', 'city', 'state'],
-            required: false
+            // required: false
         },
         {
             model: Venue,
@@ -83,7 +83,7 @@ const getEventsByGroupId = async (req, res, next) => {
         {
             model: Group,
             attributes: ['id', 'name', 'city', 'state'],
-            required: false
+            // required: false
         },
         {
             model: Venue,
@@ -114,6 +114,7 @@ const getEventsByGroupId = async (req, res, next) => {
         err.status = 404;
         return next(err);
     }
+    console.log(events)
     res.json({
         Events: events
     });
@@ -152,6 +153,7 @@ const getEventByEventId = async (req, res, next) => {
         startDate: event.startDate.toLocaleString(),
         endDate: event.endDate.toLocaleString()
     }
+    // console.log(event)
     res.json(event);
 }
 

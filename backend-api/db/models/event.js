@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     venueId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       validate: {
         isNumeric: {
           msg: "Must be an integer of Venue id"

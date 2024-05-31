@@ -54,7 +54,7 @@ const GroupDetailsPage = () => {
                 <p id="group-breadcrumb-link" className="group-details-p" onClick={() => navigate('/groups')}>Groups</p>
             </span>
             <div id="group-details-header">
-                <img id="group-details-header-image" src={group?.previewImage} />
+                <img id="group-details-header-image" src={group?.preview} />
                 <div id="group-details-header-wrapper">
                     <div id="group-details-header-info">
                         <h1 id="group-details-h1">{group?.name}</h1>

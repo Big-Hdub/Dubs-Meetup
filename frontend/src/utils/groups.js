@@ -1,6 +1,7 @@
 import * as memberActions from '../store/members';
 import * as groupActions from '../store/groups';
 import * as eventActions from '../store/events';
+import * as venueActions from '../store/venues';
 import { csrfFetch } from '../store/csrf';
 
 export const loadAllGroups = () => async (dispatch) => {
@@ -26,9 +27,18 @@ const getGroup = async (groupId, dispatch) => {
 const getEvents = async (groupId, dispatch) => {
     try {
         const res = await csrfFetch(`/api/groups/${groupId}/events`);
-        let data = await res.json();
-        if (res.ok) await dispatch(eventActions.setEvents(data.Events));
-        return data;
+        let events = await res.json();
+        if (res.ok) {
+            for (let event of events.Events) {
+                if (event.Venue) {
+                    event.venueId = event.Venue.id
+                    await dispatch(venueActions.setVenue(event.Venue));
+                    delete event.Venue;
+                }
+            }
+            await dispatch(eventActions.setEvents(events.Events));
+        }
+        return events;
     } catch {
         return;
     }

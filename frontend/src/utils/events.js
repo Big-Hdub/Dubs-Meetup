@@ -13,7 +13,7 @@ const getEvent = async (eventId, dispatch) => {
     if (res.ok) {
         await dispatch(eventActions.setEvent({
             id, groupId, venueId, name, type, capacity, price,
-            description, startDate, endDate, EventImages, numAttending
+            description, startDate, endDate, EventImages, numAttending, preview: EventImages.find(el => el.preview).url
         }));
         const res = await csrfFetch(`/api/groups/${groupId}`);
         const data = await res.json();

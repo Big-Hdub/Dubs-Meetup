@@ -22,24 +22,38 @@ const demoUsers = [
   {
     firstName: 'Harry',
     lastName: 'Wagner',
-    email: 'user1@user.io',
-    username: 'FakeUser1',
-    hashedPassword: bcrypt.hashSync('password2')
+    email: 'hdub-bb@hotmail.com',
+    username: 'Hdub',
+    hashedPassword: bcrypt.hashSync('password')
   },
   {
-    firstName: 'Kumiko',
+    firstName: 'Sarah',
     lastName: 'Wagner',
-    email: 'user2@user.io',
-    username: 'FakeUser2',
-    hashedPassword: bcrypt.hashSync('password3')
+    email: 'sdub@dubs.com',
+    username: 'Sdub',
+    hashedPassword: bcrypt.hashSync('password')
   },
   {
     firstName: 'Leilani',
     lastName: 'Wagner',
-    email: 'user3@user.io',
-    username: 'FakeUser3',
-    hashedPassword: bcrypt.hashSync('password3')
-  }
+    email: 'leidub@dubs.com',
+    username: 'Leidub',
+    hashedPassword: bcrypt.hashSync('password')
+  },
+  {
+    firstName: 'Harrison',
+    lastName: 'Wagner',
+    email: 'lildub@dubs.com',
+    username: 'Lildub',
+    hashedPassword: bcrypt.hashSync('password')
+  },
+  {
+    firstName: 'Kumiko',
+    lastName: 'Wagner',
+    email: 'kdub@dubs.com',
+    username: 'Kdub',
+    hashedPassword: bcrypt.hashSync('password')
+  },
 ]
 
 module.exports = {

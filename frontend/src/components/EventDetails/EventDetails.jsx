@@ -1,10 +1,18 @@
 import * as eventActions from "../../store/events";
+import * as venueActions from "../../store/venues";
+import { loadEventDetails } from "../../utils/events";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const EventDetails = ({ eventId }) => {
     const [date, setDate] = useState({});
     const event = useSelector(eventActions.selectEvents).entities[eventId];
+    const venue = useSelector(venueActions.selectVenues).entities[event.venueId];
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(loadEventDetails(eventId))
+    }, [dispatch, eventId])
 
     useEffect(() => {
         if (event?.startDate) {
@@ -20,10 +28,8 @@ const EventDetails = ({ eventId }) => {
     return (
         <>
             <div className="group-details-event-top">
-                <img src={event?.previewImage ?
-                    event.previewImage.includes("https://dubs-meetup.onrender.com") ?
-                        event.previewImage.slice(32) :
-                        event.previewImage : "/api/images/knights"
+                {console.log(event)}
+                <img src={event?.preview ? event.preview : "/api/images/loading"
 
                 } className="group-details-event-img" />
                 <div className="group-details-event-header">
@@ -33,7 +39,10 @@ const EventDetails = ({ eventId }) => {
                         <p className="group-details-event-date">{date?.time} {date?.amOrPm}</p>
                     </span>
                     <h2 className="group-details-event-h2">{event?.name}</h2>
-                    <p className="group-details-event-p">{event?.Venue?.city}, {event?.Venue?.state}</p>
+                    {venue ?
+                        <p className="group-details-event-p">{venue?.city}, {venue?.state}</p> :
+                        <p className="group-details-event-p">Online</p>
+                    }
                 </div>
             </div>
             <div className="group-details-event-bottom">

@@ -1,7 +1,7 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 
-const { User, Group, Member } = require('../models');
+const { Member } = require('../models');
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
@@ -16,40 +16,70 @@ const members = [
     status: 'Organizer'
   },
   {
-    userId: 1,
-    groupId: 2,
+    userId: 2,
+    groupId: 1,
     status: 'co-host'
   },
   {
-    userId: 2,
+    userId: 3,
     groupId: 1,
     status: 'member'
   },
   {
-    userId: 3,
+    userId: 4,
+    groupId: 1,
+    status: 'pending'
+  },
+  {
+    userId: 2,
     groupId: 2,
     status: 'Organizer'
   },
   {
-    userId: 2,
+    userId: 3,
     groupId: 2,
     status: 'co-host'
   },
   {
-    userId: 3,
-    groupId: 1,
+    userId: 4,
+    groupId: 2,
     status: 'member'
   },
   {
-    userId: 4,
+    userId: 5,
     groupId: 2,
-    status: 'pending'
+    status: 'member'
+  },
+  {
+    userId: 6,
+    groupId: 2,
+    status: 'member'
+  },
+  {
+    userId: 2,
+    groupId: 3,
+    status: 'Organizer'
+  },
+  {
+    userId: 3,
+    groupId: 3,
+    status: 'co-host'
   },
   {
     userId: 4,
-    groupId: 1,
-    status: 'pending'
-  }
+    groupId: 3,
+    status: 'member'
+  },
+  {
+    userId: 5,
+    groupId: 3,
+    status: 'member'
+  },
+  {
+    userId: 6,
+    groupId: 3,
+    status: 'member'
+  },
 ]
 
 module.exports = {

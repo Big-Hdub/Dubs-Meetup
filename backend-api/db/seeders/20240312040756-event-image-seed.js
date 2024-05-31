@@ -13,27 +13,42 @@ options.validate = true;
 const eventImages = [
   {
     eventId: 1,
-    url: 'https://dubs-meetup.onrender.com/api/images/coaches',
+    url: 'https://dubs-meetup.onrender.com/api/images/knights',
     preview: true
   },
   {
-    eventId: 1,
-    url: 'www.play.net/images/pic2.png',
-    preview: false
-  },
-  {
     eventId: 2,
-    url: 'https://dubs-meetup.onrender.com/api/images/finalFantasy',
+    url: 'https://dubs-meetup.onrender.com/api/images/knights',
     preview: true
   },
   {
     eventId: 3,
-    url: 'https://dubs-meetup.onrender.com/api/images/sturgeon',
+    url: 'https://dubs-meetup.onrender.com/api/images/finalFantasy',
     preview: true
   },
   {
     eventId: 4,
-    url: 'https://dubs-meetup.onrender.com/api/images/knights',
+    url: 'https://dubs-meetup.onrender.com/api/images/finalFantasy',
+    preview: true
+  },
+  {
+    eventId: 5,
+    url: 'https://dubs-meetup.onrender.com/api/images/sturgeon',
+    preview: true
+  },
+  {
+    eventId: 6,
+    url: 'https://dubs-meetup.onrender.com/api/images/sturgeon',
+    preview: true
+  },
+  {
+    eventId: 7,
+    url: 'https://dubs-meetup.onrender.com/api/images/sturgeon',
+    preview: true
+  },
+  {
+    eventId: 8,
+    url: 'https://dubs-meetup.onrender.com/api/images/sturgeon',
     preview: true
   },
 ]

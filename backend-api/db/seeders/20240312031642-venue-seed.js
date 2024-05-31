@@ -12,9 +12,9 @@ options.validate = true;
 
 const venues = [
   {
-    groupId: 1,
+    groupId: 3,
     address: '999 E. Western Ave.',
-    city: 'Wenatchee',
+    city: 'Ocean Park',
     state: 'WA',
     lat: 82.9302563,
     lng: 32.1234534

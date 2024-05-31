@@ -13,23 +13,19 @@ options.validate = true;
 const groupImages = [
   {
     groupId: 1,
-    url: 'https://dubs-meetup.onrender.com/api/images/dubs-log',
+    url: 'https://dubs-meetup.onrender.com/api/images/trunks',
     preview: true
-  },
-  {
-    groupId: 1,
-    url: 'www.play.net/images/pic2.png',
-    preview: false
-  },
-  {
-    groupId: 1,
-    url: 'www.play.net/images/pic3.png',
   },
   {
     groupId: 2,
-    url: 'https://dubs-meetup.onrender.com/api/images/volleyball',
+    url: 'https://dubs-meetup.onrender.com/api/images/landing',
     preview: true
-  }
+  },
+  {
+    groupId: 3,
+    url: 'https://dubs-meetup.onrender.com/api/images/dubs-log',
+    preview: true
+  },
 ]
 
 module.exports = {

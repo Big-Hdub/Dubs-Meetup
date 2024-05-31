@@ -21,6 +21,7 @@ router.use('/images/coaches', express.static('./images/coaches.jpg'));
 router.use('/images/finalFantasy', express.static('./images/finalFantasy.jpg'));
 router.use('/images/trunks', express.static('./images/trunks.jpg'));
 router.use('/images/sturgeon', express.static('./images/sturgeon.jpg'));
+router.use('/images/loading', express.static('./images/loading.gif'));
 
 const sessionRouter = require('./session.js');
 router.use('/session', sessionRouter);
