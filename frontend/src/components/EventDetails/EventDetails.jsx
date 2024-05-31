@@ -28,8 +28,7 @@ const EventDetails = ({ eventId }) => {
     return (
         <>
             <div className="group-details-event-top">
-                {console.log(event)}
-                <img src={event?.preview ? event.preview : "/api/images/loading"
+                <img src={event?.previewImage ? event.previewImage : event?.preview ? event.preview : "/api/images/loading"
 
                 } className="group-details-event-img" />
                 <div className="group-details-event-header">
