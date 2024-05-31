@@ -64,7 +64,7 @@ const GroupDetailsPage = () => {
                             <p className="group-details-p centered-dot">.</p>
                             <p className="group-details-p">{group?.private ? "Private" : "Public"}</p>
                         </span>
-                        <p className="group-details-p">Organized by: {group?.Organizer?.firstName} {group?.Organizer?.lastName}</p>
+                        {group?.organizerId && members[+group.organizerId] && <p className="group-details-p">Organized by: {members[+group.organizerId].firstName} {members[+group.organizerId].lastName}</p>}
                     </div>
                     {!(session === null) && <div id="group-details-buttons-wrapper">
                         {!members[session.id] && <button id="join-group-button" onClick={() => window.alert('Feature coming soon')}>Join this group</button>}

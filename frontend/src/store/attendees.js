@@ -34,7 +34,8 @@ const attendeeReducer = (state = initialState, action) => {
             return newState;
         }
         case SET_ATTENDEES: {
-            const newState = structuredClone(state)
+            const newState = { entities: {}, allIds: [] }
+            console.log(action.attendees)
             action.attendees.Attendees.forEach(attendee => {
                 newState.entities[attendee.id] = structuredClone(attendee);
                 if (newState.allIds.indexOf(attendee.id) === -1) newState.allIds.push(attendee.id)

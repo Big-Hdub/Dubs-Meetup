@@ -19,8 +19,22 @@ const getAttendees = async (req, res, next) => {
                 },
                 attributes: ['id', 'firstName', 'lastName'],
             });
-        }
-    } else {
+        } else {
+            attendees = await User.findAll({
+                include: {
+                    model: Attendee,
+                    as: 'Attendance',
+                    where: [
+                        { eventId: id },
+                        { status: { [Op.or]: ['host', 'co-host', 'attending'] } }
+                    ],
+                    attributes: ['status']
+                },
+                attributes: ['id', 'firstName', 'lastName'],
+            });
+        };
+    }
+    if (!attendees) {
         attendees = await User.findAll({
             include: {
                 model: Attendee,
