@@ -100,14 +100,17 @@ const GroupDetailsPage = () => {
                 {past.length > 0 &&
                     <div id="past-events-wrapper">
                         <h2 className="group-details-h2">Past Events ({past.length})</h2>
-                        {past.map(event => {
-                            return (<div
-                                key={`pastId:${event.id}`}
-                                className="group-page-event-containers"
-                                onClick={() => navigate(`/events/${event.id}`)}>
-                                <EventDetails eventId={event.id} />
-                            </div>)
-                        })}
+                        {past.sort((a, b) =>
+                            new Date(b.startDate).getTime()
+                            - new Date(a.startDate).getTime())
+                            .map(event => {
+                                return (<div
+                                    key={`pastId:${event.id}`}
+                                    className="group-page-event-containers"
+                                    onClick={() => navigate(`/events/${event.id}`)}>
+                                    <EventDetails eventId={event.id} />
+                                </div>)
+                            })}
                     </div>
                 }
             </div>
