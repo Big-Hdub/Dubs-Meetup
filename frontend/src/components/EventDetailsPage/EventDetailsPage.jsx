@@ -51,7 +51,7 @@ const EventDetailsPage = () => {
                 setPreview(previewImage.slice(32)) :
                 setPreview(previewImage);
         } else {
-            setPreview("/api/images/knights");
+            setPreview("/api/images/loading");
         }
     }, [events, id])
 
