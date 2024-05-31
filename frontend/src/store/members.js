@@ -34,7 +34,7 @@ const memberReducer = (state = initialState, action) => {
             return newState;
         }
         case SET_MEMBERS: {
-            const newState = structuredClone(state)
+            const newState = { entities: {}, allIds: [] }
             action.members.forEach(member => {
                 newState.entities[member.id] = structuredClone(member);
                 if (newState.allIds.indexOf(member.id) < 0) newState.allIds.push(member.id)
