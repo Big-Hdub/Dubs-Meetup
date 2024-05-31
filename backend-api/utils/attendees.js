@@ -1,13 +1,12 @@
-const { Op } = require('sequelize');
+const { Op, JSON, json } = require('sequelize');
 const { Attendee, Member, User } = require('../db/models');
 
 const getAttendees = async (req, res, next) => {
     const { id, groupId } = req.event;
-    console.log(id)
     let attendees;
     if (req.user) {
         const member = await Member.findOne({ where: { userId: req.user.id, groupId: groupId } });
-        if (member?.status !== 'co-host' && member?.status !== 'Organizer') {
+        if (member?.status === 'co-host' && member?.status === 'Organizer') {
             attendees = await User.findAll({
                 include: {
                     model: Attendee,
@@ -26,7 +25,10 @@ const getAttendees = async (req, res, next) => {
             include: {
                 model: Attendee,
                 as: 'Attendance',
-                where: { eventId: id },
+                where: [
+                    { eventId: id },
+                    { status: { [Op.or]: ['host', 'co-host', 'attending'] } }
+                ],
                 attributes: ['status']
             },
             attributes: ['id', 'firstName', 'lastName'],

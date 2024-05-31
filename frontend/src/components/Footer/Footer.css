@@ -1,0 +1,25 @@
+#footer-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    border-top: 2px solid black;
+    padding: 5px 50px 10px 50px;
+    background-color: lightgray;
+    box-shadow: -2px -2px 2px grey;
+    box-sizing: border-box;
+}
+
+.footer-links {
+    text-decoration-line: none;
+    color: black;
+}
+
+.footer-links:hover {
+    text-decoration-line: underline;
+    color: blue;
+}

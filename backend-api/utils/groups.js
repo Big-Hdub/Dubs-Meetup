@@ -102,8 +102,10 @@ const createGroup = async (req, res) => {
 const createGroupImage = async (req, res) => {
     const imageObj = req.body;
     imageObj.groupId = +req.params.id;
-    const preview = await GroupImage.findOne({ where: { preview: true } });
-    if (preview) await preview.update({ preview: false })
+    if (imageObj.preview) {
+        const preview = await GroupImage.findOne({ where: { groupId: imageObj.groupId, preview: true } });
+        if (preview) await preview.update({ preview: false })
+    }
     const check = await GroupImage.findOne({ where: { groupId: imageObj.groupId, url: imageObj.url } });
     if (!check) {
         const groupImage = await GroupImage.create(imageObj);

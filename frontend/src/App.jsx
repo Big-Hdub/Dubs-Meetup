@@ -12,6 +12,7 @@ import CreateGroup from "./components/CreateGroup";
 import YourGroupsPage from "./components/GroupsPage/YourGroupsPage";
 import CreateEvent from "./components/CreateEvent";
 import UpdateGroup from "./components/UpdateGroup";
+import Footer from "./components/Footer";
 
 const Layout = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const Layout = () => {
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
+      <Footer />
     </>
   );
 }
