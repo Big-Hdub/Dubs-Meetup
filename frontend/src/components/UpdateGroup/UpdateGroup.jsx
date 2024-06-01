@@ -17,7 +17,7 @@ const UpdateGroup = () => {
     const [about, setAbout] = useState(group?.about);
     const [type, setType] = useState(group?.type);
     const [isPrivate, setIsPrivate] = useState(group?.private);
-    const [url, setUrl] = useState(group?.previewImage ? group.previewImage : group?.GroupImages.find(image => image.preview === true).url);
+    const [url, setUrl] = useState(group?.preview ? group.preview : group?.GroupImages.find(image => image.preview === true).url);
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
