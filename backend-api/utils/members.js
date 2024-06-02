@@ -98,7 +98,11 @@ const editMembership = async (req, res, next) => {
         err.status = 404;
         return next(err);
     }
-    if (edit?.status === 'member') {
+    if (check?.status === 'Organizer' && userId === memberToEdit.userId) {
+        const err = new Error('Must promote someone to your place.');
+        err.status = 403;
+        return next(err);
+    } else if (edit?.status === 'member') {
         await memberToEdit.update({
             status: edit.status
         });
@@ -131,7 +135,6 @@ const editMembership = async (req, res, next) => {
         err.errors = { status: "Cannot change a membership to status of pending" };
         return next(err);
     }
-    // console.log(memberToEdit)
     res.json({
         id: memberToEdit.id,
         groupId: memberToEdit.groupId,
@@ -168,15 +171,20 @@ const deleteMembership = async (req, res, next) => {
             userId: userId
         }
     });
-    if (!check && check?.status !== 'Organizer' || userId !== memberId) {
-        const err = new Error('Not authorized to delete this member');
+    if (!check || check?.status !== 'Organizer' && userId !== memberId) {
+        const err = new Error('Not authorized to delete this member.');
+        err.status = 403;
+        return next(err);
+    }
+    if (check?.status === 'Organizer' && userId === memberId) {
+        const err = new Error('Must promote someone to your place first.');
         err.status = 403;
         return next(err);
     }
     if (member) {
         member.destroy();
         res.json({
-            "message": "Successfully deleted membership from group"
+            "message": "Successfully deleted membership from group."
         });
     }
 };

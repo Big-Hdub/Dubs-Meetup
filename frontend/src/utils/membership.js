@@ -18,19 +18,24 @@ export const requestMembership = async (groupId, dispatch) => {
 };
 
 export const editMembership = async (groupId, member, dispatch) => {
-    try {
-        const res = await csrfFetch(`/api/groups/${groupId}/membership`, {
-            method: 'PUT',
-            body: JSON.stringify(member)
-        });
+    const res = await csrfFetch(`/api/groups/${groupId}/membership`, {
+        method: 'PUT',
+        body: JSON.stringify(member)
+    });
+    const data = await res.json();
+    if (res.ok) {
+        const res = await csrfFetch(`/api/groups/${groupId}/members`);
         const data = await res.json();
-        if (res.ok) {
-            const res = await csrfFetch(`/api/groups/${groupId}/members`);
-            const data = await res.json();
-            if (res.ok) await dispatch(memberActions.setMembers(data.Members));
-        }
-        return data;
-    } catch (e) {
-        return;
+        if (res.ok) await dispatch(memberActions.setMembers(data.Members));
     }
+    return data;
+}
+
+export const deleteMembership = async (memberId, groupId, dispatch) => {
+    const res = await csrfFetch(`/api/groups/${groupId}/membership/${memberId}`, {
+        method: 'DELETE'
+    });
+    const data = await res.json();
+    if (res.ok) await dispatch(memberActions.deleteMember(memberId))
+    return data
 }

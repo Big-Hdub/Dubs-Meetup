@@ -55,7 +55,6 @@ const GroupDetailsPage = () => {
         await requestMembership(+id);
         setRequested(true)
     }
-    // console.log(members)
     return (
         <div id="group-details-wrapper">
             <span id="group-breadcrumb-span">
