@@ -1,0 +1,25 @@
+#members-modal-container {
+    width: fit-content;
+    height: fit-content;
+    min-width: 250px;
+    gap: 15px;
+    padding: 20px;
+    align-items: end;
+    border: grey 2px solid;
+    border-radius: 15px;
+    box-shadow: 2px 2px 4px black;
+}
+
+#Member-modal-title {
+    align-self: start;
+}
+
+.members-span.space-between {
+    justify-content: space-between;
+}
+
+.members-span {
+    width: 100%;
+    justify-content: end;
+    gap: 15px;
+}

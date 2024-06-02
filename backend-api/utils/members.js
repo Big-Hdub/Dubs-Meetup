@@ -3,40 +3,15 @@ const { Op } = require("sequelize");
 
 const getMembers = async (req, res) => {
     const { group, user } = req;
-    let auth;
-    if (user) {
-        auth = await Member.findOne({
-            where: {
-                userId: Number(user.id),
-                groupId: Number(group.id)
-            }
-        });
-    };
-    let members;
-    if (auth?.status === 'Organizer' || auth?.status === 'co-host') {
-        members = await User.findAll({
-            attributes: ['id', 'firstName', 'lastName'],
-            include: {
-                model: Member,
-                attributes: ['status'],
-                as: 'Membership',
-                where: { groupId: group.id }
-            }
-        })
-    } else {
-        members = await User.findAll({
-            attributes: ['id', 'firstName', 'lastName'],
-            include: {
-                model: Member,
-                attributes: ['status'],
-                as: 'Membership',
-                where: {
-                    groupId: Number(group.id),
-                    status: { [Op.in]: ['Organizer', 'co-host', 'member'] }
-                }
-            }
-        })
-    }
+    let members = await User.findAll({
+        attributes: ['id', 'firstName', 'lastName'],
+        include: {
+            model: Member,
+            attributes: ['status'],
+            as: 'Membership',
+            where: { groupId: group.id }
+        }
+    })
     const response = {};
     response.Members = members;
     res.json(response);
@@ -66,13 +41,27 @@ const requestMembership = async (req, res, next) => {
         err.status = 400;
         return next(err);
     };
-    const newMember = await Member.create({
+    await Member.create({
         userId: userId,
         groupId: groupId
     });
+    const newMember = await User.findOne({
+        attributes: ['id', 'firstName', 'lastName'],
+        include: {
+            model: Member,
+            attributes: ['status'],
+            as: 'Membership',
+            where: {
+                groupId: groupId,
+                userId: userId
+            }
+        }
+    })
     res.json({
-        memberId: newMember.id,
-        status: newMember.status
+        id: newMember.id,
+        firstName: newMember.firstName,
+        lastName: newMember.lastName,
+        Membership: { status: newMember.Membership.status }
     });
 };
 
@@ -123,12 +112,26 @@ const editMembership = async (req, res, next) => {
                 status: edit.status
             });
         };
+    } else if (edit?.status === 'Organizer') {
+        if (check?.status !== 'Organizer') {
+            const err = new Error('Not authorized to edit this member.');
+            err.status = 403;
+            return next(err);
+        } else {
+            await check.update({
+                status: "co-host"
+            })
+            await memberToEdit.update({
+                status: edit.status
+            });
+        };
     } else if (edit?.status === 'pending') {
         const err = new Error('Bad Request');
         err.status = 400;
         err.errors = { status: "Cannot change a membership to status of pending" };
         return next(err);
     }
+    // console.log(memberToEdit)
     res.json({
         id: memberToEdit.id,
         groupId: memberToEdit.groupId,

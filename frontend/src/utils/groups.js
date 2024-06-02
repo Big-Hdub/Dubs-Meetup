@@ -15,7 +15,7 @@ const getGroup = async (groupId, dispatch) => {
     try {
         const res = await csrfFetch(`/api/groups/${groupId}`);
         const group = await res.json();
-        group.previewImage = group.GroupImages.find(image => image.preview === true).url;
+        group.preview = group.GroupImages.find(image => image.preview === true).url;
         group.Venues = group.Venues.map(venue => venue.id);
         if (res.ok) await dispatch(groupActions.setGroup(group));
         return group;
@@ -56,9 +56,10 @@ const getMembers = async (groupId, dispatch) => {
 }
 
 export const loadGroupDetails = (groupId) => async (dispatch) => {
+    await getMembers(groupId, dispatch);
+    await getMembers(groupId, dispatch);
     await getGroup(groupId, dispatch);
     await getEvents(groupId, dispatch);
-    await getMembers(groupId, dispatch);
     return;
 }
 

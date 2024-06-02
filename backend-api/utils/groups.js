@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Group, GroupImage, Member, User, Venue } = require('../db/models');
 
 const findAllGroups = async () => {
@@ -54,7 +55,12 @@ const getCurrentGroups = async (req, res) => {
 
 const findGroupById = async (groupObj) => {
     const group = groupObj.toJSON();
-    group.numMembers = await Member.count({ where: { groupId: group.id } })
+    group.numMembers = await Member.count({
+        where: {
+            groupId: group.id,
+            status: ['Organizer', 'co-host', 'member']
+        }
+    })
     group.GroupImages = await GroupImage.findAll({
         where: { groupId: group.id },
         attributes: ['id', 'url', 'preview']

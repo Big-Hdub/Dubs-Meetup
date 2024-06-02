@@ -141,3 +141,11 @@
     background-color: grey;
     color: white;
 }
+
+.ModalMenuItem.group-details-p.members-link {
+    text-decoration-line: underline;
+}
+
+.ModalMenuItem.group-details-p.members-link:hover {
+    color: blue;
+}

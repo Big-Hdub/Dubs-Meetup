@@ -1,3 +1,6 @@
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+import { requestMembership } from "../../utils/membership";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loadGroupDetails } from "../../utils/groups";
@@ -5,11 +8,11 @@ import * as sessionActions from "../../store/session";
 import * as memberActions from "../../store/members";
 import * as groupActions from "../../store/groups";
 import * as eventActions from "../../store/events";
+import DeleteGroupModal from "./DeleteGroupModal";
 import { useEffect, useState } from "react";
 import EventDetails from "../EventDetails";
 import './Group.css';
-import OpenModalButton from "../OpenModalButton/OpenModalButton";
-import DeleteGroupModal from "./DeleteGroupModal";
+import MemberListModal from "./MemberListModal";
 
 const GroupDetailsPage = () => {
     document.querySelector('title').innerText = 'Dubs Family Meetup';
@@ -19,6 +22,7 @@ const GroupDetailsPage = () => {
     const [upcoming, setUpcoming] = useState([]);
     const [past, setPast] = useState([]);
     const [loaded, setLoaded] = useState(0);
+    const [requested, setRequested] = useState(false)
     const group = useSelector(groupActions.selectGroup).entities[+id];
     const members = useSelector(memberActions.selectMember).entities;
     const session = useSelector(sessionActions.selectSessionUser).user;
@@ -29,7 +33,7 @@ const GroupDetailsPage = () => {
             await dispatch(loadGroupDetails(+id));
         }
         loader();
-    }, [dispatch, id])
+    }, [dispatch, id, requested]);
 
     useEffect(() => {
         const { entities } = events;
@@ -45,8 +49,13 @@ const GroupDetailsPage = () => {
                 }
             }
         }
-    }, [events, past, upcoming, loaded, id])
+    }, [events, past, upcoming, loaded, id]);
 
+    const handleJoin = async () => {
+        await requestMembership(+id);
+        setRequested(true)
+    }
+    // console.log(members)
     return (
         <div id="group-details-wrapper">
             <span id="group-breadcrumb-span">
@@ -60,14 +69,22 @@ const GroupDetailsPage = () => {
                         <h1 id="group-details-h1">{group?.name}</h1>
                         <p className="group-details-p">{group?.city}, {group?.state}</p>
                         <span>
-                            <p className="group-details-p">{group?.numMembers} members </p>
+                            <p className="group-details-p">{group?.numMembers}</p>
+                            {(session !== null) ?
+                                <OpenModalMenuItem
+                                    itemText="Members"
+                                    members={members}
+                                    classname=" group-details-p members-link"
+                                    modalComponent={<MemberListModal members={members} session={session} groupId={group?.id} />} /> :
+                                <p className="group-details-p">Members</p>}
                             <p className="group-details-p centered-dot">.</p>
                             <p className="group-details-p">{group?.private ? "Private" : "Public"}</p>
                         </span>
                         {group?.organizerId && members[+group.organizerId] && <p className="group-details-p">Organized by: {members[+group.organizerId].firstName} {members[+group.organizerId].lastName}</p>}
                     </div>
                     {!(session === null) && <div id="group-details-buttons-wrapper">
-                        {!members[session.id] && <button id="join-group-button" onClick={() => window.alert('Feature coming soon')}>Join this group</button>}
+                        {!members[session.id] && <button id="join-group-button" onClick={handleJoin}>Join this group</button>}
+                        {members[session.id]?.Membership.status === "pending" && <p className="group-details-p">Membership pending</p>}
                         {members[session.id]?.Membership.status === "Organizer" && <div id="group-details-action-buttons-wrapper">
                             <button id="action-create-button" className="group-details-action-buttons" onClick={() => navigate('/events/create', { state: { group } })}>Create event</button>
                             <button className="group-details-action-buttons" onClick={() => navigate(`/groups/${group?.id}/update`)}>Update</button>
