@@ -112,8 +112,8 @@ const EventDetailsPage = () => {
                                 </div>
                                 <div id="event-details-action-buttons-container">
                                     {session?.user?.id === hostId ? <>
-                                        <button className="event-details-action-buttons">Update</button>
-                                        <OpenModalButton classname="event-details-action-buttons" buttonText="Delete" modalComponent={<DeleteEventModal event={event ? event : events[+id]} navigate={navigate} />} />
+                                        <button className="event-details-action-buttons" onClick={() => navigate(`/events/${id}/update`, { state: { group: groups[events[+id]?.groupId], event: events[+id] } })}>Update</button>
+                                        <OpenModalButton classname="event-details-action-buttons" buttonText="Delete" modalComponent={<DeleteEventModal event={events[+id]} navigate={navigate} />} />
                                     </> : <></>}
                                 </div>
                             </div>

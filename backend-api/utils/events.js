@@ -201,6 +201,10 @@ const createEvent = async (req, res, next) => {
 const createEventImage = async (req, res) => {
     const { body } = req;
     body.eventId = Number(req.params.id);
+    const preview = await EventImage.findOne({ where: { preview: true, eventId: +req.params.id } })
+    if (preview) {
+        preview.update({ ...preview, preview: false })
+    }
     const newImage = await EventImage.create(body);
     res.json({
         id: newImage.id,

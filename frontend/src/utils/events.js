@@ -83,3 +83,23 @@ export const deleteEvent = eventId => async dispatch => {
     if (res.ok) await dispatch(eventActions.deleteEvent(eventId));
     return data;
 }
+
+const update = async (data) => {
+    console.log(data)
+    const res = await csrfFetch(`/api/events/${+data.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+    });
+    const event = await res.json();
+    return event;
+};
+
+export const updateEvent = (eventData, imageData) => async dispatch => {
+    const event = await update(eventData);
+    console.log(imageData)
+    if (eventData.previewImage !== imageData.url) {
+        const image = await newEventImage(imageData, event.id, dispatch);
+        event.previewImage = image.url;
+    }
+    return event;
+};

@@ -20,3 +20,17 @@
 #create-event-price {
     text-align: end;
 }
+
+#create-event-name {
+    width: 350px;
+}
+
+#create-event-type,
+#create-event-start,
+#create-event-end {
+    width: 200px;
+}
+
+#create-event-description {
+    min-height: 100px;
+}
