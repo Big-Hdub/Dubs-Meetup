@@ -228,12 +228,12 @@ const editEvent = async (req, res, next) => {
         return next(err);
     }
     if (body.venueId) {
-        const venue = await Venue.findByPk(body.venueId);
+        const venue = await Venue.findByPk(event.venueId);
         if (!venue) {
             const err = new Error("Venue couldn't be found");
             err.status = 404;
             return next(err);
-        } else if (venue.groupId !== event.groupId) {
+        } else if (+venue.groupId !== +event.groupId) {
             const err = new Error("Venue doesn't belong to group");
             err.status = 400;
             err.title = "Bad Request"

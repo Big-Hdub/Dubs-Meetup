@@ -23,7 +23,6 @@ const UpdateEvent = () => {
     const handleSubmit = async e => {
         e.preventDefault();
         setErrors({});
-        console.log(startDate)
         const eventData = {
             id: event.id,
             name: eventName,
@@ -33,7 +32,7 @@ const UpdateEvent = () => {
             endDate,
             description,
             groupId: group.id,
-            venueId: 1,
+            venueId: event.venueId,
             capacity
         };
         const imageData = {
@@ -47,7 +46,6 @@ const UpdateEvent = () => {
                     if (data?.errors) {
                         setErrors(data.errors)
                     }
-                    console.log(errors)
                 });
         navigate(`/events/${event.id}`, { state: { event: newEvent } });
     }

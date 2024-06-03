@@ -85,7 +85,6 @@ export const deleteEvent = eventId => async dispatch => {
 }
 
 const update = async (data) => {
-    console.log(data)
     const res = await csrfFetch(`/api/events/${+data.id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
@@ -96,7 +95,6 @@ const update = async (data) => {
 
 export const updateEvent = (eventData, imageData) => async dispatch => {
     const event = await update(eventData);
-    console.log(imageData)
     if (eventData.previewImage !== imageData.url) {
         const image = await newEventImage(imageData, event.id, dispatch);
         event.previewImage = image.url;
